@@ -1,0 +1,51 @@
+*:focus {
+  outline: none;
+}
+body {
+  background-color: #1c283b;
+  color: #d6842d;
+}
+#preloader {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #1c283b;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  opacity: 1;
+  -webkit-transition: opacity 2s;
+  transition: opacity 2s;
+  z-index: 9999;
+}
+#preloader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#preloader img {
+  height: 64px;
+  width: 64px;
+}
+div {
+  padding: 0;
+  width: 80%;
+}
+div#menu {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 30px;
+  z-index: 9998;
+}
+div#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 9997;
+}

@@ -1,0 +1,36 @@
+{
+  "name": "peer2package",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.13.0",
+    "del": "^2.2.1",
+    "dotenv": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-cache": "^0.4.5",
+    "gulp-coffee": "^2.3.2",
+    "gulp-imagemin": "^3.0.1",
+    "gulp-jade": "^1.1.0",
+    "gulp-jshint": "^2.0.1",
+    "gulp-minify": "0.0.12",
+    "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.5.0",
+    "gulp-util": "^3.0.7",
+    "jshint": "^2.9.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.7",
+    "morgan": "^1.7.0",
+    "node-static": "^0.7.8",
+    "socket.io": "^1.4.8"
+  }
+}

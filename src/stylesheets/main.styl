@@ -1,0 +1,48 @@
+backgroundcolor = #1C283B
+foregroundcolor = #D6842D
+divcolor = #D6842D
+
+*:focus
+  outline none
+
+
+body
+  background-color backgroundcolor
+  color foregroundcolor
+
+#preloader
+  width 100%
+  margin 0 auto
+  background-color backgroundcolor
+  display flex
+  justify-content center
+  align-items center
+  opacity 1
+  transition opacity 2s
+  z-index 9999
+
+#preloader.hidden
+  opacity 0
+  pointer-events none
+
+#preloader img
+  height 64px
+  width 64px
+
+div
+  padding 0
+  width 80%
+
+div#menu
+  position absolute
+  top 15px
+  right 15px
+  width 30px
+  z-index 9998
+
+div#map
+  position absolute
+  top 0
+  bottom 0
+  width 100%
+  z-index 9997

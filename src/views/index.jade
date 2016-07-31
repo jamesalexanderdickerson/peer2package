@@ -1,0 +1,25 @@
+doctype
+html(lang='en')
+	head
+		meta(charset='UTF-8')
+		meta(name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no')
+		title Document
+		link(rel='stylesheet' href='stylesheets/main.css')
+		script(src='../bower_components/angular/angular.js')
+		script(src='../bower_components/angular-ui-router/release/angular-ui-router.js')
+		script.
+			window.onload = function () {
+				var preloader = document.getElementById('preloader');
+				setTimeout(function () {
+					preloader.classList.add('hidden') }, 0					
+				);
+			};
+
+body
+	div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
+		img(src='./img/preloader.gif')
+	div
+		h1 Hello World
+		a(href='map.html') Click here
+
+	script(src='js/main.js') 

@@ -1,0 +1,25 @@
+{
+  "name": "peer2package",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "jamesalexanderdickerson <jamesalexanderdickerson@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./public/bower_components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7",
+    "angular-ui-router": "ui-router#^0.3.1",
+    "socket.io": "^1.4.8",
+    "d3": "^4.1.1",
+    "socket.io-client": "^1.4.8"
+  }
+}

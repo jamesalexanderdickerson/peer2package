@@ -1,0 +1,1 @@
+(function(){var o,t,a;o=function(){var o,t,a;for(o="",t=a=32;a>=0;t=a+=-1)o+=Math.floor(15*Math.random());return o},t=location.hash.replace(/^#/,""),t||(t=(Math.random()+1).toString(36).substring(2,12),location.hash=t),a=localStorage.getItem("myUuid"),a||(a=o(),console.log(a),localStorage.setItem("myUuid",a))}).call(this);
