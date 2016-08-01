@@ -38,7 +38,7 @@ app.get('/user_location', function (req, res) {
     "type": "Feature",
     "properties": {
       "title": "You",
-      "description": "<p>This is your current location.</p>"
+      "description": "<style>div.mapboxgl-popup {padding:10px;max-width:400px;background-color:#1C283B;font:20px'Helvetica Neue',Arial,Helvetica,sans-serif;border-radius:4px;margin-top:-50px;}button.mapboxgl-popup-close-button {display:none;}button{background-color:rgba(0, 0, 0, 0);color:#D6842D;border:1px solid #D6842D;}svg{margin:0 41% 0 ;display:block;position:absolute}</style><p>This is your current location.</p><br /><form><textarea rows='4' cols='50'>Enter text here.</textarea><br /><button type='submit'>Submit</button></form><svg xmlns='http://www.w3.org/2000/svg' width='54.875' height='29.875' viewBox='0 0 54.875 29.875'><path fill='#1C283B' d='M.916-.333l53.81.214L26.916 30z'/></svg>"
     }
   }
 );
