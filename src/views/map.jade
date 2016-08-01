@@ -38,12 +38,14 @@ html(lang='en')
 					data: url
 					});
 				window.setInterval(function() {
-					lat = position.coords["latitude"];
-					lng = position.coords["longitude"];
+					navigator.geolocation.getCurrentPosition(function(position) {
+						lat = position.coords["latitude"];	
+						lng = position.coords["longitude"];
+					});
 					var yourPosition = lng + ',' + lat;
 					socket.emit('LngLat', yourPosition);
 					source.setData(url);
-					}, 2000);
+					}, 1000);
 
 				map.on('load', function () {
 					map.addSource('You', source);
