@@ -197,7 +197,7 @@ div {
 .mapbox-form-label {
   position:absolute;
   top:0;left:0;
-  background:#8a8acb;
+  background:#FFC747;
   color:#fff;
   padding:0;
   width:40px;
@@ -207,7 +207,7 @@ div {
   border-radius:0 0 0 3px;
   }
   .mapbox-directions-origin .mapbox-form-label {
-    background-color:#3bb2d0;
+    background-color:#E65D5D;
     border-radius:3px 0 0 0;
     box-shadow:0 1px 0 0 rgba(0,0,0,0.1);
     z-index:1;
