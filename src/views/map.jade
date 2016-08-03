@@ -11,9 +11,11 @@ html(lang='en')
 		link(rel='preload' href='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css')
 		script(src='../bower_components/socket.io-client/socket.io.js')
 		script.
+			var map = null;
 			var lat = null;
 			var lng = null;
 			var socket = io();
+
 
 			function getLocation() {
 				if (navigator.geolocation) {
@@ -27,7 +29,7 @@ html(lang='en')
 				lat = position.coords["latitude"];
 				lng = position.coords["longitude"];
 				mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
-				var map = new mapboxgl.Map({
+				map = new mapboxgl.Map({
 					container: 'map',
 					style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
 					zoom: 19,
@@ -60,10 +62,6 @@ html(lang='en')
 					});
 				});
 
-				function moveToPosition () {
-					map.flyTo({center: [lng, lat]});	
-				}
-
 				map.on('click', function (e) {
 					var features = map.queryRenderedFeatures(e.point, { layers: ['You'] });
 					if (!features.length) {
@@ -81,25 +79,20 @@ html(lang='en')
 				);
 			};
 
+			function moveToPosition() {
+				map.flyTo({center: [lng, lat]});	
+			}
+
+
 			window.onload = function () {
 				getLocation();
 			};
 body
-	style.
-		button#centerMap {
-			display:inline-block;
-			width:200px;
-			height:100px;
-			position:absolute;
-			right:10px;
-			top:400px;
-			z-index:9999;
-		}
-
 	div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
 		img(src='./img/preloader.gif')
 	div#menu
 		img(src='./img/hamburger.png')
-	button#centerMap(onclick='moveToPosition()') Center Move to Position
+	div#bar
+		button#centerMap(onclick='moveToPosition()') Center Move to Position
 	div#map
 	script(src='js/map.js')

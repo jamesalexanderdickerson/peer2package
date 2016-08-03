@@ -10,6 +10,32 @@ body
   background-color backgroundcolor
   color foregroundcolor
 
+div#bar
+  position absolute
+  bottom 100px
+  display flex
+  z-index 9999
+  width 100%
+  flex-direction row
+  justify-content center
+
+
+button#centerMap
+  background-color rgba(0, 0, 0, 0)
+  border 1px solid #D6842D
+  color #D6842D
+  font-size 1em
+  border-radius 5px
+  box-sizing content-box;
+  padding 0
+  width 200px
+  height 50px
+  align-self center
+
+button#centerMap:hover
+  border-color white
+  color white
+
 #preloader
   width 100%
   margin 0 auto
@@ -29,13 +55,6 @@ body
   height 64px
   width 64px
 
-button#centerMap
-  display inline-block
-  width 200px
-  height 100px
-  position absolute
-  right 10px
-  top 1000px
 
 div
   padding 0
