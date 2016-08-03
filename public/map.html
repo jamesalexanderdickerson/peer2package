@@ -47,6 +47,10 @@ function showPosition(position) {
 		});
 	});
 
+	function moveToPosition () {
+		map.flyTo({center: [lng, lat]});	
+	}
+
 	map.on('click', function (e) {
 		var features = map.queryRenderedFeatures(e.point, { layers: ['You'] });
 		if (!features.length) {
@@ -66,4 +70,13 @@ function showPosition(position) {
 
 window.onload = function () {
 	getLocation();
-};</script></head></html><body><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"></div><div id="menu"><img src="./img/hamburger.png"></div><div id="map"></div><script src="js/map.js"></script></body>
+};</script></head></html><body><style>button#centerMap {
+	display:inline-block;
+	width:200px;
+	height:100px;
+	position:absolute;
+	right:10px;
+	top:400px;
+	z-index:9999;
+}
+</style><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"></div><div id="menu"><img src="./img/hamburger.png"></div><button id="centerMap" onclick="moveToPosition()">Center Move to Position</button><div id="map"></div><script src="js/map.js"></script></body>

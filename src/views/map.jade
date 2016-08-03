@@ -60,6 +60,10 @@ html(lang='en')
 					});
 				});
 
+				function moveToPosition () {
+					map.flyTo({center: [lng, lat]});	
+				}
+
 				map.on('click', function (e) {
 					var features = map.queryRenderedFeatures(e.point, { layers: ['You'] });
 					if (!features.length) {
@@ -81,9 +85,21 @@ html(lang='en')
 				getLocation();
 			};
 body
+	style.
+		button#centerMap {
+			display:inline-block;
+			width:200px;
+			height:100px;
+			position:absolute;
+			right:10px;
+			top:400px;
+			z-index:9999;
+		}
+
 	div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
 		img(src='./img/preloader.gif')
 	div#menu
 		img(src='./img/hamburger.png')
+	button#centerMap(onclick='moveToPosition()') Center Move to Position
 	div#map
 	script(src='js/map.js')
