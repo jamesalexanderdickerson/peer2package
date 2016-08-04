@@ -1,4 +1,6 @@
 backgroundcolor = #1C283B
+buttonbg = rgba(28,40,59,0.3)
+buttontxt = rgba(214,132,45,0.35)
 foregroundcolor = #D6842D
 divcolor = #D6842D
 
@@ -21,9 +23,9 @@ div#bar
 
 
 button#centerMap
-  background-color rgba(0, 0, 0, 0)
-  border 1px solid #D6842D
-  color #D6842D
+  background-color buttonbg
+  border 1px solid buttontxt
+  color buttontxt
   font-size 1em
   border-radius 5px
   box-sizing content-box;
@@ -33,8 +35,9 @@ button#centerMap
   align-self center
 
 button#centerMap:hover
-  border-color white
-  color white
+  border-color foregroundcolor
+  background-color backgroundcolor
+  color foregroundcolor
 
 #preloader
   width 100%
