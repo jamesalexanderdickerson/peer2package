@@ -1,8 +1,25 @@
 (function() {
-  var myVar;
+  var peer2package;
 
-  myVar = 'Javascript is running!';
+  peer2package = angular.module('peer2package', ['ui.router']);
 
-  console.log('%c' + myVar, 'background-color:#0058ff; color:#a7e03b; border-radius: 5px; padding: 5px');
+  peer2package.config(function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/home');
+    return $stateProvider.state('home', {
+      url: '/home',
+      templateUrl: 'home.html',
+      controller: 'mainController'
+    }).state('about', {
+      url: '/about',
+      templateUrl: 'about.html',
+      controller: 'aboutController'
+    });
+  });
+
+  peer2package.controller('mainController', function($scope) {});
+
+  peer2package.controller('mapController', function($scope) {});
+
+  peer2package.controller('aboutController', function($scope) {});
 
 }).call(this);

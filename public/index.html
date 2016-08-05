@@ -3,5 +3,9 @@
 	setTimeout(function () {
 		preloader.classList.add('hidden') }, 0					
 	);
-};
-</script></head></html><body><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"></div><div><h1>Hello World</h1><a href="map.html">Click here</a></div><script src="js/main.js"> </script></body>
+};</script></head></html><body ng-app="peer2package"><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"></div><div id="menu"><span></span><span></span><span></span><span></span></div><nav id="side-nav" role="navigation"><a ui-sref="home">Home</a><a ui-sref="about">About</a></nav><div ui-view></div><script src="js/main.js"> </script><script>var menu = document.getElementById('menu');
+var sidenav = document.getElementById('side-nav')
+menu.addEventListener('click', function () {
+	menu.classList.toggle('open');
+	sidenav.classList.toggle('nav-open')
+});</script></body>

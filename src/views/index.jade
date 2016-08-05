@@ -14,12 +14,24 @@ html(lang='en')
 					preloader.classList.add('hidden') }, 0					
 				);
 			};
-
-body
+body(ng-app='peer2package')
 	div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
 		img(src='./img/preloader.gif')
-	div
-		h1 Hello World
-		a(href='map.html') Click here
+	div#menu
+		span
+		span
+		span
+		span
+	nav#side-nav(role='navigation')
+		a(ui-sref='home') Home
+		a(ui-sref='about') About
+	div(ui-view)
 
 	script(src='js/main.js') 
+	script.
+		var menu = document.getElementById('menu');
+		var sidenav = document.getElementById('side-nav')
+		menu.addEventListener('click', function () {
+			menu.classList.toggle('open');
+			sidenav.classList.toggle('nav-open')
+		});
