@@ -1,12 +1,27 @@
+@font-face {
+  font-family: 'Avenir Next';
+  src: url("../fonts/AvenirNext-Regular.ttf");
+}
 *:focus {
   outline: none;
 }
 body {
+  padding: 0;
+  margin: 0;
   background-color: #1c283b;
   color: #d6842d;
   overflow: hidden;
+  font-family: 'Avenir Next';
+}
+div#navbar {
+  width: 100%;
+  height: 65px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 nav#side-nav {
+  background-color: #1c283b;
   padding: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -21,24 +36,73 @@ nav#side-nav {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 400px;
-  height: 400px;
-  -webkit-transform: translateX(410px);
-          transform: translateX(410px);
+  width: 420px;
+  height: 100%;
+  -webkit-transform: translateX(449px);
+          transform: translateX(449px);
   -webkit-transition: -webkit-transform 0.5s ease-in-out;
   transition: -webkit-transform 0.5s ease-in-out;
   transition: transform 0.5s ease-in-out;
   transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
 }
 nav#side-nav.nav-open {
-  -webkit-transform: translateX(0px);
-          transform: translateX(0px);
+  -webkit-transform: translateX(10px);
+          transform: translateX(10px);
 }
 nav#side-nav a {
   font-size: 3em;
-  color: #fff;
+  color: #d6842d;
   text-decoration: none;
   text-transform: lowercase;
+}
+div.container {
+  width: 100%;
+  height: 100%;
+}
+div#arrow {
+  position: absolute;
+  top: 34px;
+  left: 120px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #d6842d;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  transition: -webkit-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
+}
+a#home.active {
+  color: #fff;
+}
+a#about.active {
+  color: #fff;
+}
+div#arrow.about {
+  -webkit-transform: translateY(70px);
+          transform: translateY(70px);
+}
+div.ng-scope {
+  width: 100%;
+  height: 100%;
+}
+div.jumbotron {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 300px;
+  background-color: #626262;
+}
+div.jumbotron h1 {
+  font-size: 2.9em;
 }
 div#bar {
   position: absolute;
@@ -140,7 +204,7 @@ div#menu span {
   position: absolute;
   height: 3px;
   width: 100%;
-  background: #fff;
+  background: #d6842d;
   border-radius: 9px;
   opacity: 1;
   left: 0;

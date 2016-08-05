@@ -3,9 +3,26 @@
 	setTimeout(function () {
 		preloader.classList.add('hidden') }, 0					
 	);
-};</script></head></html><body ng-app="peer2package"><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"></div><div id="menu"><span></span><span></span><span></span><span></span></div><nav id="side-nav" role="navigation"><a ui-sref="home">Home</a><a ui-sref="about">About</a></nav><div ui-view></div><script src="js/main.js"> </script><script>var menu = document.getElementById('menu');
-var sidenav = document.getElementById('side-nav')
+};
+</script></head><body ng-app="peer2package"><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"></div><div id="navbar"><div id="menu"><span></span><span></span><span></span><span></span></div></div><nav id="side-nav" role="navigation"><div id="arrow" class="home"></div><a id="home" ui-sref="home" class="active">Home</a><a id="about" ui-sref="about">About</a></nav><div ui-view></div></body><script src="js/main.js"> </script><script>var menu = document.getElementById('menu');
+var sidenav = document.getElementById('side-nav');
+var arrow = document.getElementById('arrow');
+var btn_home = document.getElementById('home');
+var btn_about= document.getElementById('about');
+
+btn_about.addEventListener('click', function () {
+	arrow.classList.add('about');
+	arrow.classList.remove('home');
+	btn_about.classList.add('active');
+	btn_home.classList.remove('active');
+});
+btn_home.addEventListener('click', function () {
+	arrow.classList.add('home');
+	arrow.classList.remove('about');
+	btn_home.classList.add('active')
+	btn_about.classList.remove('active')
+});
 menu.addEventListener('click', function () {
 	menu.classList.toggle('open');
 	sidenav.classList.toggle('nav-open')
-});</script></body>
+});</script></html>

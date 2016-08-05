@@ -14,23 +14,43 @@ html(lang='en')
 					preloader.classList.add('hidden') }, 0					
 				);
 			};
-body(ng-app='peer2package')
-	div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
-		img(src='./img/preloader.gif')
-	div#menu
-		span
-		span
-		span
-		span
-	nav#side-nav(role='navigation')
-		a(ui-sref='home') Home
-		a(ui-sref='about') About
-	div(ui-view)
 
+	body(ng-app='peer2package')
+		div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
+			img(src='./img/preloader.gif')
+		div#navbar
+			div#menu
+				span
+				span
+				span
+				span
+		nav#side-nav(role='navigation')
+			div#arrow.home
+			a#home.active(ui-sref='home') Home
+			a#about(ui-sref='about') About
+		div(ui-view)
+
+	//- Scripts to run after the DOM has loaded.
 	script(src='js/main.js') 
 	script.
 		var menu = document.getElementById('menu');
-		var sidenav = document.getElementById('side-nav')
+		var sidenav = document.getElementById('side-nav');
+		var arrow = document.getElementById('arrow');
+		var btn_home = document.getElementById('home');
+		var btn_about= document.getElementById('about');
+
+		btn_about.addEventListener('click', function () {
+			arrow.classList.add('about');
+			arrow.classList.remove('home');
+			btn_about.classList.add('active');
+			btn_home.classList.remove('active');
+		});
+		btn_home.addEventListener('click', function () {
+			arrow.classList.add('home');
+			arrow.classList.remove('about');
+			btn_home.classList.add('active')
+			btn_about.classList.remove('active')
+		});
 		menu.addEventListener('click', function () {
 			menu.classList.toggle('open');
 			sidenav.classList.toggle('nav-open')
