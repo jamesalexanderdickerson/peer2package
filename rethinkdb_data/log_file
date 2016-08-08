@@ -1,0 +1,53 @@
+2016-08-05T18:06:29.669939000 0.511871s notice: Recursively removing directory /Users/jamesalexanderdickerson/Desktop/peer2package/rethinkdb_data/tmp
+2016-08-05T18:06:29.671609000 0.513544s notice: Initializing directory /Users/jamesalexanderdickerson/Desktop/peer2package/rethinkdb_data
+2016-08-05T18:06:29.671687000 0.513618s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/jamesalexanderdickerson/Desktop/peer2package/rethinkdb_data' did not already exist or is empty.)
+2016-08-05T18:06:29.671710000 0.513641s notice: Running rethinkdb 2.3.4 (CLANG 7.3.0 (clang-703.0.31))...
+2016-08-05T18:06:29.676148000 0.518081s notice: Running on Darwin 15.5.0 x86_64
+2016-08-05T18:06:29.676189000 0.518120s notice: Loading data from directory /Users/jamesalexanderdickerson/Desktop/peer2package/rethinkdb_data
+2016-08-05T18:06:29.741925000 0.583857s info: Automatically using cache size of 1726 MB
+2016-08-05T18:06:29.742883000 0.584814s notice: Listening for intracluster connections on port 29015
+2016-08-05T18:06:29.744390000 0.586321s notice: Listening for client driver connections on port 28015
+2016-08-05T18:06:29.744504000 0.586435s notice: Listening for administrative HTTP connections on port 8080
+2016-08-05T18:06:29.744510000 0.586441s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2016-08-05T18:06:29.744513000 0.586444s notice: Listening on driver addresses: 127.0.0.1, ::1
+2016-08-05T18:06:29.744515000 0.586446s notice: Listening on http addresses: 127.0.0.1, ::1
+2016-08-05T18:06:29.744518000 0.586449s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-08-05T18:06:29.744520000 0.586451s notice: Server ready, "Jamess_MBP_3_lan_ujf" 3894937b-5bd2-402e-acdb-337331b5dcc3
+2016-08-05T18:06:29.855108000 0.697040s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:29.855211000 0.697142s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:30.857638000 1.699662s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:31.858944000 2.700967s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:31.859025000 2.701048s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:33.344233000 4.186348s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:33.858130000 4.700337s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:35.344759000 6.186966s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:35.857421000 6.699718s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:37.349523000 8.191912s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:37.857436000 8.699826s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:39.346087000 10.188567s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:41.223962000 12.066535s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:41.857655000 12.700228s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:42.857746000 13.700409s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:44.076925000 14.919680s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:44.859019000 15.701775s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:44.859042000 15.701797s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:45.857428000 16.700275s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:47.182738000 18.025677s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:47.182822000 18.025760s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:47.857619000 18.700558s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:48.856771000 19.699801s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:50.109873000 20.952995s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:50.857182000 21.700304s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:51.857125000 22.700338s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:53.162284000 24.005497s notice: Someone asked for the nonwhitelisted file "/socket.io/".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:53.162343000 24.005555s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:53.858392000 24.701696s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:54.856536000 25.699932s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:56.123490000 26.966886s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:56.857051000 27.700538s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:57.857314000 28.700802s notice: Someone asked for the nonwhitelisted file "/user_location".  If this should be accessible, add it to the static web assets.
+2016-08-05T18:06:58.769112000 29.612691s notice: Server got SIGINT from pid 78386, uid 501; shutting down...
+2016-08-05T18:06:58.769243000 29.612821s notice: Shutting down client connections...
+2016-08-05T18:06:58.769306000 29.612884s notice: All client connections closed.
+2016-08-05T18:06:58.769310000 29.612888s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2016-08-05T18:06:58.769629000 29.613207s notice: Storage engine shut down.

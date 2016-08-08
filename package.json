@@ -31,6 +31,7 @@
     "mongoose": "^4.5.7",
     "morgan": "^1.7.0",
     "node-static": "^0.7.8",
+    "redis": "^2.6.2",
     "socket.io": "^1.4.8"
   }
 }

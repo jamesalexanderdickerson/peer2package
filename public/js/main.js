@@ -4,19 +4,21 @@
   peer2package = angular.module('peer2package', ['ui.router']);
 
   peer2package.config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/home');
-    return $stateProvider.state('home', {
-      url: '/home',
+    return $stateProvider.state('main', {
       templateUrl: 'home.html',
       controller: 'mainController'
     }).state('about', {
-      url: '/about',
       templateUrl: 'about.html',
       controller: 'aboutController'
     });
   });
 
   peer2package.controller('mainController', function($scope) {});
+
+  peer2package.controller('menuController', function($scope) {
+    $scope.authStatus = false;
+    return console.log(regForm);
+  });
 
   peer2package.controller('mapController', function($scope) {});
 

@@ -20,6 +20,7 @@
     "angular-ui-router": "ui-router#^0.3.1",
     "socket.io": "^1.4.8",
     "d3": "^4.1.1",
-    "socket.io-client": "^1.4.8"
+    "socket.io-client": "^1.4.8",
+    "angular-animate": "^1.5.8"
   }
 }

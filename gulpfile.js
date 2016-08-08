@@ -36,7 +36,6 @@ gulp.task('styles', function () {
   gulp.src('src/stylesheets/*.styl')
   .pipe(stylus())
   .pipe(autoprefixer())
-  .pipe(minify())
   .pipe(gulp.dest('public/stylesheets'))
   .pipe(browserSync.stream());
 });

@@ -4,42 +4,15 @@ var app = require('express')(),
   http = require('http').Server(app),
   bodyParser = require('body-parser'),
   io = require('socket.io')(http),
-  mongoose = require('mongoose'),
+  redis = require('redis'),
+  redisClient = redis.createClient()
   dotenv = require('dotenv');
 
 // Import variables from .env file.
 dotenv.load();
 
-// Mongodb setup
-mongoose.connect('mongodb://localhost/peer2package', function () {
-  console.log('Connected to mongodb.');
-});
-
-var Schema = mongoose.Schema;
-var user = '';
-
-var positionSchema = new Schema({
-  userId: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  coordinates: {
-    lat: {
-      type: String
-    },
-    lng: {
-      type: String
-    }
-  }
-});
-
-var Position = mongoose.model('Position', positionSchema);
+var lng = '';
+var lat = '';
 
 // Define a port we want to use.
 const PORT=8080;
@@ -47,6 +20,11 @@ var myPosition = '';
 
 // Load in environment variables.
 var mapboxAPIKey = process.env.MAPBOXAPIKEY
+
+// Setup Redis
+redisClient.on('connect', function () {
+  console.log('connected to redis');
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -69,10 +47,12 @@ app.get('/other_positions', function (req, res) {
 });
 
 app.get('/user_location', function (req, res) {
+  lng = redisClient.get('lng');
+  lat = redisClient.get('lat');
   res.json({
     "geometry": {
       "type": "Point",
-      "coordinates": [myPosition[0],myPosition[1]]
+      "coordinates": [ lng,lat ]
     },
     "type": "Feature",
     "properties": {
@@ -87,6 +67,9 @@ io.on('connection', function (socket) {
   socket.on('LngLat', function (yourPosition) {
     myPosition = yourPosition.split(',');
     console.log(myPosition);
+    redisClient.set('lng', yourPosition[0]);
+    redisClient.set('lat', yourPosition[1]);
+    console.log('Redis:' + redisClient.get(lng))
   });
   socket.on('disconnect', function () {
     console.log('A user has disconnected');
