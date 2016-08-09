@@ -34,27 +34,28 @@ html(lang='en')
 					div#navcontainer-menu(ng-show='authStatus')
 						div#arrow.home
 						a#home.active(ui-sref='main') Home
-						a#about(ui-sref='about') About
+						a#account(ui-sref='account') Account
+						a#map(ui-sref='map2') Map
 					div#navcontainer-login(ng-show='!authStatus')
 						h1 Login
 						form#loginForm(name='loginForm' novalidate)
 							div.inputs
-								input#email(type='email' ng-model='user.email' placeholder='Email')
+								input#email(type='email' ng-model='user.email' placeholder='Email' ng-required='true')
 								div.valid
 									img(src='img/valid.svg' ng-show='user.email')
 									img(src='img/invalid.svg' ng-show='!user.email')
 							div.inputs
-								input#password(type='password' ng-model='user.password' placeholder='Password')
+								input#password(type='password' ng-model='user.password' placeholder='Password' ng-required='true')
 								div.valid
 									img(src='img/valid.svg' ng-show='user.password')
 									img(src='img/invalid.svg' ng-show='!user.password')
-							button(type='submit') Submit
+							button(type='submit' ng-class='{ "disabled": loginForm.$invalid }' ng-disabled='loginForm.$invalid') Submit
 							a.small(ng-click="menuClass='registerOn'") or register
 					div#navcontainer-register(ng-show='!authStatus')
 						h1 Register
 						form#registerForm(name='regForm' novalidate)
 							div.inputs
-								input#email(type='email' ng-model='user.email' placeholder='Email')
+								input#email(type='email' ng-model='user.email' placeholder='Email' ng-required='true')
 								div.valid
 									img(src='img/valid.svg' ng-show='user.email')
 									img(src='img/invalid.svg' ng-show='!user.email')
@@ -78,12 +79,39 @@ html(lang='en')
 								div.valid
 									img(src='img/valid.svg' ng-show='user.pword == user.password && user.pword')
 									img(src='img/invalid.svg' ng-show='user.pword != user.password || !user.pword')
-							button(type='submit') Submit
+							button(type='submit' ng-class='{ "disabled": regForm.$invalid || user.pword != user.password }' ng-disabled='regForm.$invalid') Submit
 							a.small(ng-click="menuClass=''") or login
 		div(ui-view)
 			div.container(ng-controller='mainController')
-				div.jumbotron
-					h1 Peer2Package
+				div.main_page(front-scroll)
+					div.jumbotron
+						h1 Peer2Package
+					div.logo_section
+						div.logos
+							div#buy.front_logo
+								img(src='img/buy.svg')
+								p BUY
+							div#sell.front_logo
+								img(src='img/sell.svg')
+								p SELL
+							div#deliver.front_logo
+								img(src='img/deliver.svg')
+								p DELIVER
+					div#buy_things.main_section
+						div.column_one.logo
+							img(src='img/buy.svg')
+						div.column_two.text
+							p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni voluptatum quidem temporibus accusamus soluta eaque quas tempora, officia incidunt tempore, corrupti quod ad quaerat dolore consequuntur vel necessitatibus illum sed!
+					div#buy_things.main_section
+						div#sell_things.column_one.text
+							p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, sed sequi autem, maiores, doloremque iusto a, atque ad quaerat quae delectus expedita nobis accusantium? Numquam doloribus, itaque error nostrum assumenda.
+						div.column_two.logo
+							img(src='img/sell.svg')
+					div#buy_things.main_section
+						div#deliver_things.column_one.logo
+							img(src='img/deliver.svg')
+						div.column_two.text
+							p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum dignissimos blanditiis unde molestiae veritatis assumenda amet, quisquam vitae nobis error culpa perspiciatis, esse perferendis eligendi in quod veniam. Similique, dolore.
 
 	//- Scripts to run after the DOM has loaded.
 	script(src='js/main.js')

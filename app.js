@@ -4,8 +4,11 @@ var app = require('express')(),
   http = require('http').Server(app),
   bodyParser = require('body-parser'),
   io = require('socket.io')(http),
+  mysql = require('mysql'),
   redis = require('redis'),
-  redisClient = redis.createClient()
+  Session = require('express-session'),
+  cookieParser = require('cookie-parser'),
+  redisClient = redis.createClient(),
   dotenv = require('dotenv');
 
 // Import variables from .env file.
@@ -21,6 +24,21 @@ var myPosition = '';
 // Load in environment variables.
 var mapboxAPIKey = process.env.MAPBOXAPIKEY
 
+// Setup MySQL
+var db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  database: 'peer2package'
+});
+
+db.connect(function(err) {
+  if (err) {
+    console.log('Error connecting to MySQL');
+    return;
+  }
+  console.log('Connected to MySQL')
+});
+
 // Setup Redis
 redisClient.on('connect', function () {
   console.log('connected to redis');
@@ -28,10 +46,26 @@ redisClient.on('connect', function () {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
+
+var Session = Session({
+  secret: 'shhhhhhhhhhhhh!!!!!',
+  saveUnintialized: true,
+  resave: true
+});
+
+io.use(function (socket, next) {
+  Session(socket.request, socket.request.res, next);
+});
+
+app.use(Session);
 
 app.get('/', function (req, res) {
   res.sendFile('index.html');
+});
+
+app.post('/', function (req, res) {
 });
 
 app.get('/map', function (req, res) {

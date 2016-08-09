@@ -3,16 +3,68 @@ peer2package = angular.module 'peer2package', ['ui.router']
 peer2package.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider
     .state 'main', {templateUrl: 'home.html', controller: 'mainController'}
-    .state 'about', {templateUrl: 'about.html', controller: 'aboutController'}
+    .state 'account', {templateUrl: 'account.html', controller: 'accountController'}
+    .state 'map', {templateUrl: 'map.html', controller: 'mapController'}
+    .state 'map2', {templateUrl: 'map2.html', controller: 'mapController'}
+    .state 'gps', {templateUrl: 'gps.html', controller: 'gpsController'}
 
 peer2package.controller 'mainController', ($scope) ->
 
 peer2package.controller 'menuController', ($scope) ->
   $scope.authStatus = false
 
-peer2package.controller 'mapController', ($scope) ->
+peer2package.controller 'mapController', ($scope, socket) ->
+  $scope.map = null
+  $scope.lat = null
+  $scope.lng = null
 
-peer2package.controller 'aboutController', ($scope) ->
+
+peer2package.controller 'gpsController', ($scope, socket) ->
+
+peer2package.controller 'accountController', ($scope) ->
+
+peer2package.factory 'socket', ($rootScope) ->
+  socket = io.connect()
+  {
+    on: (eventName, callback) ->
+      socket.on eventName, ->
+        args = arguments
+        $rootScope.$apply ->
+          callback.apply socket, args
+          return
+        return
+      return
+    emit: (eventName, data, callback) ->
+      socket.emit eventName, data, ->
+        args = arguments
+        $rootScope.$apply ->
+          if callback
+            callback.apply socket, args
+          return
+        return
+      return
+  }
+
+peer2package.directive 'frontScroll', () ->
+  return {
+    restrict: 'AE',
+    link: () ->
+      buy_button = document.getElementById 'buy'
+      sell_button = document.getElementById 'sell'
+      deliver_button = document.getElementById 'deliver'
+      buy_div = document.getElementById 'buy_things'
+      sell_div = document.getElementById 'sell_things'
+      deliver_div = document.getElementById 'deliver_things'
+
+      buy_button.addEventListener 'click', () ->
+        buy_things.scrollIntoView()
+
+      sell_button.addEventListener 'click', () ->
+        sell_things.scrollIntoView()
+
+      deliver_button.addEventListener 'click', () ->
+        deliver_things.scrollIntoView()
+  }
 
 peer2package.directive 'menuChange', () ->
   return {
@@ -22,21 +74,34 @@ peer2package.directive 'menuChange', () ->
       sidenavmenu = document.getElementById 'side-nav-menu'
       arrow = document.getElementById 'arrow'
       btn_home = document.getElementById 'home'
-      btn_about = document.getElementById 'about'
+      btn_account = document.getElementById 'account'
+      btn_map = document.getElementById 'map'
 
       menu.addEventListener 'click', () ->
         menu.classList.toggle 'open'
         sidenavmenu.classList.toggle('nav-open')
 
-      btn_about.addEventListener 'click', () ->
-        arrow.classList.add 'about'
+      btn_account.addEventListener 'click', () ->
+        arrow.classList.add 'account'
         arrow.classList.remove 'home'
-        btn_about.classList.add 'active'
+        arrow.classList.remove 'map'
+        btn_account.classList.add 'active'
         btn_home.classList.remove 'active'
+        btn_map.classList.remove 'active'
 
       btn_home.addEventListener 'click', () ->
         arrow.classList.add 'home'
-        arrow.classList.remove 'about'
+        arrow.classList.remove 'account'
+        arrow.classList.remove 'map'
         btn_home.classList.add 'active'
-        btn_about.classList.remove 'active'
+        btn_account.classList.remove 'active'
+        btn_map.classList.remove 'active'
+
+      btn_map.addEventListener 'click', () ->
+        arrow.classList.add 'map'
+        arrow.classList.remove 'account'
+        arrow.classList.remove 'home'
+        btn_map.classList.add 'active'
+        btn_home.classList.remove 'active'
+        btn_account.classList.remove 'active'
   }

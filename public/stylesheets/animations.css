@@ -4,9 +4,13 @@ div#arrow {
   transition: transform 0.2s ease-in-out;
   transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
 }
-div#arrow.about {
+div#arrow.account {
   -webkit-transform: translateY(67px);
           transform: translateY(67px);
+}
+div#arrow.map {
+  -webkit-transform: translateY(134px);
+          transform: translateY(134px);
 }
 div#menu {
   -webkit-transform: rotate(0deg);
