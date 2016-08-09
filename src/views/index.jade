@@ -19,66 +19,67 @@ html(lang='en')
 	body(ng-app='peer2package')
 		div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
 			img(src='./img/preloader.gif')
-		div#navbar
-			div#logo
-				img(src='img/logo.svg')
-				p Peer2Package
-			div#menu
-				span
-				span
-				span
-				span
-		nav#side-nav-menu(role='navigation' ng-controller='menuController')
-			div#menubox(ng-class="menuClass")
-				div#navcontainer-menu(ng-show='authStatus')
-					div#arrow.home
-					a#home.active(ui-sref='main') Home
-					a#about(ui-sref='about') About
-				div#navcontainer-login(ng-show='!authStatus')
-					h1 Login
-					form#loginForm(name='loginForm' novalidate)
-						div.inputs
-							input#email(type='email' ng-model='user.email' placeholder='Email')
-							div.valid
-								img(src='img/valid.svg' ng-show='user.email')
-								img(src='img/invalid.svg' ng-show='!user.email')
-						div.inputs
-							input#password(type='password' ng-model='user.password' placeholder='Password')
-							div.valid
-								img(src='img/valid.svg' ng-show='user.password')
-								img(src='img/invalid.svg' ng-show='!user.password')
-						button(type='submit') Submit
-						a.small(ng-click="menuClass='registerOn'") or register
-				div#navcontainer-register(ng-show='!authStatus')
-					h1 Register
-					form#registerForm(name='regForm' novalidate)
-						div.inputs
-							input#email(type='email' ng-model='user.email' placeholder='Email')
-							div.valid
-								img(src='img/valid.svg' ng-show='user.email')
-								img(src='img/invalid.svg' ng-show='!user.email')
-						div.inputs
-							input#fname(type='text' ng-model='user.fname' placeholder='First Name' ng-required='true')
-							div.valid
-								img(src='img/valid.svg' ng-show='user.fname')
-								img(src='img/invalid.svg' ng-show='!user.fname')
-						div.inputs
-							input#lname(type='text' ng-model='user.lname' placeholder='Last Name' ng-required='true')
-							div.valid
-								img(src='img/valid.svg' ng-show='user.lname')
-								img(src='img/invalid.svg' ng-show='!user.lname')
-						div.inputs
-							input#passwd(type='password' ng-model='user.password' placeholder='Password' ng-required='true')
-							div.valid
-								img(src='img/valid.svg' ng-show='user.password')
-								img(src='img/invalid.svg' ng-show='!user.password')
-						div.inputs
-							input#pword(type='password' ng-model='user.pword' placeholder='Confirm Password' ng-required='true')
-							div.valid
-								img(src='img/valid.svg' ng-show='user.pword == user.password && user.pword')
-								img(src='img/invalid.svg' ng-show='user.pword != user.password || !user.pword')
-						button(type='submit') Submit
-						a.small(ng-click="menuClass=''") or login
+		div(menu-change)
+			div#navbar
+				div#logo
+					img(src='img/logo.svg')
+					p Peer2Package
+				div#menu
+					span
+					span
+					span
+					span
+			nav#side-nav-menu(role='navigation' ng-controller='menuController')
+				div#menubox(ng-class="menuClass")
+					div#navcontainer-menu(ng-show='authStatus')
+						div#arrow.home
+						a#home.active(ui-sref='main') Home
+						a#about(ui-sref='about') About
+					div#navcontainer-login(ng-show='!authStatus')
+						h1 Login
+						form#loginForm(name='loginForm' novalidate)
+							div.inputs
+								input#email(type='email' ng-model='user.email' placeholder='Email')
+								div.valid
+									img(src='img/valid.svg' ng-show='user.email')
+									img(src='img/invalid.svg' ng-show='!user.email')
+							div.inputs
+								input#password(type='password' ng-model='user.password' placeholder='Password')
+								div.valid
+									img(src='img/valid.svg' ng-show='user.password')
+									img(src='img/invalid.svg' ng-show='!user.password')
+							button(type='submit') Submit
+							a.small(ng-click="menuClass='registerOn'") or register
+					div#navcontainer-register(ng-show='!authStatus')
+						h1 Register
+						form#registerForm(name='regForm' novalidate)
+							div.inputs
+								input#email(type='email' ng-model='user.email' placeholder='Email')
+								div.valid
+									img(src='img/valid.svg' ng-show='user.email')
+									img(src='img/invalid.svg' ng-show='!user.email')
+							div.inputs
+								input#fname(type='text' ng-model='user.fname' placeholder='First Name' ng-required='true')
+								div.valid
+									img(src='img/valid.svg' ng-show='user.fname')
+									img(src='img/invalid.svg' ng-show='!user.fname')
+							div.inputs
+								input#lname(type='text' ng-model='user.lname' placeholder='Last Name' ng-required='true')
+								div.valid
+									img(src='img/valid.svg' ng-show='user.lname')
+									img(src='img/invalid.svg' ng-show='!user.lname')
+							div.inputs
+								input#passwd(type='password' ng-model='user.password' placeholder='Password' ng-required='true')
+								div.valid
+									img(src='img/valid.svg' ng-show='user.password')
+									img(src='img/invalid.svg' ng-show='!user.password')
+							div.inputs
+								input#pword(type='password' ng-model='user.pword' placeholder='Confirm Password' ng-required='true')
+								div.valid
+									img(src='img/valid.svg' ng-show='user.pword == user.password && user.pword')
+									img(src='img/invalid.svg' ng-show='user.pword != user.password || !user.pword')
+							button(type='submit') Submit
+							a.small(ng-click="menuClass=''") or login
 		div(ui-view)
 			div.container(ng-controller='mainController')
 				div.jumbotron
@@ -86,27 +87,3 @@ html(lang='en')
 
 	//- Scripts to run after the DOM has loaded.
 	script(src='js/main.js')
-	script.
-		var menu = document.getElementById('menu');
-		var sidenavmenu = document.getElementById('side-nav-menu');
-		var arrow = document.getElementById('arrow');
-		var btn_home = document.getElementById('home');
-		var btn_about= document.getElementById('about');
-
-		btn_about.addEventListener('click', function () {
-			arrow.classList.add('about');
-			arrow.classList.remove('home');
-			btn_about.classList.add('active');
-			btn_home.classList.remove('active');
-		});
-
-		btn_home.addEventListener('click', function () {
-			arrow.classList.add('home');
-			arrow.classList.remove('about');
-			btn_home.classList.add('active')
-			btn_about.classList.remove('active')
-		});
-		menu.addEventListener('click', function () {
-			menu.classList.toggle('open');
-			sidenavmenu.classList.toggle('nav-open')
-		});
