@@ -24,8 +24,12 @@
 
   peer2package.controller('mainController', function($scope) {});
 
-  peer2package.controller('menuController', function($scope) {
-    return $scope.authStatus = false;
+  peer2package.controller('menuController', function($scope, $http) {
+    $scope.authStatus = false;
+    return $scope.submitReg = function() {
+      console.log($scope.regForm.user);
+      return $http.post('/register', $scope.regForm.user);
+    };
   });
 
   peer2package.controller('mapController', function($scope, socket) {

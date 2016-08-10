@@ -1,4 +1,4 @@
-<script>var map = null;
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"><title>Document</title><link rel="stylesheet" href="stylesheets/main.css"><link rel="stylesheet" href="stylesheets/animations.css"><script src="../bower_components/angular/angular.js"></script><script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script><script src="../bower_components/socket.io-client/socket.io.js"></script><script rel="preload" src="https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js"></script><link rel="preload" href="https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css"><script>var map = null;
 var lat = null;
 var lng = null;
 var socket = io();
@@ -72,9 +72,9 @@ function moveToPosition() {
 
 window.onload = function () {
 	getLocation();
-};</script><body><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"/></div><div id="menu"><span></span><span></span><span></span><span></span></div><div id="bar"><div id="centerMap" onclick="moveToPosition()"> </div></div><div id="map"></div><script>var menu = document.getElementById('menu');
+};</script><body><div id="preloader" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;"><img src="./img/preloader.gif"></div><div id="menu"><span></span><span></span><span></span><span></span></div><div id="bar"><div id="centerMap" onclick="moveToPosition()"> </div></div><div id="map"></div><script>var menu = document.getElementById('menu');
 console.log(menu);
 
 menu.addEventListener('click', function () {
 	menu.classList.toggle('open');
-});</script></body>
+});</script></body></head></html>

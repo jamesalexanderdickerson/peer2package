@@ -53,33 +53,33 @@ html(lang='en')
 							a.small(ng-click="menuClass='registerOn'") or register
 					div#navcontainer-register(ng-show='!authStatus')
 						h1 Register
-						form#registerForm(name='regForm' novalidate)
+						form#registerForm(ng-submit='submitReg()' name='regForm' novalidate)
 							div.inputs
-								input#email(type='email' ng-model='user.email' placeholder='Email' ng-required='true')
+								input#email(type='email' ng-model='regForm.user.email' placeholder='Email' ng-required='true')
 								div.valid
-									img(src='img/valid.svg' ng-show='user.email')
-									img(src='img/invalid.svg' ng-show='!user.email')
+									img(src='img/valid.svg' ng-show='regForm.user.email')
+									img(src='img/invalid.svg' ng-show='!regForm.user.email')
 							div.inputs
-								input#fname(type='text' ng-model='user.fname' placeholder='First Name' ng-required='true')
+								input#fname(type='text' ng-model='regForm.user.fname' placeholder='First Name' ng-required='true')
 								div.valid
-									img(src='img/valid.svg' ng-show='user.fname')
-									img(src='img/invalid.svg' ng-show='!user.fname')
+									img(src='img/valid.svg' ng-show='regForm.user.fname')
+									img(src='img/invalid.svg' ng-show='!regForm.user.fname')
 							div.inputs
-								input#lname(type='text' ng-model='user.lname' placeholder='Last Name' ng-required='true')
+								input#lname(type='text' ng-model='regForm.user.lname' placeholder='Last Name' ng-required='true')
 								div.valid
-									img(src='img/valid.svg' ng-show='user.lname')
-									img(src='img/invalid.svg' ng-show='!user.lname')
+									img(src='img/valid.svg' ng-show='regForm.user.lname')
+									img(src='img/invalid.svg' ng-show='!regForm.user.lname')
 							div.inputs
-								input#passwd(type='password' ng-model='user.password' placeholder='Password' ng-required='true')
+								input#passwd(type='password' ng-model='regForm.user.password' placeholder='Password' ng-required='true')
 								div.valid
-									img(src='img/valid.svg' ng-show='user.password')
-									img(src='img/invalid.svg' ng-show='!user.password')
+									img(src='img/valid.svg' ng-show='regForm.user.password')
+									img(src='img/invalid.svg' ng-show='!regForm.user.password')
 							div.inputs
-								input#pword(type='password' ng-model='user.pword' placeholder='Confirm Password' ng-required='true')
+								input#pword(type='password' ng-model='regForm.user.pword' placeholder='Confirm Password' ng-required='true')
 								div.valid
-									img(src='img/valid.svg' ng-show='user.pword == user.password && user.pword')
-									img(src='img/invalid.svg' ng-show='user.pword != user.password || !user.pword')
-							button(type='submit' ng-class='{ "disabled": regForm.$invalid || user.pword != user.password }' ng-disabled='regForm.$invalid') Submit
+									img(src='img/valid.svg' ng-show='regForm.user.pword == regForm.user.password && regForm.user.pword')
+									img(src='img/invalid.svg' ng-show='regForm.user.pword != regForm.user.password || !regForm.user.pword')
+							button(type='submit' ng-class='{ "disabled": regForm.$invalid || regForm.user.pword != regForm.user.password }' ng-disabled='regForm.$invalid') Submit
 							a.small(ng-click="menuClass=''") or login
 		div(ui-view)
 			div.container(ng-controller='mainController')

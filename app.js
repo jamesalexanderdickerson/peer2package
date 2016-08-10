@@ -4,12 +4,21 @@ var app = require('express')(),
   http = require('http').Server(app),
   bodyParser = require('body-parser'),
   io = require('socket.io')(http),
+  bcrypt = require('bcrypt'),
   Sequelize = require('sequelize'),
   redis = require('redis'),
+  r = require('rethinkdbdash')({
+    port: 28015,
+    host: 'localhost',
+    db: 'peer2package'
+  }),
   Session = require('express-session'),
   cookieParser = require('cookie-parser'),
   redisClient = redis.createClient(),
   dotenv = require('dotenv');
+
+// Bcrypt password hashing
+const salt = bcrypt.genSaltSync(10)
 
 // Import variables from .env file.
 dotenv.load();
@@ -18,7 +27,7 @@ var lng = '';
 var lat = '';
 
 // Define a port we want to use.
-const PORT=8080;
+const PORT=8000;
 var myPosition = '';
 
 // Load in environment variables.
@@ -52,7 +61,7 @@ var User = sequelize.define('user', {
     type: Sequelize.STRING(50),
     field: 'pword'
   }
-})
+});
 
 // Setup Redis
 redisClient.on('connect', function () {
@@ -81,14 +90,17 @@ app.get('/', function (req, res) {
 });
 
 app.post('/register', function (req, res) {
-
+  var email = req.body.email;
+  var fname = req.body.fname;
+  var lname = req.body.lname;
+  var pword = bcrypt.hashSync(req.body.password, salt);
+  console.log(pword);
+  res.end()
 });
-
 
 app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');
 });
-
 
 app.get('/other_positions', function (req, res) {
   Position.find({}, function(err, positions) {
@@ -98,8 +110,6 @@ app.get('/other_positions', function (req, res) {
 });
 
 app.get('/user_location', function (req, res) {
-  lng = redisClient.get('lng');
-  lat = redisClient.get('lat');
   res.json({
     "geometry": {
       "type": "Point",
@@ -118,9 +128,14 @@ io.on('connection', function (socket) {
   socket.on('LngLat', function (yourPosition) {
     myPosition = yourPosition.split(',');
     console.log(myPosition);
-    redisClient.set('lng', yourPosition[0]);
-    redisClient.set('lat', yourPosition[1]);
-    console.log('Redis:' + redisClient.get(lng))
+    r.table('locations').insert({
+      lng: myPosition[0],
+      lat: myPosition[1]
+    }).run().then(function (response) {
+      console.log(response);
+    }).error(function (err) {
+      console.log('error occured', err);
+    });
   });
   socket.on('disconnect', function () {
     console.log('A user has disconnected');

@@ -10,9 +10,11 @@ peer2package.config ($stateProvider, $urlRouterProvider) ->
 
 peer2package.controller 'mainController', ($scope) ->
 
-peer2package.controller 'menuController', ($scope) ->
+peer2package.controller 'menuController', ($scope, $http) ->
   $scope.authStatus = false
-
+  $scope.submitReg = () ->
+    console.log $scope.regForm.user
+    $http.post('/register', $scope.regForm.user)
 peer2package.controller 'mapController', ($scope, socket) ->
   $scope.map = null
   $scope.lat = null

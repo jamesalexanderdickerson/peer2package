@@ -663,3 +663,11 @@ div#map {
   width: 100%;
   z-index: 9996;
 }
+div.user {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #1c283b;
+  width: 500px;
+  z-index: 9999;
+}
