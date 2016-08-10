@@ -4,7 +4,7 @@ var app = require('express')(),
   http = require('http').Server(app),
   bodyParser = require('body-parser'),
   io = require('socket.io')(http),
-  mysql = require('mysql'),
+  Sequelize = require('sequelize'),
   redis = require('redis'),
   Session = require('express-session'),
   cookieParser = require('cookie-parser'),
@@ -25,19 +25,34 @@ var myPosition = '';
 var mapboxAPIKey = process.env.MAPBOXAPIKEY
 
 // Setup MySQL
-var db = mysql.createConnection({
+var sequelize = new Sequelize('peer2package', 'root', '', {
   host: 'localhost',
-  user: 'root',
-  database: 'peer2package'
+  dialect: 'mysql',
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  }
 });
 
-db.connect(function(err) {
-  if (err) {
-    console.log('Error connecting to MySQL');
-    return;
+var User = sequelize.define('user', {
+  eMail: {
+    type: Sequelize.INTEGER(11),
+    field: 'id'
+  },
+  firstName: {
+    type: Sequelize.STRING(50),
+    field: 'fname'
+  },
+  lastName: {
+    type: Sequelize.STRING(50),
+    field: 'lname'
+  },
+  passWord: {
+    type: Sequelize.STRING(50),
+    field: 'pword'
   }
-  console.log('Connected to MySQL')
-});
+})
 
 // Setup Redis
 redisClient.on('connect', function () {
@@ -65,8 +80,10 @@ app.get('/', function (req, res) {
   res.sendFile('index.html');
 });
 
-app.post('/', function (req, res) {
+app.post('/register', function (req, res) {
+
 });
+
 
 app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');
