@@ -45,27 +45,6 @@ peer2package.factory 'socket', ($rootScope) ->
       return
   }
 
-peer2package.directive 'frontScroll', () ->
-  return {
-    restrict: 'AE',
-    link: () ->
-      buy_button = document.getElementById 'buy'
-      sell_button = document.getElementById 'sell'
-      deliver_button = document.getElementById 'deliver'
-      buy_div = document.getElementById 'buy_things'
-      sell_div = document.getElementById 'sell_things'
-      deliver_div = document.getElementById 'deliver_things'
-
-      buy_button.addEventListener 'click', () ->
-        buy_things.scrollIntoView()
-
-      sell_button.addEventListener 'click', () ->
-        sell_things.scrollIntoView()
-
-      deliver_button.addEventListener 'click', () ->
-        deliver_things.scrollIntoView()
-  }
-
 peer2package.directive 'menuChange', () ->
   return {
     restrict: 'AE',
@@ -80,6 +59,7 @@ peer2package.directive 'menuChange', () ->
       menu.addEventListener 'click', () ->
         menu.classList.toggle 'open'
         sidenavmenu.classList.toggle('nav-open')
+
 
       btn_account.addEventListener 'click', () ->
         arrow.classList.add 'account'

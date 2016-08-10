@@ -18,6 +18,10 @@ div#menu {
   -webkit-transition: 0.5s ease-in-out;
   transition: 0.5s ease-in-out;
 }
+nav#side-nav-menu.nav-open {
+  -webkit-transform: translateX(10px);
+          transform: translateX(10px);
+}
 div#menu span {
   opacity: 1;
   -webkit-transform: rotate(0deg);

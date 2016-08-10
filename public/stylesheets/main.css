@@ -2,6 +2,9 @@
   font-family: 'Avenir Next';
   src: url("../fonts/AvenirNext-Regular.ttf");
 }
+::-webkit-scrollbar {
+  display: none;
+}
 *:focus {
   outline: none;
 }
@@ -15,6 +18,12 @@ body {
   color: #d6842d;
   overflow-x: hidden;
   font-family: 'Avenir Next';
+}
+div#logo > p {
+  color: #fff;
+}
+p {
+  color: #fff;
 }
 div.main_page {
   display: -webkit-box;
@@ -37,7 +46,7 @@ div.main_section {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
-  height: 200px;
+  height: 100px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
@@ -65,7 +74,6 @@ div.logo_section {
           flex-direction: row;
 }
 div.logos {
-  cursor: pointer;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -95,18 +103,41 @@ div.column_two {
       -ms-flex-align: center;
           align-items: center;
   padding: 20px;
+  height: 100px;
 }
 div.column_one.logo {
-  width: 150px;
+  width: 100px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+div#buy_things p {
+  margin-top: -10px;
+}
+div#sell_things p {
+  margin-top: 5px;
+}
+div#deliver_things p {
+  margin-top: 5px;
 }
 div.column_two.logo {
-  width: 150px;
+  width: 100px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 div.column_one.text {
-  width: 300px;
+  color: #fff;
+  width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 div.column_two.text {
-  width: 300px;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 div#navbar {
   width: 100%;
@@ -117,6 +148,7 @@ div#navbar {
   position: fixed;
   top: 0;
   background-color: #1c283b;
+  z-index: 9998;
 }
 div#logo {
   display: -webkit-box;
@@ -135,14 +167,15 @@ div#logo img {
   margin-right: 20px;
 }
 nav#side-nav-menu {
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: #1c283b;
   padding: 10px;
-  position: fixed;
+  position: absolute;
   top: 55px;
   right: 10px;
-  width: 380px;
+  width: 320px;
   height: 1200px;
+  z-index: 9998;
 }
 div#navcontainer-menu {
   margin-left: 100px;
@@ -175,19 +208,18 @@ form {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 90%;
+  width: 100%;
   height: 100%;
 }
 form#registerForm {
-  margin-top: -355px;
+  margin-top: -405px;
 }
 div.main {
   width: 80%;
   margin: 0 auto;
 }
-div.inputs {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+div#navcontainer-login div.inputs {
+  border-radius: 2px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -199,15 +231,29 @@ div.inputs {
   height: 44px;
   margin-bottom: 40px;
 }
+div#navcontainer-register div.inputs {
+  border-radius: 2px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+  height: 44px;
+  margin-bottom: 20px;
+}
 div#navcontainer-register div.valid {
   height: 50px;
-  z-index: 9999;
-  margin-left: 8px;
+  z-index: 9997;
+  margin-top: -2px;
+  margin-left: -50px;
 }
 div#navcontainer-login div.valid {
   height: 50px;
-  z-index: 9999;
-  margin-left: 8px;
+  z-index: 9997;
+  margin-left: -50px;
 }
 div.valid {
   display: -webkit-box;
@@ -242,10 +288,12 @@ div#navcontainer-register {
           align-items: center;
   width: 325px;
   height: 100%;
-  margin-left: 30px;
+}
+div#navcontainer-login {
+  margin-left: 38px;
 }
 div#navcontainer-register {
-  margin-left: 80px;
+  margin-left: 120px;
 }
 div#navcontainer-login h1,
 div#navcontainer-register h1 {
@@ -257,6 +305,10 @@ div#navcontainer-login a.small,
 div#navcontainer-register a.small {
   font-size: 0.9em;
   text-decoration: underline;
+  margin-top: 30px;
+  margin-left: -10px;
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 div#navcontainer-login a.small:hover,
 div#navcontainer-register a.small:hover {
@@ -277,7 +329,7 @@ div#navcontainer-login input {
   padding-bottom: 5px;
 }
 div#navcontainer-register input {
-  width: 800px;
+  width: 250px;
   height: 40px;
   margin-bottom: 20px;
   border-radius: 2px;
@@ -293,6 +345,8 @@ div#navcontainer-register input {
 div#navcontainer-login input:focus,
 div#navcontainer-register input:focus {
   box-shadow: 0 0 0 1px #fff;
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 ::-webkit-input-placeholder {
   color: #d6842d;
@@ -319,6 +373,7 @@ div#navcontainer-login button {
   color: #d6842d;
   font-size: 2em;
   cursor: pointer;
+  margin-left: -18px;
 }
 div#navcontainer-register button {
   width: 88%;
@@ -329,6 +384,9 @@ div#navcontainer-register button {
   color: #d6842d;
   font-size: 1em;
   cursor: pointer;
+  margin-left: -25px;
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 div#navcontainer-login button.disabled,
 div#navcontainer-register button.disabled {
@@ -346,10 +404,8 @@ div#navcontainer-login button:hover,
 div#navcontainer-register button:hover {
   border-color: #fff;
   color: #fff;
-}
-nav#side-nav-menu.nav-open {
-  -webkit-transform: translateX(10px);
-          transform: translateX(10px);
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 nav#side-nav-menu a {
   font-size: 3em;
@@ -375,18 +431,35 @@ div#arrow {
 }
 a#home.active {
   color: #fff;
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 a#account.active {
   color: #fff;
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
 }
 a#map.active {
   color: #fff;
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
+}
+video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0;
 }
 div.ng-scope {
   width: 100%;
   height: 100%;
 }
 div.jumbotron {
+  padding: 0;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -397,12 +470,26 @@ div.jumbotron {
       -ms-flex-pack: center;
           justify-content: center;
   width: 100%;
-  height: 300px;
-  background-color: #626262;
-  margin-bottom: 20px;
+  height: 200px;
+  background-color: #1c283b;
+  margin-bottom: 40px;
+  z-index: 9980;
+  overflow: hidden;
 }
 div.jumbotron h1 {
+  color: #fff;
   font-size: 2.9em;
+  position: absolute;
+  margin-top: -5px;
+  z-index: 9987;
+}
+div.jumbotron p {
+  margin-top: 90px;
+  font-size: 1.3em;
+  z-index: 9988;
+}
+div.front_logo > p {
+  color: #fff;
 }
 div#bar {
   position: absolute;
@@ -410,7 +497,7 @@ div#bar {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  z-index: 9997;
+  z-index: 9998;
   width: 100%;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
@@ -507,7 +594,7 @@ div#menu {
   right: 15px;
   width: 50px;
   height: 50px;
-  z-index: 9998;
+  z-index: 9995;
   cursor: pointer;
 }
 div#menu span {
@@ -518,6 +605,9 @@ div#menu span {
   background: #d6842d;
   border-radius: 9px;
   left: 0;
+}
+div#menu:hover > span {
+  background-color: #fff;
 }
 div#menu span:nth-child(1) {
   top: 0px;
@@ -530,19 +620,23 @@ div#menu span:nth-child(4) {
   top: 36px;
 }
 div#menu.open span:nth-child(1) {
+  background-color: #fff;
   top: 18px;
   width: 0;
   left: 50%;
 }
 div#menu.open span:nth-child(2) {
+  background-color: #fff;
   -webkit-transform: rotate(45deg);
           transform: rotate(45deg);
 }
 div#menu.open span:nth-child(3) {
+  background-color: #fff;
   -webkit-transform: rotate(-45deg);
           transform: rotate(-45deg);
 }
 div#menu.open span:nth-child(4) {
+  background-color: #fff;
   top: 18px;
   width: 0;
   left: 50%;
@@ -560,6 +654,7 @@ div#menubox {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  z-index: 9998;
 }
 div#map {
   position: absolute;

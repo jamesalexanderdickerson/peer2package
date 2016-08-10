@@ -83,9 +83,12 @@ html(lang='en')
 							a.small(ng-click="menuClass=''") or login
 		div(ui-view)
 			div.container(ng-controller='mainController')
-				div.main_page(front-scroll)
+				div.main_page
 					div.jumbotron
+						video(autoplay playsinline muted loop)
+							source(src='vid/peer2package_video.mp4' type='video/mp4')
 						h1 Peer2Package
+						p Earn money for driving your car!
 					div.logo_section
 						div.logos
 							div#buy.front_logo
@@ -100,18 +103,21 @@ html(lang='en')
 					div#buy_things.main_section
 						div.column_one.logo
 							img(src='img/buy.svg')
+							p BUY
 						div.column_two.text
-							p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni voluptatum quidem temporibus accusamus soluta eaque quas tempora, officia incidunt tempore, corrupti quod ad quaerat dolore consequuntur vel necessitatibus illum sed!
-					div#buy_things.main_section
-						div#sell_things.column_one.text
-							p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, sed sequi autem, maiores, doloremque iusto a, atque ad quaerat quae delectus expedita nobis accusantium? Numquam doloribus, itaque error nostrum assumenda.
+							p  Buy things and get them sent directly to you!
+					div#sell_things.main_section
+						div.column_one.text
+							p  Sell things and no more customers complaining about the wait time!
 						div.column_two.logo
 							img(src='img/sell.svg')
-					div#buy_things.main_section
-						div#deliver_things.column_one.logo
+							p SELL	
+					div#deliver_things.main_section
+						div.column_one.logo
 							img(src='img/deliver.svg')
+							p DELIVER
 						div.column_two.text
-							p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum dignissimos blanditiis unde molestiae veritatis assumenda amet, quisquam vitae nobis error culpa perspiciatis, esse perferendis eligendi in quod veniam. Similique, dolore.
+							p  Earn money to drive packages to their destination or hand them off to another driver at any time!
 
 	//- Scripts to run after the DOM has loaded.
 	script(src='js/main.js')

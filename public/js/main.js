@@ -65,30 +65,6 @@
     };
   });
 
-  peer2package.directive('frontScroll', function() {
-    return {
-      restrict: 'AE',
-      link: function() {
-        var buy_button, buy_div, deliver_button, deliver_div, sell_button, sell_div;
-        buy_button = document.getElementById('buy');
-        sell_button = document.getElementById('sell');
-        deliver_button = document.getElementById('deliver');
-        buy_div = document.getElementById('buy_things');
-        sell_div = document.getElementById('sell_things');
-        deliver_div = document.getElementById('deliver_things');
-        buy_button.addEventListener('click', function() {
-          return buy_things.scrollIntoView();
-        });
-        sell_button.addEventListener('click', function() {
-          return sell_things.scrollIntoView();
-        });
-        return deliver_button.addEventListener('click', function() {
-          return deliver_things.scrollIntoView();
-        });
-      }
-    };
-  });
-
   peer2package.directive('menuChange', function() {
     return {
       restrict: 'AE',

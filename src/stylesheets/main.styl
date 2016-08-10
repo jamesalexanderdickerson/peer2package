@@ -7,6 +7,8 @@ divcolor = #D6842D
   font-family 'Avenir Next'
   src url(../fonts/AvenirNext-Regular.ttf)
 
+::-webkit-scrollbar
+    display none
 
 *:focus
   outline none
@@ -22,6 +24,12 @@ body
   overflow-x hidden
   font-family 'Avenir Next'
 
+div#logo > p
+  color white
+
+p
+  color white
+
 div.main_page
   display flex
   width 100%
@@ -32,7 +40,7 @@ div.main_page
 div.main_section
   display flex
   width 100%
-  height 200px
+  height 100px
   flex-direction row
   justify-content space-between
   margin 20px 0
@@ -46,7 +54,6 @@ div.logo_section
   flex-direction row
 
 div.logos
-  cursor pointer
   display flex
   justify-content space-between
   width 350px
@@ -65,15 +72,33 @@ div.column_one, div.column_two
   justify-content center
   align-items center
   padding 20px
+  height 100px
 
 div.column_one.logo
-  width 150px
+  width 100px
+  flex-direction column
+
+div#buy_things p
+  margin-top -10px
+
+div#sell_things p
+  margin-top 5px
+
+div#deliver_things p
+  margin-top 5px
+
 div.column_two.logo
-  width 150px
+  width 100px
+  flex-direction column
 div.column_one.text
-  width 300px
+  color white
+  width 350px
+  overflow hidden
+  text-overflow ellipsis
 div.column_two.text
-  width 300px
+  color white
+  overflow hidden
+  text-overflow ellipsis
 
 div#navbar
   width 100%
@@ -82,6 +107,7 @@ div#navbar
   position fixed
   top 0
   background-color backgroundcolor
+  z-index 9998
 
 div#logo
   display flex
@@ -95,14 +121,15 @@ div#logo img
   margin-right 20px
 
 nav#side-nav-menu
-  overflow hidden
+  overflow-x hidden
   background-color backgroundcolor
   padding 10px
-  position fixed
+  position absolute
   top 55px
   right 10px
-  width 380px
+  width 320px
   height 1200px
+  z-index 9998
 
 div#navcontainer-menu
   margin-left 100px
@@ -119,35 +146,43 @@ form
   justify-content center
   flex-direction column
   align-items center
-  width 90%
+  width 100%
   height 100%
 
 form#registerForm
-  margin-top -355px
+  margin-top -405px
 
 div.main
   width 80%
   margin 0 auto
 
-div.inputs
-  border-top-right-radius 2px
-  border-bottom-right-radius 2px
+div#navcontainer-login div.inputs
+  border-radius 2px
   display flex
   flex-direction row
   width 100%
   height 44px
   margin-bottom 40px
 
+div#navcontainer-register div.inputs
+  border-radius 2px
+  display flex
+  flex-direction row
+  width 100%
+  height 44px
+  margin-bottom 20px
+
 div#navcontainer-register div.valid
   height 50px
-  z-index 9999
-  margin-left 8px
+  z-index 9997
+  margin-top -2px
+  margin-left -50px
 
 
 div#navcontainer-login div.valid
   height 50px
-  z-index 9999
-  margin-left 8px
+  z-index 9997
+  margin-left -50px
 
 div.valid
   display flex
@@ -169,10 +204,12 @@ div#navcontainer-login, div#navcontainer-register
   align-items center
   width 325px
   height 100%
-  margin-left 30px
+
+div#navcontainer-login
+  margin-left 38px
 
 div#navcontainer-register
-  margin-left 80px
+  margin-left 120px
 
 div#navcontainer-login h1, div#navcontainer-register h1
   font-family 'Avenir Next'
@@ -182,6 +219,9 @@ div#navcontainer-login h1, div#navcontainer-register h1
 div#navcontainer-login a.small, div#navcontainer-register a.small
   font-size 0.9em
   text-decoration underline
+  margin-top 30px
+  margin-left -10px
+  transition 0.25s ease-in-out
 
 div#navcontainer-login a.small:hover, div#navcontainer-register a.small:hover
   color white
@@ -201,7 +241,7 @@ div#navcontainer-login input
   padding-bottom 5px
 
 div#navcontainer-register input
-  width 800px
+  width 250px
   height 40px
   margin-bottom 20px
   border-radius 2px
@@ -216,6 +256,7 @@ div#navcontainer-register input
 
 div#navcontainer-login input:focus, div#navcontainer-register input:focus
   box-shadow 0 0 0 1px white
+  transition 0.25s ease-in-out
 
 ::placeholder
   color foregroundcolor
@@ -230,6 +271,8 @@ div#navcontainer-login button
   color foregroundcolor
   font-size 2em
   cursor pointer
+  margin-left -18px
+
 
 div#navcontainer-register button
   width 88%
@@ -240,6 +283,8 @@ div#navcontainer-register button
   color foregroundcolor
   font-size 1em
   cursor pointer
+  margin-left -25px
+  transition 0.25s ease-in-out
 
 div#navcontainer-login button.disabled, div#navcontainer-register button.disabled
   opacity 0.5
@@ -255,9 +300,7 @@ div#navcontainer-login button.disabled:hover, div#navcontainer-register button.d
 div#navcontainer-login button:hover, div#navcontainer-register button:hover
   border-color white
   color white
-
-nav#side-nav-menu.nav-open
-  transform translateX(10px)
+  transition 0.25s ease-in-out
 
 nav#side-nav-menu a
   font-size 3em
@@ -283,34 +326,60 @@ div#arrow
 
 a#home.active
   color white
+  transition 0.25s ease-in-out
 
 a#account.active
   color white
+  transition 0.25s ease-in-out
+
 
 a#map.active
   color white
+  transition 0.25s ease-in-out
+
+video
+  width 100%
+  height 100%
+  position absolute
+  margin 0
 
 div.ng-scope
   width 100%
   height 100%
 
 div.jumbotron
+  padding 0
+  flex-direction column
   display flex
   align-items center
   justify-content center
   width 100%
-  height 300px
-  background-color rgb(98, 98, 98)
-  margin-bottom 20px
+  height 200px
+  background-color backgroundcolor
+  margin-bottom 40px
+  z-index 9980
+  overflow hidden
 
 div.jumbotron h1
+  color white
   font-size 2.9em
+  position absolute
+  margin-top -5px
+  z-index 9987
+
+div.jumbotron p
+  margin-top 90px
+  font-size 1.3em
+  z-index 9988
+
+div.front_logo > p
+  color white
 
 div#bar
   position absolute
   bottom 100px
   display flex
-  z-index 9997
+  z-index 9998
   width 100%
   flex-direction row
   justify-content center
@@ -382,7 +451,7 @@ div#menu
   right 15px
   width 50px
   height 50px
-  z-index 9998
+  z-index 9995
   cursor pointer
 
 div#menu span
@@ -394,6 +463,9 @@ div#menu span
   border-radius 9px
   left 0
 
+div#menu:hover > span
+  background-color white
+
 div#menu span:nth-child(1)
   top 0px
 
@@ -404,17 +476,21 @@ div#menu span:nth-child(4)
   top 36px
 
 div#menu.open span:nth-child(1)
+  background-color white
   top 18px
   width 0
   left 50%
 
 div#menu.open span:nth-child(2)
+  background-color white
   transform rotate(45deg)
 
 div#menu.open span:nth-child(3)
+  background-color white
   transform rotate(-45deg)
 
 div#menu.open span:nth-child(4)
+  background-color white
   top 18px
   width 0
   left 50%
@@ -425,6 +501,7 @@ div#menubox
   display flex
   flex-direction row
   justify-content space-between
+  z-index 9998
 
 div#map
   position absolute
