@@ -38,7 +38,7 @@ html(lang='en')
 						a#map(ui-sref='map2') Map
 					div#navcontainer-login(ng-show='!authStatus')
 						h1 Login
-						form#loginForm(name='loginForm' novalidate)
+						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate)
 							div.inputs
 								input#email(type='email' ng-model='user.email' placeholder='Email' ng-required='true')
 								div.valid

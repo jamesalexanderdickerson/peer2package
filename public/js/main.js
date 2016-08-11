@@ -26,9 +26,11 @@
 
   peer2package.controller('menuController', function($scope, $http) {
     $scope.authStatus = false;
-    return $scope.submitReg = function() {
-      console.log($scope.regForm.user);
+    $scope.submitReg = function() {
       return $http.post('/register', $scope.regForm.user);
+    };
+    return $scope.submitLog = function() {
+      return $http.post('/login', $scope.loginForm.user);
     };
   });
 

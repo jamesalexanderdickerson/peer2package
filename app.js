@@ -47,21 +47,27 @@ var sequelize = new Sequelize('peer2package', 'root', '', {
 var User = sequelize.define('user', {
   eMail: {
     type: Sequelize.INTEGER(11),
-    field: 'id'
+    field: 'email',
+    allowNull: false,
+    unique: true,
+    primaryKey: true
   },
   firstName: {
     type: Sequelize.STRING(50),
-    field: 'fname'
+    field: 'fname',
+    allowNull: false
   },
   lastName: {
     type: Sequelize.STRING(50),
-    field: 'lname'
+    field: 'lname',
+    allowNull: false
   },
   passWord: {
-    type: Sequelize.STRING(50),
-    field: 'pword'
+    type: Sequelize.STRING(90),
+    field: 'pword',
+    allowNull: false
   }
-});
+}, { timestamps: false });
 
 // Setup Redis
 redisClient.on('connect', function () {
@@ -94,9 +100,21 @@ app.post('/register', function (req, res) {
   var fname = req.body.fname;
   var lname = req.body.lname;
   var pword = bcrypt.hashSync(req.body.password, salt);
+  User.build({
+    eMail: email,
+    firstName: fname,
+    lastName: lname,
+    passWord: pword
+  }).save();
   console.log(pword);
   res.end()
 });
+
+app.post('/login', function (req, res) {
+  var email = req.body.email
+  var pword = bcrypt.hashSync(req.body.password, salt);
+  res.end()
+})
 
 app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');

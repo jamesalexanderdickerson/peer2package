@@ -13,8 +13,9 @@ peer2package.controller 'mainController', ($scope) ->
 peer2package.controller 'menuController', ($scope, $http) ->
   $scope.authStatus = false
   $scope.submitReg = () ->
-    console.log $scope.regForm.user
     $http.post('/register', $scope.regForm.user)
+  $scope.submitLog = () ->
+    $http.post('/login', $scope.loginForm.user)
 peer2package.controller 'mapController', ($scope, socket) ->
   $scope.map = null
   $scope.lat = null
