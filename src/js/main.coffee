@@ -27,6 +27,7 @@ peer2package.controller 'mapController', ($scope, socket) ->
   $scope.lng = null
 
 peer2package.factory 'UserService', () ->
+  # This will be where my login functionality will go
 
 peer2package.controller 'gpsController', ($scope, socket) ->
 
