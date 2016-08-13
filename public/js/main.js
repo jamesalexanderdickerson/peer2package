@@ -27,10 +27,14 @@
   peer2package.controller('menuController', function($scope, $http) {
     $scope.authStatus = false;
     $scope.submitReg = function() {
-      return $http.post('/register', $scope.regForm.user);
+      return $http.post('/register', $scope.regForm.user).then(function(response) {
+        return $scope.authStatus = response.data.authStatus;
+      });
     };
     return $scope.submitLog = function() {
-      return $http.post('/login', $scope.loginForm.user);
+      return $http.post('/login', $scope.loginForm.user).then(function(response) {
+        return $scope.authStatus = response.data.authStatus;
+      });
     };
   });
 
@@ -39,6 +43,8 @@
     $scope.lat = null;
     return $scope.lng = null;
   });
+
+  peer2package.factory('UserService', function() {});
 
   peer2package.controller('gpsController', function($scope, socket) {});
 

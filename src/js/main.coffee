@@ -13,14 +13,20 @@ peer2package.controller 'mainController', ($scope) ->
 peer2package.controller 'menuController', ($scope, $http) ->
   $scope.authStatus = false
   $scope.submitReg = () ->
-    $http.post('/register', $scope.regForm.user)
+    $http.post('/register', $scope.regForm.user).then((response) ->
+      $scope.authStatus = response.data.authStatus
+      )
   $scope.submitLog = () ->
-    $http.post('/login', $scope.loginForm.user)
+    $http.post('/login', $scope.loginForm.user).then((response) ->
+      $scope.authStatus = response.data.authStatus
+      )
+
 peer2package.controller 'mapController', ($scope, socket) ->
   $scope.map = null
   $scope.lat = null
   $scope.lng = null
 
+peer2package.factory 'UserService', () ->
 
 peer2package.controller 'gpsController', ($scope, socket) ->
 

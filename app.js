@@ -1,130 +1,140 @@
-// Require/import libraries.
+// REQUIRE/IMPORT LIBRARIES
 var app = require('express')(),
   express = require('express'),
+  flash = require('connect-flash'),
   http = require('http').Server(app),
   bodyParser = require('body-parser'),
+  morgan = require('morgan'),
+  mysql = require('mysql'),
+  session = require('express-session'),
   io = require('socket.io')(http),
   bcrypt = require('bcrypt'),
-  Sequelize = require('sequelize'),
-  redis = require('redis'),
   r = require('rethinkdbdash')({
     port: 28015,
     host: 'localhost',
     db: 'peer2package'
   }),
-  Session = require('express-session'),
-  cookieParser = require('cookie-parser'),
-  redisClient = redis.createClient(),
+  jwt = require('jsonwebtoken'),
   dotenv = require('dotenv');
 
-// Bcrypt password hashing
-const salt = bcrypt.genSaltSync(10)
 
-// Import variables from .env file.
+// IMPORT VARIABLES FROM .ENV FILE
 dotenv.load();
+
+// BCRYPT PASSWORD HASHING
+const salt = process.env.BCRYPT_SALT;
+//const salt = bcrypt.genSaltSync(10);
 
 var lng = '';
 var lat = '';
 
-// Define a port we want to use.
+// DEFINE A PORT WE WANT TO USE
 const PORT=8000;
 var myPosition = '';
 
-// Load in environment variables.
-var mapboxAPIKey = process.env.MAPBOXAPIKEY
+// LOAD IN ENVIRONMENT VARIABLES
+const secret = process.env.JWT_SECRET;
 
-// Setup MySQL
-var sequelize = new Sequelize('peer2package', 'root', '', {
+// CONFIGURE MYSQL
+var connection = mysql.createConnection({
   host: 'localhost',
-  dialect: 'mysql',
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
+  user: 'root',
+  password: '',
+  database: 'peer2package'
 });
+connection.connect();
 
-var User = sequelize.define('user', {
-  eMail: {
-    type: Sequelize.INTEGER(11),
-    field: 'email',
-    allowNull: false,
-    unique: true,
-    primaryKey: true
-  },
-  firstName: {
-    type: Sequelize.STRING(50),
-    field: 'fname',
-    allowNull: false
-  },
-  lastName: {
-    type: Sequelize.STRING(50),
-    field: 'lname',
-    allowNull: false
-  },
-  passWord: {
-    type: Sequelize.STRING(90),
-    field: 'pword',
-    allowNull: false
-  }
-}, { timestamps: false });
-
-// Setup Redis
-redisClient.on('connect', function () {
-  console.log('connected to redis');
-});
-
+// CONFIGURE APP
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
-
-var Session = Session({
-  secret: 'shhhhhhhhhhhhh!!!!!',
-  saveUnintialized: true,
-  resave: true
+app.use(flash());
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+    next();
 });
+app.use(session({
+  secret: 'sssshhhhhhhhhhhhhhh!',
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    secure: true
+  }
+}));
+app.use(morgan('dev'));
 
-io.use(function (socket, next) {
-  Session(socket.request, socket.request.res, next);
-});
+function ensureAuthorized(req, res, next) {
+  var bearerToken
+  var bearerHeader = req.headers["authorization"]
+  if (typeof bearerHeader !== 'undefined') {
+    var bearer = bearerHeader.split(" ")
+    bearerToken = bearer[1]
+    req.token = bearerToken
+    next()
+  } else {
+    res.send(403)
+  }
+}
 
-app.use(Session);
-
+// CONFIGURE ROUTES
 app.get('/', function (req, res) {
-  res.sendFile('index.html');
+    res.sendFile('index.html');
 });
 
 app.post('/register', function (req, res) {
-  var email = req.body.email;
-  var fname = req.body.fname;
-  var lname = req.body.lname;
-  var pword = bcrypt.hashSync(req.body.password, salt);
-  User.build({
-    eMail: email,
-    firstName: fname,
-    lastName: lname,
-    passWord: pword
-  }).save();
-  console.log(pword);
-  res.end()
+  sess = req.session;
+  sess.email = req.body.email;
+  var user = req.body;
+  var hash = bcrypt.hashSync(user.pword, salt);
+  user.pword = hash;
+  console.log(user);
+  var insertQuery = 'SELECT * FROM users WHERE email="'+user.email+'";';
+  connection.query(insertQuery, function(err, rows) {
+    if (err) {
+      res.send(err);
+    }
+    if (rows.length) {
+        console.log('That email is already in use!');
+    } else {
+      var newQuery = 'INSERT INTO users (email, fname, lname, pword) VALUES ("'+user.email+'","'+user.fname+'","'+user.lname+'","'+user.pword+'");';
+      connection.query(newQuery, function(err, rows) {
+        console.log('Registration successful!');
+        res.send({message: 'hello'});
+      })
+    }
+  })
 });
 
 app.post('/login', function (req, res) {
-  var email = req.body.email
-  var pword = bcrypt.hashSync(req.body.password, salt);
-  res.end()
-})
+  var testUser = req.body
+  var hash = bcrypt.hashSync(testUser.password, salt);
+  testUser.password = hash;
+  var insertQuery = 'SELECT * FROM users WHERE email="'+testUser.email+'";';
+  connection.query(insertQuery, function(err, rows) {
+    if (err) throw err;
+    if (rows.length) {
+      if (rows[0].pword === testUser.password) {
+        console.log('User logged in successfully!');
+        res.json({authStatus: true})
+      } else {
+        console.log('The password is incorrect.')
+        res.send({message: 'pword incorrect'})
+      }
+    } else {
+      console.log('That email does not exist.')
+      res.send({message: 'does_not_exist'})
+    }
+  })
+});
+
 
 app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');
 });
 
 app.get('/other_positions', function (req, res) {
-  Position.find({}, function(err, positions) {
-    if (err) throw err;
-    console.log(positions);
-  });
 });
 
 app.get('/user_location', function (req, res) {
@@ -141,6 +151,7 @@ app.get('/user_location', function (req, res) {
   });
 });
 
+// SOCKET.IO
 io.on('connection', function (socket) {
   console.log('A user has connected');
   socket.on('LngLat', function (yourPosition) {
@@ -160,6 +171,7 @@ io.on('connection', function (socket) {
   })
 });
 
+// SERVER
 http.listen(PORT, function () {
   console.log('Listening on port ' + PORT);
 });

@@ -40,15 +40,15 @@ html(lang='en')
 						h1 Login
 						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate)
 							div.inputs
-								input#email(type='email' ng-model='user.email' placeholder='Email' ng-required='true')
+								input#email(type='email' ng-model='loginForm.user.email' placeholder='Email' ng-required='true')
 								div.valid
-									img(src='img/valid.svg' ng-show='user.email')
-									img(src='img/invalid.svg' ng-show='!user.email')
+									img(src='img/valid.svg' ng-show='loginForm.user.email')
+									img(src='img/invalid.svg' ng-show='!loginForm.user.email')
 							div.inputs
-								input#password(type='password' ng-model='user.password' placeholder='Password' ng-required='true')
+								input#password(type='password' ng-model='loginForm.user.password' placeholder='Password' ng-required='true')
 								div.valid
-									img(src='img/valid.svg' ng-show='user.password')
-									img(src='img/invalid.svg' ng-show='!user.password')
+									img(src='img/valid.svg' ng-show='loginForm.user.password')
+									img(src='img/invalid.svg' ng-show='!loginForm.user.password')
 							button(type='submit' ng-class='{ "disabled": loginForm.$invalid }' ng-disabled='loginForm.$invalid') Submit
 							a.small(ng-click="menuClass='registerOn'") or register
 					div#navcontainer-register(ng-show='!authStatus')
