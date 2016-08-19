@@ -22,7 +22,7 @@ html(lang='en')
 		div(menu-change)
 			div#navbar
 				div#logo
-					img(src='img/logo.svg')
+					img(src='img/logo3.svg')
 					p Peer2Package
 				div#menu
 					span
@@ -38,7 +38,7 @@ html(lang='en')
 						a#map(ui-sref='map2') Map
 					div#navcontainer-login(ng-show='!authStatus')
 						h1 Login
-						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate)
+						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate autocomplete='off')
 							div.inputs
 								input#email(type='email' ng-model='loginForm.user.email' placeholder='Email' ng-required='true')
 								div.valid
@@ -53,7 +53,7 @@ html(lang='en')
 							a.small(ng-click="menuClass='registerOn'") or register
 					div#navcontainer-register(ng-show='!authStatus')
 						h1 Register
-						form#registerForm(ng-submit='submitReg()' name='regForm' novalidate)
+						form#registerForm(ng-submit='submitReg()' name='regForm' novalidate autocomplete='off')
 							div.inputs
 								input#email(type='email' ng-model='regForm.user.email' placeholder='Email' ng-required='true')
 								div.valid

@@ -52,6 +52,8 @@ div.logo_section
   height 100px
   align-items center
   flex-direction row
+  border-bottom 3px solid rgb(23, 23, 31)
+  padding-bottom 20px
 
 div.logos
   display flex
@@ -129,7 +131,7 @@ nav#side-nav-menu
   right 10px
   width 320px
   height 1200px
-  z-index 9998
+  z-index 9997
 
 div#navcontainer-menu
   margin-left 100px
@@ -148,6 +150,7 @@ form
   align-items center
   width 100%
   height 100%
+
 
 form#registerForm
   margin-top -405px
@@ -184,10 +187,14 @@ div#navcontainer-login div.valid
   z-index 9997
   margin-left -50px
 
+div#navcontainer-login input.ng-empty.ng-touched + div.valid, div#navcontainer-register input.ng-empty.ng-touched + div.valid
+  opacity 1
+
 div.valid
   display flex
   justify-content center
   width 50px
+  opacity 0
 
 div.valid img
   align-self center
@@ -206,10 +213,10 @@ div#navcontainer-login, div#navcontainer-register
   height 100%
 
 div#navcontainer-login
-  margin-left 38px
+  margin-left 48px
 
 div#navcontainer-register
-  margin-left 120px
+  margin-left 130px
 
 div#navcontainer-login h1, div#navcontainer-register h1
   font-family 'Avenir Next'
@@ -258,9 +265,15 @@ div#navcontainer-login input:focus, div#navcontainer-register input:focus
   box-shadow 0 0 0 1px white
   transition 0.25s ease-in-out
 
+div#navcontainer-login input:focus + div.valid, div#navcontainer-register input:focus + div.valid
+  opacity 1
+
 ::placeholder
   color foregroundcolor
-  opacity 1
+  opacity 0.5
+
+input.ng-not-empty.ng-valid.ng-touched
+  display none
 
 div#navcontainer-login button
   width 88%
@@ -441,6 +454,8 @@ div.front_logo
   flex-direction column
   justify-content center
   align-items center
+  height 100%
+
 div
   padding 0
   width 80%
@@ -502,7 +517,14 @@ div#menubox
   display flex
   flex-direction row
   justify-content space-between
-  z-index 9998
+  z-index 9997
+
+div.main_section
+  padding 0
+  margin 10px 0 10px
+  border-bottom 3px solid rgb(23, 23, 31)
+  color rgb(19, 21, 26)
+  height 100%
 
 div#map
   position absolute

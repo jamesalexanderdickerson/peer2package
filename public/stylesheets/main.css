@@ -72,6 +72,8 @@ div.logo_section {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  border-bottom: 3px solid #17171f;
+  padding-bottom: 20px;
 }
 div.logos {
   display: -webkit-box;
@@ -175,7 +177,7 @@ nav#side-nav-menu {
   right: 10px;
   width: 320px;
   height: 1200px;
-  z-index: 9998;
+  z-index: 9997;
 }
 div#navcontainer-menu {
   margin-left: 100px;
@@ -255,6 +257,10 @@ div#navcontainer-login div.valid {
   z-index: 9997;
   margin-left: -50px;
 }
+div#navcontainer-login input.ng-empty.ng-touched + div.valid,
+div#navcontainer-register input.ng-empty.ng-touched + div.valid {
+  opacity: 1;
+}
 div.valid {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -263,6 +269,7 @@ div.valid {
       -ms-flex-pack: center;
           justify-content: center;
   width: 50px;
+  opacity: 0;
 }
 div.valid img {
   -ms-flex-item-align: center;
@@ -290,10 +297,10 @@ div#navcontainer-register {
   height: 100%;
 }
 div#navcontainer-login {
-  margin-left: 38px;
+  margin-left: 48px;
 }
 div#navcontainer-register {
-  margin-left: 120px;
+  margin-left: 130px;
 }
 div#navcontainer-login h1,
 div#navcontainer-register h1 {
@@ -348,21 +355,28 @@ div#navcontainer-register input:focus {
   -webkit-transition: 0.25s ease-in-out;
   transition: 0.25s ease-in-out;
 }
+div#navcontainer-login input:focus + div.valid,
+div#navcontainer-register input:focus + div.valid {
+  opacity: 1;
+}
 ::-webkit-input-placeholder {
   color: #d6842d;
-  opacity: 1;
+  opacity: 0.5;
 }
 ::-moz-placeholder {
   color: #d6842d;
-  opacity: 1;
+  opacity: 0.5;
 }
 :-ms-input-placeholder {
   color: #d6842d;
-  opacity: 1;
+  opacity: 0.5;
 }
 ::placeholder {
   color: #d6842d;
-  opacity: 1;
+  opacity: 0.5;
+}
+input.ng-not-empty.ng-valid.ng-touched {
+  display: none;
 }
 div#navcontainer-login button {
   width: 88%;
@@ -583,6 +597,7 @@ div.front_logo {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  height: 100%;
 }
 div {
   padding: 0;
@@ -655,7 +670,14 @@ div#menubox {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  z-index: 9998;
+  z-index: 9997;
+}
+div.main_section {
+  padding: 0;
+  margin: 10px 0 10px;
+  border-bottom: 3px solid #17171f;
+  color: #13151a;
+  height: 100%;
 }
 div#map {
   position: absolute;
