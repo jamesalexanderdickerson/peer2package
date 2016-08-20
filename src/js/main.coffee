@@ -6,6 +6,7 @@ peer2package.config ($stateProvider, $urlRouterProvider) ->
     .state 'account', {templateUrl: 'account.html', controller: 'accountController'}
     .state 'map', {templateUrl: 'map.html', controller: 'mapController'}
     .state 'map2', {templateUrl: 'map2.html', controller: 'mapController'}
+    .state 'photoUpload', {templateUrl: 'photo_upload.html', controller: 'photoController'}
     .state 'gps', {templateUrl: 'gps.html', controller: 'gpsController'}
 
 peer2package.controller 'mainController', ($scope, $localStorage) ->
@@ -45,31 +46,11 @@ peer2package.controller 'mapController', ($scope, socket) ->
   $scope.lat = null
   $scope.lng = null
 
-peer2package.directive 'mapDirective', (mapbox, [ () ->
-  return {
-    restrict: 'EA',
-    replace: true,
-    scope: {
-      callback: "="
-    },
-    template: '<div#map></div>',
-    link: (scope, element, attributes) ->
-      mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
-      map = new (mapboxgl.Map)(
-        container: 'map'
-        style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf'
-        zoom: 19
-        center: [
-          lng
-          lat
-        ])
-        scope.callback map
-  }
-]
-
 peer2package.controller 'gpsController', ($scope, socket) ->
 
 peer2package.controller 'accountController', ($scope) ->
+
+peer2package.controller 'photoController', ($scope) ->
 
 peer2package.factory 'socket', ($rootScope) ->
   socket = io.connect()

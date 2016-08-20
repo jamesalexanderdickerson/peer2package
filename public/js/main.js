@@ -16,6 +16,9 @@
     }).state('map2', {
       templateUrl: 'map2.html',
       controller: 'mapController'
+    }).state('photoUpload', {
+      templateUrl: 'photo_upload.html',
+      controller: 'photoController'
     }).state('gps', {
       templateUrl: 'gps.html',
       controller: 'gpsController'
@@ -72,6 +75,8 @@
   peer2package.controller('gpsController', function($scope, socket) {});
 
   peer2package.controller('accountController', function($scope) {});
+
+  peer2package.controller('photoController', function($scope) {});
 
   peer2package.factory('socket', function($rootScope) {
     var socket;
