@@ -89,7 +89,6 @@ app.post('/register', function (req, res) {
   var user = req.body;
   var hash = bcrypt.hashSync(user.pword, salt);
   user.pword = hash;
-  console.log(user);
   var insertQuery = 'SELECT * FROM users WHERE email="'+user.email+'";';
   connection.query(insertQuery, function(err, rows) {
     if (err) {
@@ -97,11 +96,12 @@ app.post('/register', function (req, res) {
     }
     if (rows.length) {
         console.log('That email is already in use!');
+        res.send({message: 'That email is already in use!'});
     } else {
       var newQuery = 'INSERT INTO users (email, fname, lname, pword) VALUES ("'+user.email+'","'+user.fname+'","'+user.lname+'","'+user.pword+'");';
       connection.query(newQuery, function(err, rows) {
         console.log('Registration successful!');
-        res.send({message: 'hello'});
+        res.send({authStatus: true});
       })
     }
   })
@@ -120,11 +120,11 @@ app.post('/login', function (req, res) {
         res.json({authStatus: true})
       } else {
         console.log('The password is incorrect.')
-        res.send({message: 'pword incorrect'})
+        res.send({message: 'The password is incorrect!'})
       }
     } else {
       console.log('That email does not exist.')
-      res.send({message: 'does_not_exist'})
+      res.send({message: 'That email does not exist.'})
     }
   })
 });

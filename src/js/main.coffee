@@ -11,14 +11,17 @@ peer2package.config ($stateProvider, $urlRouterProvider) ->
 peer2package.controller 'mainController', ($scope) ->
 
 peer2package.controller 'menuController', ($scope, $http) ->
+  $scope.message = null
   $scope.authStatus = false
   $scope.submitReg = () ->
     $http.post('/register', $scope.regForm.user).then((response) ->
       $scope.authStatus = response.data.authStatus
+      $scope.messageReg = response.data.message
       )
   $scope.submitLog = () ->
     $http.post('/login', $scope.loginForm.user).then((response) ->
       $scope.authStatus = response.data.authStatus
+      $scope.messageLog = response.data.message
       )
 
 peer2package.controller 'mapController', ($scope, socket) ->
@@ -26,8 +29,9 @@ peer2package.controller 'mapController', ($scope, socket) ->
   $scope.lat = null
   $scope.lng = null
 
-peer2package.factory 'UserService', () ->
-  # This will be where my login functionality will go
+peer2package.factory 'Auth', ['$http', '$localStorage'], ($http, $localStorage) ->
+  myToken = res.data.
+  console.log jwtHelper.decodeToken
 
 peer2package.controller 'gpsController', ($scope, socket) ->
 

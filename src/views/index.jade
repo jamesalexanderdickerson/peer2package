@@ -51,6 +51,8 @@ html(lang='en')
 									img(src='img/invalid.svg' ng-show='!loginForm.user.password')
 							button(type='submit' ng-class='{ "disabled": loginForm.$invalid }' ng-disabled='loginForm.$invalid') Submit
 							a.small(ng-click="menuClass='registerOn'") or register
+							div#log_error.error
+								span.error {{messageLog}}
 					div#navcontainer-register(ng-show='!authStatus')
 						h1 Register
 						form#registerForm(ng-submit='submitReg()' name='regForm' novalidate autocomplete='off')
@@ -81,6 +83,8 @@ html(lang='en')
 									img(src='img/invalid.svg' ng-show='regForm.user.pword != regForm.user.password || !regForm.user.pword')
 							button(type='submit' ng-class='{ "disabled": regForm.$invalid || regForm.user.pword != regForm.user.password }' ng-disabled='regForm.$invalid') Submit
 							a.small(ng-click="menuClass=''") or login
+							div#reg_error.error
+								span.error {{messageReg}}
 		div(ui-view)
 			div.container(ng-controller='mainController')
 				div.main_page
@@ -118,6 +122,10 @@ html(lang='en')
 							p DELIVER
 						div.column_two.text
 							p  Earn money to drive packages to their destination or hand them off to another driver at any time!
+	footer
+		p Peer2Package &copy; 2015 - 
+			script.
+				document.write(new Date().getFullYear())
 
 	//- Scripts to run after the DOM has loaded.
 	script(src='js/main.js')

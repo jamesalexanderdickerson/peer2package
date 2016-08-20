@@ -25,15 +25,18 @@
   peer2package.controller('mainController', function($scope) {});
 
   peer2package.controller('menuController', function($scope, $http) {
+    $scope.message = null;
     $scope.authStatus = false;
     $scope.submitReg = function() {
       return $http.post('/register', $scope.regForm.user).then(function(response) {
-        return $scope.authStatus = response.data.authStatus;
+        $scope.authStatus = response.data.authStatus;
+        return $scope.messageReg = response.data.message;
       });
     };
     return $scope.submitLog = function() {
       return $http.post('/login', $scope.loginForm.user).then(function(response) {
-        return $scope.authStatus = response.data.authStatus;
+        $scope.authStatus = response.data.authStatus;
+        return $scope.messageLog = response.data.message;
       });
     };
   });
@@ -44,7 +47,10 @@
     return $scope.lng = null;
   });
 
-  peer2package.factory('UserService', function() {});
+  peer2package.factory('Auth', ['$http', '$localStorage'], function($http, $localStorage) {
+    var myToken;
+    return myToken = res.data.console.log(jwtHelper.decodeToken);
+  });
 
   peer2package.controller('gpsController', function($scope, socket) {});
 
