@@ -8,6 +8,10 @@ html(lang='en')
 		link(rel='stylesheet' href='stylesheets/animations.css')
 		script(src='../bower_components/angular/angular.js')
 		script(src='../bower_components/angular-ui-router/release/angular-ui-router.js')
+		script(src='../bower_components/ngstorage/ngStorage.js')
+		script(src='../bower_components/socket.io-client/socket.io.js')
+		script(rel='preload' src='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js')
+		link(rel='preload' href='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css')
 		script.
 			window.onload = function () {
 				var preloader = document.getElementById('preloader');
@@ -31,12 +35,13 @@ html(lang='en')
 					span
 			nav#side-nav-menu(role='navigation' ng-controller='menuController')
 				div#menubox(ng-class="menuClass")
-					div#navcontainer-menu(ng-show='authStatus')
+					div#navcontainer-menu
 						div#arrow.home
 						a#home.active(ui-sref='main') Home
 						a#account(ui-sref='account') Account
-						a#map(ui-sref='map2') Map
-					div#navcontainer-login(ng-show='!authStatus')
+						a#map(ui-sref='map') Map
+						a#logout(ng-click='logout()') Logout
+					div#navcontainer-login
 						h1 Login
 						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate autocomplete='off')
 							div.inputs
@@ -53,7 +58,7 @@ html(lang='en')
 							a.small(ng-click="menuClass='registerOn'") or register
 							div#log_error.error
 								span.error {{messageLog}}
-					div#navcontainer-register(ng-show='!authStatus')
+					div#navcontainer-register
 						h1 Register
 						form#registerForm(ng-submit='submitReg()' name='regForm' novalidate autocomplete='off')
 							div.inputs

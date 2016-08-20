@@ -301,7 +301,7 @@ div#navcontainer-login {
   margin-left: 48px;
 }
 div#navcontainer-register {
-  margin-left: 130px;
+  margin-left: 135px;
 }
 div#navcontainer-login h1,
 div#navcontainer-register h1 {
@@ -386,7 +386,6 @@ div#navcontainer-login button {
   color: #d6842d;
   font-size: 2em;
   cursor: pointer;
-  margin-left: -18px;
 }
 div#navcontainer-register button {
   width: 88%;
@@ -397,7 +396,6 @@ div#navcontainer-register button {
   color: #d6842d;
   font-size: 1em;
   cursor: pointer;
-  margin-left: -25px;
   -webkit-transition: 0.25s ease-in-out;
   transition: 0.25s ease-in-out;
 }
@@ -434,7 +432,7 @@ div.container {
 }
 div#arrow {
   position: absolute;
-  top: 35px;
+  top: 25px;
   left: 80px;
   width: 0;
   height: 0;
@@ -442,17 +440,10 @@ div#arrow {
   border-bottom: 10px solid transparent;
   border-left: 10px solid #d6842d;
 }
-a#home.active {
-  color: #fff;
-  -webkit-transition: 0.25s ease-in-out;
-  transition: 0.25s ease-in-out;
-}
-a#account.active {
-  color: #fff;
-  -webkit-transition: 0.25s ease-in-out;
-  transition: 0.25s ease-in-out;
-}
-a#map.active {
+a#home.active,
+a#account.active,
+a#map.active,
+a#logout.active {
   color: #fff;
   -webkit-transition: 0.25s ease-in-out;
   transition: 0.25s ease-in-out;
@@ -671,6 +662,8 @@ div#menubox {
       -ms-flex-pack: justify;
           justify-content: space-between;
   z-index: 9997;
+  -webkit-transform: translateX(-275px);
+          transform: translateX(-275px);
 }
 div.main_section {
   padding: 0;

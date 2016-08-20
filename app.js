@@ -84,24 +84,25 @@ app.get('/', function (req, res) {
 });
 
 app.post('/register', function (req, res) {
-  sess = req.session;
-  sess.email = req.body.email;
   var user = req.body;
   var hash = bcrypt.hashSync(user.pword, salt);
   user.pword = hash;
+  delete user.password;
   var insertQuery = 'SELECT * FROM users WHERE email="'+user.email+'";';
   connection.query(insertQuery, function(err, rows) {
     if (err) {
       res.send(err);
     }
     if (rows.length) {
-        console.log('That email is already in use!');
         res.send({message: 'That email is already in use!'});
     } else {
       var newQuery = 'INSERT INTO users (email, fname, lname, pword) VALUES ("'+user.email+'","'+user.fname+'","'+user.lname+'","'+user.pword+'");';
       connection.query(newQuery, function(err, rows) {
         console.log('Registration successful!');
-        res.send({authStatus: true});
+        user.token = jwt.sign(user, process.env.JWT_SECRET);
+        res.send({
+          token: user.token
+        });
       })
     }
   })
@@ -109,6 +110,7 @@ app.post('/register', function (req, res) {
 
 app.post('/login', function (req, res) {
   var testUser = req.body
+  var user = {}
   var hash = bcrypt.hashSync(testUser.password, salt);
   testUser.password = hash;
   var insertQuery = 'SELECT * FROM users WHERE email="'+testUser.email+'";';
@@ -117,7 +119,10 @@ app.post('/login', function (req, res) {
     if (rows.length) {
       if (rows[0].pword === testUser.password) {
         console.log('User logged in successfully!');
-        res.json({authStatus: true})
+        user.token = jwt.sign(user, process.env.JWT_SECRET);
+        res.send({
+          token: user.token
+        });
       } else {
         console.log('The password is incorrect.')
         res.send({message: 'The password is incorrect!'})
@@ -141,7 +146,7 @@ app.get('/user_location', function (req, res) {
   res.json({
     "geometry": {
       "type": "Point",
-      "coordinates": [ lng,lat ]
+      "coordinates": [ lng, lat ]
     },
     "type": "Feature",
     "properties": {

@@ -217,7 +217,7 @@ div#navcontainer-login
   margin-left 48px
 
 div#navcontainer-register
-  margin-left 130px
+  margin-left 135px
 
 div#navcontainer-login h1, div#navcontainer-register h1
   font-family 'Avenir Next'
@@ -283,7 +283,6 @@ div#navcontainer-login button
   color foregroundcolor
   font-size 2em
   cursor pointer
-  margin-left -18px
 
 
 div#navcontainer-register button
@@ -295,7 +294,6 @@ div#navcontainer-register button
   color foregroundcolor
   font-size 1em
   cursor pointer
-  margin-left -25px
   transition 0.25s ease-in-out
 
 div#navcontainer-login button.disabled, div#navcontainer-register button.disabled
@@ -328,7 +326,7 @@ div.container
 
 div#arrow
   position absolute
-  top 35px
+  top 25px
   left 80px
   width 0
   height 0
@@ -336,16 +334,7 @@ div#arrow
   border-bottom 10px solid transparent
   border-left 10px solid foregroundcolor
 
-a#home.active
-  color white
-  transition 0.25s ease-in-out
-
-a#account.active
-  color white
-  transition 0.25s ease-in-out
-
-
-a#map.active
+a#home.active, a#account.active, a#map.active, a#logout.active
   color white
   transition 0.25s ease-in-out
 
@@ -518,6 +507,7 @@ div#menubox
   flex-direction row
   justify-content space-between
   z-index 9997
+  transform translateX(-275px)
 
 div.main_section
   padding 0

@@ -12,6 +12,10 @@ div#arrow.map {
   -webkit-transform: translateY(134px);
           transform: translateY(134px);
 }
+div#arrow.logout {
+  -webkit-transform: translateY(201px);
+          transform: translateY(201px);
+}
 div#menu {
   -webkit-transform: rotate(0deg);
           transform: rotate(0deg);
@@ -44,6 +48,10 @@ div#menubox {
   transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
 }
 div#menubox.registerOn {
-  -webkit-transform: translateX(-400px);
-          transform: translateX(-400px);
+  -webkit-transform: translateX(-670px);
+          transform: translateX(-670px);
+}
+div#menubox.loggedIn {
+  -webkit-transform: translateX(20px);
+          transform: translateX(20px);
 }
