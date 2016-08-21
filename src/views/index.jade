@@ -10,6 +10,7 @@ html(lang='en')
 		script(src='../bower_components/angular-ui-router/release/angular-ui-router.js')
 		script(src='../bower_components/ngstorage/ngStorage.js')
 		script(src='../bower_components/socket.io-client/socket.io.js')
+		script(rel='preload' src='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js')
 		link(rel='preload' href='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css')
 		script.
 			window.onload = function () {
@@ -38,7 +39,7 @@ html(lang='en')
 						div#arrow.home
 						a#home.active(ui-sref='main') Home
 						a#account(ui-sref='account') Account
-						a#map(ui-sref='map2') Map
+						a#gps(ui-sref='gps') Map
 						a#logout(ui-sref='main' ng-click='logout()') Logout
 					div#navcontainer-login
 						h1 Login

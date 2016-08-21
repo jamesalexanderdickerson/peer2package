@@ -143,7 +143,7 @@ app.get('/other_positions', function (req, res) {
 });
 
 app.get('/user_location', function (req, res) {
-  res.json({
+  res.send({
     "geometry": {
       "type": "Point",
       "coordinates": [ lng, lat ]

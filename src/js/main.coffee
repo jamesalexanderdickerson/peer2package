@@ -15,12 +15,19 @@ peer2package.controller 'mainController', ($scope, $localStorage) ->
 
 peer2package.controller 'menuController', ($scope, $http, $localStorage) ->
   $scope.message = null
+  arrow = document.getElementById 'arrow'
+  btn_logout = document.getElementById 'logout'
+  btn_home = document.getElementById 'home'
+
   $scope.loggedIn = () ->
     menubox = document.getElementById 'menubox'
     menubox.classList.add 'loggedIn'
 
   $scope.submitReg = () ->
     $http.post('/register', $scope.regForm.user).then((response) ->
+      btn_home.classList.add 'active'
+      arrow.classList.remove 'logoout'
+      btn_logout.classList.remove 'active'
       $scope.token = response.data.token || null
       $scope.messageReg = response.data.message
       if (response.data.token)
@@ -29,9 +36,6 @@ peer2package.controller 'menuController', ($scope, $http, $localStorage) ->
       )
   $scope.submitLog = () ->
     $http.post('/login', $scope.loginForm.user).then((response) ->
-      arrow = document.getElementById 'arrow'
-      btn_logout = document.getElementById 'logout'
-      btn_home = document.getElementById 'home'
       btn_home.classList.add 'active'
       arrow.classList.remove 'logout'
       btn_logout.classList.remove 'active'
@@ -54,7 +58,18 @@ peer2package.controller 'mapController', ($scope, socket) ->
   $scope.lat = null
   $scope.lng = null
 
-peer2package.controller 'gpsController', ($scope, socket) ->
+peer2package.controller 'gpsController', ($scope) ->
+  $scope.$on('$viewContentLoaded', () ->
+    mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
+
+    map = new mapboxgl.Map({
+    		container: 'map',
+    		style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+    		zoom: 19,
+    		pitch: 45,
+    		center: [-80, 34]
+ 		})
+  )
 
 peer2package.controller 'accountController', ($scope) ->
 
@@ -91,7 +106,7 @@ peer2package.directive 'menuChange', () ->
       arrow = document.getElementById 'arrow'
       btn_home = document.getElementById 'home'
       btn_account = document.getElementById 'account'
-      btn_map = document.getElementById 'map'
+      btn_map = document.getElementById 'gps'
       btn_logout = document.getElementById 'logout'
 
       menu.addEventListener 'click', () ->

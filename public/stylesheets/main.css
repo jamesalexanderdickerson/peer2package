@@ -442,7 +442,7 @@ div#arrow {
 }
 a#home.active,
 a#account.active,
-a#map.active,
+a#gps.active,
 a#logout.active {
   color: #fff;
   -webkit-transition: 0.25s ease-in-out;

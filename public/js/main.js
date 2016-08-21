@@ -32,7 +32,11 @@
   });
 
   peer2package.controller('menuController', function($scope, $http, $localStorage) {
+    var arrow, btn_home, btn_logout;
     $scope.message = null;
+    arrow = document.getElementById('arrow');
+    btn_logout = document.getElementById('logout');
+    btn_home = document.getElementById('home');
     $scope.loggedIn = function() {
       var menubox;
       menubox = document.getElementById('menubox');
@@ -40,6 +44,9 @@
     };
     $scope.submitReg = function() {
       return $http.post('/register', $scope.regForm.user).then(function(response) {
+        btn_home.classList.add('active');
+        arrow.classList.remove('logoout');
+        btn_logout.classList.remove('active');
         $scope.token = response.data.token || null;
         $scope.messageReg = response.data.message;
         if (response.data.token) {
@@ -50,10 +57,6 @@
     };
     $scope.submitLog = function() {
       return $http.post('/login', $scope.loginForm.user).then(function(response) {
-        var arrow, btn_home, btn_logout;
-        arrow = document.getElementById('arrow');
-        btn_logout = document.getElementById('logout');
-        btn_home = document.getElementById('home');
         btn_home.classList.add('active');
         arrow.classList.remove('logout');
         btn_logout.classList.remove('active');
@@ -81,7 +84,19 @@
     return $scope.lng = null;
   });
 
-  peer2package.controller('gpsController', function($scope, socket) {});
+  peer2package.controller('gpsController', function($scope) {
+    return $scope.$on('$viewContentLoaded', function() {
+      var map;
+      mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
+      return map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+        zoom: 19,
+        pitch: 45,
+        center: [-80, 34]
+      });
+    });
+  });
 
   peer2package.controller('accountController', function($scope) {});
 
@@ -124,7 +139,7 @@
         arrow = document.getElementById('arrow');
         btn_home = document.getElementById('home');
         btn_account = document.getElementById('account');
-        btn_map = document.getElementById('map');
+        btn_map = document.getElementById('gps');
         btn_logout = document.getElementById('logout');
         menu.addEventListener('click', function() {
           menu.classList.toggle('open');
