@@ -1,4 +1,4 @@
-peer2package = angular.module 'peer2package', ['ui.router', 'ngStorage']
+peer2package = angular.module 'peer2package', ['ui.router', 'ngStorage', 'ngGeolocation']
 
 peer2package.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider
@@ -58,18 +58,33 @@ peer2package.controller 'mapController', ($scope, socket) ->
   $scope.lat = null
   $scope.lng = null
 
-peer2package.controller 'gpsController', ($scope) ->
+peer2package.controller 'gpsController', ['$scope', '$geolocation', ($scope, $geolocation) ->
   $scope.$on('$viewContentLoaded', () ->
-    mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
+    $geolocation.watchPosition({
+      timeout: 60000,
+      maximumAge: 250,
+      enableHighAccuracy: true
+      })
+    $scope.myPosition = $geolocation.position
+    $scope.$watch('myPosition.coords', (newValue, oldValue) ->
+      console.log newValue.longitude
+      console.log newValue.latitude
+      $scope.longitude = newValue.longitude
+      $scope.latitude = newValue.latitude
+      mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
 
-    map = new mapboxgl.Map({
-    		container: 'map',
-    		style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
-    		zoom: 19,
-    		pitch: 45,
-    		center: [-80, 34]
- 		})
-  )
+      map = new mapboxgl.Map({
+      		container: 'map',
+      		style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+      		zoom: 19,
+      		pitch: 45,
+      		center: [$scope.longitude, $scope.latitude]
+    		})
+
+      )
+    )
+]
+
 
 peer2package.controller 'accountController', ($scope) ->
 
