@@ -39,7 +39,7 @@ html(lang='en')
 						a#home.active(ui-sref='main') Home
 						a#account(ui-sref='account') Account
 						a#map(ui-sref='map2') Map
-						a#logout(ng-click='logout()') Logout
+						a#logout(ui-sref='main' ng-click='logout()') Logout
 					div#navcontainer-login
 						h1 Login
 						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate autocomplete='off')

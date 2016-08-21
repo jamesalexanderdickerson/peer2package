@@ -50,6 +50,13 @@
     };
     $scope.submitLog = function() {
       return $http.post('/login', $scope.loginForm.user).then(function(response) {
+        var arrow, btn_home, btn_logout;
+        arrow = document.getElementById('arrow');
+        btn_logout = document.getElementById('logout');
+        btn_home = document.getElementById('home');
+        btn_home.classList.add('active');
+        arrow.classList.remove('logout');
+        btn_logout.classList.remove('active');
         $scope.token = response.data.token || null;
         $scope.messageLog = response.data.message;
         if (response.data.token) {
@@ -61,6 +68,8 @@
     return $scope.logout = function() {
       var menubox;
       menubox = document.getElementById('menubox');
+      $scope.regForm.user = {};
+      $scope.loginForm.user = {};
       menubox.classList.remove('loggedIn');
       return $localStorage.$reset();
     };

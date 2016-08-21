@@ -29,6 +29,12 @@ peer2package.controller 'menuController', ($scope, $http, $localStorage) ->
       )
   $scope.submitLog = () ->
     $http.post('/login', $scope.loginForm.user).then((response) ->
+      arrow = document.getElementById 'arrow'
+      btn_logout = document.getElementById 'logout'
+      btn_home = document.getElementById 'home'
+      btn_home.classList.add 'active'
+      arrow.classList.remove 'logout'
+      btn_logout.classList.remove 'active'
       $scope.token = response.data.token || null
       $scope.messageLog = response.data.message
       if (response.data.token)
@@ -38,6 +44,8 @@ peer2package.controller 'menuController', ($scope, $http, $localStorage) ->
 
   $scope.logout = () ->
     menubox = document.getElementById 'menubox'
+    $scope.regForm.user = {}
+    $scope.loginForm.user = {}
     menubox.classList.remove 'loggedIn'
     $localStorage.$reset()
 
