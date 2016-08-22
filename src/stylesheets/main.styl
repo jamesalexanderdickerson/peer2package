@@ -123,26 +123,24 @@ div#logo img
   margin-right 20px
 
 nav#side-nav-menu
-  overflow-x hidden
+  overflow hidden
   background-color backgroundcolor
-  padding 10px
-  position absolute
-  top 55px
+  padding 0
+  position fixed
+  top 70px
   right 10px
-  width 320px
   height 1200px
-  z-index 9997
+  z-index 9999
+  width 400px !important
 
 div#navcontainer-menu
-  margin-left 100px
   display flex
-  flex-direction column
   align-items flex-start
-  width 100%
   height 100%
+  width 400px
 
 form
-  margin-top 10px
+  margin 10px 0 0
   display flex
   position relative
   padding 0
@@ -152,29 +150,35 @@ form
   width 100%
   height 100%
 
-
 form#registerForm
   margin-top -405px
+  margin-left 20px
 
 div.main
   width 80%
   margin 0 auto
 
+div#navcontainer-login
+  margin-left -80px
+
+div#navcontainer-register
+  margin-right 8px
+
 div#navcontainer-login div.inputs
+  margin 0 0 40px 0
   border-radius 2px
   display flex
   flex-direction row
-  width 100%
+  width 90%
   height 44px
-  margin-bottom 40px
 
 div#navcontainer-register div.inputs
   border-radius 2px
   display flex
   flex-direction row
-  width 100%
+  width 90%
   height 44px
-  margin-bottom 20px
+  margin 0 0 20px 0
 
 div#navcontainer-register div.valid
   height 50px
@@ -204,20 +208,16 @@ div.valid img
   width 20px
 
 div#navcontainer-login form
-  margin -475px 0 0
+  margin-top -475px
+
 
 div#navcontainer-login, div#navcontainer-register
   display flex
   flex-direction column
   align-items center
-  width 325px
   height 100%
+  width 400px !important
 
-div#navcontainer-login
-  margin-left 48px
-
-div#navcontainer-register
-  margin-left 135px
 
 div#navcontainer-login h1, div#navcontainer-register h1
   font-family 'Avenir Next'
@@ -236,7 +236,7 @@ div#navcontainer-login a.small:hover, div#navcontainer-register a.small:hover
   color white
 
 div#navcontainer-login input
-  width 250px
+  width 100%
   height 40px
   margin-bottom 20px
   border-radius 2px
@@ -250,7 +250,7 @@ div#navcontainer-login input
   padding-bottom 5px
 
 div#navcontainer-register input
-  width 250px
+  width 100%
   height 40px
   margin-bottom 20px
   border-radius 2px
@@ -326,13 +326,17 @@ div.container
 
 div#arrow
   position absolute
-  top 25px
+  top 55px
   left 80px
   width 0
   height 0
   border-top 10px solid transparent
   border-bottom 10px solid transparent
   border-left 10px solid foregroundcolor
+
+
+a#home, a#account, a#gps, a#logout
+  margin-left 100px
 
 a#home.active, a#account.active, a#gps.active, a#logout.active
   color white
@@ -428,7 +432,7 @@ div#centerMap:hover
   align-items center
   opacity 1
   transition opacity 2s
-  z-index 9999
+  z-index 9998
 
 #preloader.hidden
   opacity 0
@@ -500,14 +504,14 @@ div#menu.open span:nth-child(4)
   left 50%
 
 div#menubox
-  width 725px
   height 100%
   margin-left -10px
   display flex
   flex-direction row
   justify-content space-between
   z-index 9997
-  transform translateX(-275px)
+  width 1390px
+  transform translateX(-442px)
 
 div.main_section
   padding 0
@@ -518,7 +522,7 @@ div.main_section
 
 div#map
   position absolute
-  top 0
+  top 70px
   bottom 0
   width 100%
   z-index 9996
@@ -530,8 +534,24 @@ span.error
   color #de5061
 
 footer
+  position relative
+  bottom 0
+  left 0
+  right 0
   display flex
   justify-content center
   align-items center
   background-color rgb(23, 23, 31)
-  height 350px
+  height 100px
+
+div#menu-list
+  margin-top 30px
+  display flex
+  width 100%
+  flex-direction column
+  justify-content center
+
+div#mapContainer
+  height 100%
+  width 100%
+  z-index 9996

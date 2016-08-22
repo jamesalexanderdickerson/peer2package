@@ -78,37 +78,62 @@
     };
   });
 
-  peer2package.controller('mapController', function($scope, socket) {
-    $scope.map = null;
-    $scope.lat = null;
-    return $scope.lng = null;
-  });
+  peer2package.controller('mapController', function($scope, socket) {});
 
-  peer2package.controller('gpsController', [
-    '$scope', '$geolocation', function($scope, $geolocation) {
-      return $scope.$on('$viewContentLoaded', function() {
-        $geolocation.watchPosition({
-          timeout: 60000,
-          maximumAge: 250,
-          enableHighAccuracy: true
-        });
-        $scope.myPosition = $geolocation.position;
-        return $scope.$watch('myPosition.coords', function(newValue, oldValue) {
-          var map;
-          console.log(newValue.longitude);
-          console.log(newValue.latitude);
-          $scope.longitude = newValue.longitude;
-          $scope.latitude = newValue.latitude;
-          mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
-          return map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
-            zoom: 19,
-            pitch: 45,
-            center: [$scope.longitude, $scope.latitude]
+  peer2package.factory('gpsService', [
+    '$rootScope', '$geolocation', function($rootScope, $geolocation) {
+      return $rootScope.$on('$viewContentLoaded', function() {
+        var map;
+        $geolocation.getCurrentPosition({
+          timeout: 60000
+        }).then(function(position) {
+          $rootScope.myPosition = position;
+          $geolocation.watchPosition({
+            timeout: 60000,
+            maximumAge: 250,
+            enableHighAccuracy: true
           });
+          $rootScope.myPosition = $geolocation.position;
+          $rootScope.$watch('myPosition.coords', function(newValue, oldValue) {
+            $rootScope.longitude = newValue.longitude;
+            $rootScope.latitude = newValue.latitude;
+            return map.setCenter([$rootScope.longitude, $rootScope.latitude]);
+          });
+          return $rootScope.loading = false;
         });
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
+        map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+          zoom: 19,
+          pitch: 45
+        });
+        return map.addControl(new mapboxgl.Directions());
       });
+    }
+  ]);
+
+  peer2package.controller('gpsController', ['$scope', 'gpsService', '$interval', function($scope, gpsService, $interval) {}]);
+
+  peer2package.directive('loading', [
+    '$http', function($http) {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attributes) {
+          scope.loading = true;
+          scope.isLoading = function() {
+            return $http.pendingRequests.length > 0;
+          };
+          return scope.$watch(scope.isLoading, function(value) {
+            if (value) {
+              return element.removeClass('hidden');
+            } else {
+              element.addClass('hidden');
+              return scope.loading = false;
+            }
+          });
+        }
+      };
     }
   ]);
 

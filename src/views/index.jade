@@ -13,16 +13,10 @@ html(lang='en')
 		script(src='../bower_components/socket.io-client/socket.io.js')
 		script(rel='preload' src='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js')
 		link(rel='preload' href='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css')
-		script.
-			window.onload = function () {
-				var preloader = document.getElementById('preloader');
-				setTimeout(function () {
-					preloader.classList.add('hidden') }, 0					
-				);
-			};
-
+		script(src='js/mapbox-gl-directions.js')
+		link(rel='stylesheet' href='stylesheets/mapbox-gl-directions.css')
 	body(ng-app='peer2package')
-		div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
+		div#preloader(data-loading style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
 			img(src='./img/preloader.gif')
 		div(menu-change)
 			div#navbar
@@ -37,11 +31,12 @@ html(lang='en')
 			nav#side-nav-menu(role='navigation' ng-controller='menuController')
 				div#menubox(ng-class="menuClass")
 					div#navcontainer-menu
-						div#arrow.home
-						a#home.active(ui-sref='main') Home
-						a#account(ui-sref='account') Account
-						a#gps(ui-sref='gps') Map
-						a#logout(ui-sref='main' ng-click='logout()') Logout
+						div#menu-list
+							div#arrow.home
+							a#home.active(ui-sref='main') Home
+							a#account(ui-sref='account') Account
+							a#gps(ui-sref='gps') Map
+							a#logout(ui-sref='main' ng-click='logout()') Logout
 					div#navcontainer-login
 						h1 Login
 						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate autocomplete='off')

@@ -1,6 +1,7 @@
-script(src='js/mapbox-gl-directions.js')
-link(rel='stylesheet' href='stylesheets/mapbox-gl-directions.css')
-div#map
+div#preloader(ng-class='{"hidden":!loading}' style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
+	img(src='./img/preloader.gif')
+div#mapContainer
+	div#map
 //- script.
 //- 	function getLocation() {
 //- 		if (navigator.geolocation) {

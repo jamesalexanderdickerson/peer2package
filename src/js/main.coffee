@@ -54,35 +54,55 @@ peer2package.controller 'menuController', ($scope, $http, $localStorage) ->
     $localStorage.$reset()
 
 peer2package.controller 'mapController', ($scope, socket) ->
-  $scope.map = null
-  $scope.lat = null
-  $scope.lng = null
 
-peer2package.controller 'gpsController', ['$scope', '$geolocation', ($scope, $geolocation) ->
-  $scope.$on('$viewContentLoaded', () ->
-    $geolocation.watchPosition({
-      timeout: 60000,
-      maximumAge: 250,
-      enableHighAccuracy: true
+peer2package.factory 'gpsService', ['$rootScope', '$geolocation', ($rootScope, $geolocation) ->
+  $rootScope.$on('$viewContentLoaded', () ->
+    $geolocation.getCurrentPosition({
+      timeout: 60000
+    })
+    .then (position) ->
+      $rootScope.myPosition = position
+      $geolocation.watchPosition({
+        timeout: 60000,
+        maximumAge: 250,
+        enableHighAccuracy: true
       })
-    $scope.myPosition = $geolocation.position
-    $scope.$watch('myPosition.coords', (newValue, oldValue) ->
-      console.log newValue.longitude
-      console.log newValue.latitude
-      $scope.longitude = newValue.longitude
-      $scope.latitude = newValue.latitude
-      mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
-
-      map = new mapboxgl.Map({
-      		container: 'map',
-      		style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
-      		zoom: 19,
-      		pitch: 45,
-      		center: [$scope.longitude, $scope.latitude]
-    		})
-
+      $rootScope.myPosition = $geolocation.position
+      $rootScope.$watch('myPosition.coords', (newValue, oldValue) ->
+        $rootScope.longitude = newValue.longitude
+        $rootScope.latitude = newValue.latitude
+        map.setCenter([$rootScope.longitude, $rootScope.latitude])
       )
-    )
+      $rootScope.loading = false
+    mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
+    map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+      zoom: 19,
+      pitch: 45
+    })
+    map.addControl(new mapboxgl.Directions())
+  )
+]
+
+peer2package.controller 'gpsController', ['$scope', 'gpsService', '$interval', ($scope, gpsService, $interval) ->
+]
+
+peer2package.directive 'loading', ['$http', ($http) ->
+  return {
+    restrict: 'A',
+    link: (scope, element, attributes) ->
+      scope.loading = true
+      scope.isLoading = () ->
+        return $http.pendingRequests.length > 0
+      scope.$watch(scope.isLoading, (value) ->
+        if (value)
+          element.removeClass('hidden')
+        else
+          element.addClass('hidden')
+          scope.loading = false
+      )
+  }
 ]
 
 

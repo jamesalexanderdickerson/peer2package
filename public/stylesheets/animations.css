@@ -48,8 +48,8 @@ div#menubox {
   transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
 }
 div#menubox.registerOn {
-  -webkit-transform: translateX(-670px);
-          transform: translateX(-670px);
+  -webkit-transform: translateX(-980px);
+          transform: translateX(-980px);
 }
 div#menubox.loggedIn {
   -webkit-transform: translateX(20px);
