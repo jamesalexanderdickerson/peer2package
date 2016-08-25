@@ -39,7 +39,7 @@ html(lang='en')
 							a#logout(ui-sref='main' ng-click='logout()') Logout
 					div#navcontainer-login
 						h1 Login
-						form#loginForm(ng-submit='submitLog()' name='loginForm' novalidate autocomplete='off')
+						form#loginForm(ng-submit='submitLog(loginForm.user)' name='loginForm' novalidate autocomplete='off')
 							div.inputs
 								input#email(type='email' ng-model='loginForm.user.email' placeholder='Email' ng-required='true')
 								div.valid
@@ -56,7 +56,7 @@ html(lang='en')
 								span.error {{messageLog}}
 					div#navcontainer-register
 						h1 Register
-						form#registerForm(ng-submit='submitReg()' name='regForm' novalidate autocomplete='off')
+						form#registerForm(ng-submit='submitReg(regForm.user)' name='regForm' novalidate autocomplete='off')
 							div.inputs
 								input#email(type='email' ng-model='regForm.user.email' placeholder='Email' ng-required='true')
 								div.valid

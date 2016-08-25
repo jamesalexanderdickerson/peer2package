@@ -364,7 +364,7 @@ div {
   line-height:25px;
   }
 .mapbox-directions-step-distance {
-  color:rgba(255, 190, 80, 0.5);
+  color: #D6842D;
   position:absolute;
   padding:5px 10px;
   font-size:12px;
@@ -379,7 +379,7 @@ div {
   }
   .mapbox-directions-step {
     position:relative;
-    color:rgba(255, 190, 80, 0.7);
+    color: #D6842D;
     cursor:pointer;
     padding:20px 20px 20px 40px;
     font-size:20px;

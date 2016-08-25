@@ -101,6 +101,10 @@ app.post('/register', function (req, res) {
         console.log('Registration successful!');
         user.token = jwt.sign(user, process.env.JWT_SECRET);
         res.send({
+          user: {
+            fname: rows[0].fname,
+            lname: rows[0].lname
+          },
           token: user.token
         });
       })
@@ -121,6 +125,10 @@ app.post('/login', function (req, res) {
         console.log('User logged in successfully!');
         user.token = jwt.sign(user, process.env.JWT_SECRET);
         res.send({
+          user: {
+            fname: rows[0].fname,
+            lname: rows[0].lname
+          },
           token: user.token
         });
       } else {

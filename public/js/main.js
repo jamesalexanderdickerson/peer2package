@@ -31,57 +31,94 @@
     }
   });
 
-  peer2package.controller('menuController', function($scope, $http, $localStorage) {
-    var arrow, btn_home, btn_logout;
-    $scope.message = null;
-    arrow = document.getElementById('arrow');
-    btn_logout = document.getElementById('logout');
-    btn_home = document.getElementById('home');
-    $scope.loggedIn = function() {
-      var menubox;
-      menubox = document.getElementById('menubox');
-      return menubox.classList.add('loggedIn');
-    };
-    $scope.submitReg = function() {
-      return $http.post('/register', $scope.regForm.user).then(function(response) {
-        btn_home.classList.add('active');
-        arrow.classList.remove('logoout');
-        btn_logout.classList.remove('active');
-        $scope.token = response.data.token || null;
-        $scope.messageReg = response.data.message;
-        if (response.data.token) {
-          $localStorage.token = response.data.token;
-          return $scope.loggedIn();
-        }
-      });
-    };
-    $scope.submitLog = function() {
-      return $http.post('/login', $scope.loginForm.user).then(function(response) {
-        btn_home.classList.add('active');
-        arrow.classList.remove('logout');
-        btn_logout.classList.remove('active');
-        $scope.token = response.data.token || null;
-        $scope.messageLog = response.data.message;
-        if (response.data.token) {
-          $localStorage.token = response.data.token;
-          return $scope.loggedIn();
-        }
-      });
-    };
-    return $scope.logout = function() {
-      var menubox;
-      menubox = document.getElementById('menubox');
-      $scope.regForm.user = {};
-      $scope.loginForm.user = {};
-      menubox.classList.remove('loggedIn');
-      return $localStorage.$reset();
+  peer2package.factory('userService', function($http) {
+    var currentUser;
+    currentUser = {};
+    return {
+      login: function(user) {
+        var $postedUser;
+        $postedUser = $http.post('/login', user);
+        $postedUser.then(function(response) {
+          currentUser = response.data.user;
+          return console.log(currentUser);
+        });
+        return $postedUser;
+      },
+      register: function(user) {
+        var $postedUser;
+        $postedUser = $http.post('/register', user);
+        $postedUser.then(function(response) {
+          return currentUser = response.data.user;
+        });
+        return $postedUser;
+      },
+      logout: function() {},
+      isLoggedIn: function() {},
+      currentUser: function() {
+        return currentUser;
+      }
     };
   });
 
+  peer2package.controller('menuController', [
+    '$scope', '$http', '$localStorage', 'userService', function($scope, $http, $localStorage, userService) {
+      var arrow, btn_home, btn_logout, menu, menubox, sidenavmenu;
+      $scope.message = null;
+      menu = document.getElementById('menu');
+      arrow = document.getElementById('arrow');
+      btn_logout = document.getElementById('logout');
+      btn_home = document.getElementById('home');
+      menubox = document.getElementById('menubox');
+      sidenavmenu = document.getElementById('side-nav-menu');
+      $scope.loggedIn = function() {
+        return menubox.classList.add('loggedIn');
+      };
+      $scope.submitReg = function(user) {
+        return userService.register(user).then(function(response) {
+          btn_home.classList.add('active');
+          arrow.classList.remove('logoout');
+          btn_logout.classList.remove('active');
+          $scope.token = response.data.token || null;
+          $scope.messageReg = response.data.message;
+          if (response.data.token) {
+            $localStorage.token = response.data.token;
+            return $scope.loggedIn();
+          }
+        });
+      };
+      $scope.submitLog = function(user) {
+        return userService.login(user).then(function(response) {
+          btn_home.classList.add('active');
+          arrow.classList.remove('logout');
+          btn_logout.classList.remove('active');
+          $scope.token = response.data.token || null;
+          $scope.messageLog = response.data.message;
+          if (response.data.token) {
+            $localStorage.token = response.data.token;
+            return $scope.loggedIn();
+          }
+        });
+      };
+      return $scope.logout = function() {
+        $scope.regForm.user = {};
+        $scope.loginForm.user = {};
+        menubox.classList.remove('loggedIn');
+        $localStorage.$reset();
+        return setTimeout(function() {
+          menu.classList.toggle('open');
+          return sidenavmenu.classList.toggle('nav-open');
+        }, 500);
+      };
+    }
+  ]);
+
   peer2package.controller('mapController', function($scope, socket) {});
 
-  peer2package.factory('gpsService', [
+  peer2package.service('gpsService', [
     '$rootScope', '$geolocation', function($rootScope, $geolocation) {
+      var latitude, longitude;
+      longitude = null;
+      latitude = null;
       return $rootScope.$on('$viewContentLoaded', function() {
         var map;
         $geolocation.getCurrentPosition({
@@ -96,7 +133,9 @@
           $rootScope.myPosition = $geolocation.position;
           $rootScope.$watch('myPosition.coords', function(newValue, oldValue) {
             $rootScope.longitude = newValue.longitude;
+            longitude = $rootScope.longitude;
             $rootScope.latitude = newValue.latitude;
+            latitude = $rootScope.latitude;
             return map.setCenter([$rootScope.longitude, $rootScope.latitude]);
           });
           return $rootScope.loading = false;
@@ -108,12 +147,13 @@
           zoom: 19,
           pitch: 45
         });
-        return map.addControl(new mapboxgl.Directions());
+        map.addControl(new mapboxgl.Directions());
+        return map.setCenter([longitude, latitude]);
       });
     }
   ]);
 
-  peer2package.controller('gpsController', ['$scope', 'gpsService', '$interval', function($scope, gpsService, $interval) {}]);
+  peer2package.controller('gpsController', ['$scope', 'gpsService', function($scope, gpsService) {}]);
 
   peer2package.directive('loading', [
     '$http', function($http) {
@@ -137,7 +177,13 @@
     }
   ]);
 
-  peer2package.controller('accountController', function($scope) {});
+  peer2package.controller('accountController', [
+    '$scope', 'userService', function($scope, userService) {
+      $scope.currentUser = userService.currentUser();
+      $scope.name = $scope.currentUser.fname + ' ' + $scope.currentUser.lname;
+      return $scope.deleteAccount = function() {};
+    }
+  ]);
 
   peer2package.controller('photoController', function($scope) {});
 

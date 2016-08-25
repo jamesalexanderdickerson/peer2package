@@ -2,33 +2,3 @@ div#preloader(ng-class='{"hidden":!loading}' style='position: absolute; top: 0px
 	img(src='./img/preloader.gif')
 div#mapContainer
 	div#map
-//- script.
-//- 	function getLocation() {
-//- 		if (navigator.geolocation) {
-//- 			navigator.geolocation.getCurrentPosition(showPosition);
-//- 		} else {
-//- 			x.innerHTML = "Geolocation is not supported by this browser.";
-//- 		};
-//- 	};
-//- 
-//- 	function showPosition(position) {
-//- 		mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
-//- 		var map = new mapboxgl.Map({
-//- 			container: 'map',
-//- 			style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
-//- 			zoom: 19,
-//- 			pitch: 45,
-//- 			center: [position.coords.longitude, position.coords.latitude]
-//- 		});
-//- 		map.addControl(new mapboxgl.Directions());
-//- 		var preloader = document.getElementById('preloader');
-//- 		setTimeout(function () {
-//- 			preloader.classList.add('hidden'); }, 0
-//- 		);
-//- 	};
-//- 
-//- 	window.onload = function () {
-//- 		getLocation();
-//- 	};
-//- 
-//- script(src='js/map.js')
