@@ -145,6 +145,7 @@ peer2package.directive 'loading', ['$http', ($http) ->
 peer2package.controller 'accountController', ['$scope', 'userService', ($scope, userService) ->
   $scope.currentUser = userService.currentUser()
   $scope.name = $scope.currentUser.fname + ' ' + $scope.currentUser.lname
+  $scope.balance = 0.00
   $scope.deleteAccount = () ->
 ]
 

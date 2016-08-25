@@ -9,13 +9,15 @@ var app = require('express')(),
   session = require('express-session'),
   io = require('socket.io')(http),
   bcrypt = require('bcrypt'),
-  r = require('rethinkdbdash')({
-    port: 28015,
-    host: 'localhost',
-    db: 'peer2package'
-  }),
+  r = require('rethinkdb'),
   jwt = require('jsonwebtoken'),
   dotenv = require('dotenv');
+
+  var rethinkdb = null;
+  r.connect({host: 'localhost', port: 28015, db: 'peer2package'}, function (err, conn) {
+    if (err) throw err;
+    rethinkdb = conn;
+  });
 
 
 // IMPORT VARIABLES FROM .ENV FILE
@@ -31,6 +33,7 @@ var lat = '';
 // DEFINE A PORT WE WANT TO USE
 const PORT=8000;
 var myPosition = '';
+var generatedKeys = ''
 
 // LOAD IN ENVIRONMENT VARIABLES
 const secret = process.env.JWT_SECRET;
@@ -151,6 +154,13 @@ app.get('/other_positions', function (req, res) {
 });
 
 app.get('/user_location', function (req, res) {
+  r.table('locations').get(generatedKeys).run(rethinkdb, function(err, result) {
+    if (err) throw err;
+    if (result) {
+      lng = result.lng;
+      lat = result.lat;
+    }
+  })
   res.send({
     "geometry": {
       "type": "Point",
@@ -169,12 +179,12 @@ io.on('connection', function (socket) {
   console.log('A user has connected');
   socket.on('LngLat', function (yourPosition) {
     myPosition = yourPosition.split(',');
-    console.log(myPosition);
     r.table('locations').insert({
-      lng: myPosition[0],
-      lat: myPosition[1]
-    }).run().then(function (response) {
-      console.log(response);
+        lng: myPosition[0],
+        lat: myPosition[1]
+    }).run(rethinkdb).then(function (response) {
+      var genKey = JSON.stringify(response.generated_keys).replace(/[[\]]/g,'');
+      generatedKeys = genKey.replace(/"/g, '');
     }).error(function (err) {
       console.log('error occured', err);
     });

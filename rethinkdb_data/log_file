@@ -497,3 +497,17 @@
 2016-08-10T18:09:11.016164000 0.397341s notice: Server ready, "Jamess_MBP_3_lan_ujf" 3894937b-5bd2-402e-acdb-337331b5dcc3
 2016-08-10T18:09:12.387774000 1.769026s info: Table a54e5688-a814-4bbd-ae54-ffac32c1b909: Starting a new Raft election for term 3.
 2016-08-10T18:09:12.398230000 1.779482s info: Table a54e5688-a814-4bbd-ae54-ffac32c1b909: This server is Raft leader for term 3. Latest log index is 6.
+2016-08-25T05:18:39.684054000 0.379111s notice: Running rethinkdb 2.3.4 (CLANG 7.3.0 (clang-703.0.31))...
+2016-08-25T05:18:39.688315000 0.383370s notice: Running on Darwin 15.5.0 x86_64
+2016-08-25T05:18:39.688350000 0.383404s notice: Loading data from directory /Users/jamesalexanderdickerson/Desktop/peer2package/rethinkdb_data
+2016-08-25T05:18:39.708185000 0.403239s info: Automatically using cache size of 890 MB
+2016-08-25T05:18:39.710007000 0.405060s notice: Listening for intracluster connections on port 29015
+2016-08-25T05:18:39.730639000 0.425693s notice: Listening for client driver connections on port 28015
+2016-08-25T05:18:39.730740000 0.425793s notice: Listening for administrative HTTP connections on port 8080
+2016-08-25T05:18:39.730741000 0.425795s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2016-08-25T05:18:39.730743000 0.425796s notice: Listening on driver addresses: 127.0.0.1, ::1
+2016-08-25T05:18:39.730745000 0.425798s notice: Listening on http addresses: 127.0.0.1, ::1
+2016-08-25T05:18:39.730828000 0.425882s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2016-08-25T05:18:39.730830000 0.425883s notice: Server ready, "Jamess_MBP_3_lan_ujf" 3894937b-5bd2-402e-acdb-337331b5dcc3
+2016-08-25T05:18:41.349677000 2.044807s info: Table a54e5688-a814-4bbd-ae54-ffac32c1b909: Starting a new Raft election for term 4.
+2016-08-25T05:18:41.358457000 2.053587s info: Table a54e5688-a814-4bbd-ae54-ffac32c1b909: This server is Raft leader for term 4. Latest log index is 9.

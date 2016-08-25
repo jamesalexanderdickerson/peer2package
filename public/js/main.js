@@ -181,6 +181,7 @@
     '$scope', 'userService', function($scope, userService) {
       $scope.currentUser = userService.currentUser();
       $scope.name = $scope.currentUser.fname + ' ' + $scope.currentUser.lname;
+      $scope.balance = 0.00;
       return $scope.deleteAccount = function() {};
     }
   ]);
