@@ -29,6 +29,7 @@ const salt = process.env.BCRYPT_SALT;
 
 var lng = '';
 var lat = '';
+var uname = '';
 
 // DEFINE A PORT WE WANT TO USE
 const PORT=8000;
@@ -103,8 +104,10 @@ app.post('/register', function (req, res) {
       connection.query(newQuery, function(err, rows) {
         console.log('Registration successful!');
         user.token = jwt.sign(user, process.env.JWT_SECRET);
+        uname = user.fname + ' ' + user.lname;
         res.send({
           user: {
+            email: rows[0].email,
             fname: rows[0].fname,
             lname: rows[0].lname
           },
@@ -127,8 +130,11 @@ app.post('/login', function (req, res) {
       if (rows[0].pword === testUser.password) {
         console.log('User logged in successfully!');
         user.token = jwt.sign(user, process.env.JWT_SECRET);
+        uname = rows[0].fname + ' ' + rows[0].lname
         res.send({
           user: {
+            id: rows[0].id,
+            email: rows[0].email,
             fname: rows[0].fname,
             lname: rows[0].lname
           },
@@ -141,6 +147,20 @@ app.post('/login', function (req, res) {
     } else {
       console.log('That email does not exist.')
       res.send({message: 'That email does not exist.'})
+    }
+  })
+});
+
+app.post('/delete', function (req, res) {
+  var user = req.body
+  var insertQuery = 'DELETE FROM users WHERE id="' + user.id + '";'
+  connection.query(insertQuery, function (err, rows) {
+    if (err) throw err;
+    if (rows.length) {
+      console.log('User deleted');
+      res.send({
+        message: 'User deleted.'
+      })
     }
   })
 });
@@ -169,7 +189,7 @@ app.get('/user_location', function (req, res) {
     "type": "Feature",
     "properties": {
       "title": "You",
-      "description": "<style>div.profile{display:flex;width:100%;justify-content:space-between;}div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;max-width:400px;background-color:#1C283B;font:20px'Helvetica Neue',Arial,Helvetica,sans-serif;border-radius:4px;margin-top:-80px;align-self:flex-start;}h1{align-self:flex-end;font-size:1.5em;}button.mapboxgl-popup-close-button {display:none;}svg{margin:0 41% 0 ;display:block;position:absolute}</style><div class='profile'><img src='../img/profile.gif' /><h1> John Smith </h1></div><p>This is your current location.</p><br /><svg xmlns='http://www.w3.org/2000/svg' width='54.875' height='29.875' viewBox='0 0 54.875 29.875'><path fill='#1C283B' d='M.916-.333l53.81.214L26.916 30z'/></svg>"
+      "description": "<style>div.profile{display:flex;width:100%;justify-content:space-between;}div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;font:20px'Helvetica Neue',Arial,Helvetica,sans-serif;border-radius:4px;margin-top:-80px;align-self:flex-start;}h1{align-self:flex-end;font-size:1.5em;}button.mapboxgl-popup-close-button {display:none;}svg{margin:0 41% 0 ;display:block;position:absolute}</style><div class='profile'><img src='../img/profile.gif' /><h1> " + uname + " </h1></div><p>This is your current location." + lng + "," + lat + "</p><br /><svg xmlns='http://www.w3.org/2000/svg' width='54.875' height='29.875' viewBox='0 0 54.875 29.875'><path fill='#1C283B' d='M.916-.333l53.81.214L26.916 30z'/></svg>"
     }
   });
 });

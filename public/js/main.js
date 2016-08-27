@@ -52,6 +52,13 @@
         });
         return $postedUser;
       },
+      "delete": function(user) {
+        var $postedUser;
+        $postedUser = $http.post('/delete', user);
+        return $postedUser.then(function(response) {
+          return currentUser = '';
+        });
+      },
       logout: function() {},
       isLoggedIn: function() {},
       currentUser: function() {
@@ -112,7 +119,94 @@
     }
   ]);
 
-  peer2package.controller('mapController', function($scope, socket) {});
+  peer2package.service('mapService', [
+    '$rootScope', '$geolocation', 'socket', '$interval', function($rootScope, $geolocation, socket, $interval) {
+      var latitude, longitude;
+      $rootScope.loading = true;
+      longitude = null;
+      latitude = null;
+      return $rootScope.$on('$viewContentLoaded', function() {
+        var moveCenter;
+        $geolocation.getCurrentPosition({
+          timeout: 60000
+        }).then(function(position) {
+          var map, source, url;
+          longitude = position.coords.longitude;
+          latitude = position.coords.latitude;
+          $rootScope.myPosition = position;
+          $interval((function() {
+            $geolocation.getCurrentPosition({
+              timeout: 60000
+            }).then(function(position) {
+              $rootScope.myPosition = position;
+              longitude = position.coords.longitude;
+              latitude = position.coords.latitude;
+            });
+          }), 1000);
+          $rootScope.$watch('myPosition.coords', function(newValue, oldValue) {
+            var url, yourPosition;
+            longitude = newValue.longitude;
+            latitude = newValue.latitude;
+            url = 'http://localhost:8000/user_location';
+            yourPosition = longitude + ', ' + latitude;
+            source.setData(url);
+            return socket.emit('LngLat', yourPosition);
+          });
+          mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
+          map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+            zoom: 19
+          });
+          url = 'http://localhost:8000/user_location';
+          source = new mapboxgl.GeoJSONSource({
+            data: url
+          });
+          return map.on('load', function() {
+            $rootScope.loading = false;
+            map.addSource('You', source);
+            map.addLayer({
+              "id": "You",
+              "type": "circle",
+              "source": "You",
+              "paint": {
+                "circle-radius": 20,
+                "circle-color": "#E65D5D"
+              }
+            });
+            map.setCenter([longitude, latitude]);
+            console.log(longitude + ',' + latitude);
+            return map.on('click', function(e) {
+              var feature, features, popup;
+              features = map.queryRenderedFeatures(e.point, {
+                layers: ['You']
+              });
+              if (!features.length) {
+                return;
+              }
+              feature = features[0];
+              return popup = new mapboxgl.Popup({
+                closeButton: false
+              }).setLngLat([longitude, latitude]).setHTML(feature.properties.description).addTo(map);
+            });
+          });
+        });
+        return moveCenter = function() {
+          return map.flyTo({
+            center: [longitude, latitude]
+          });
+        };
+      });
+    }
+  ]);
+
+  peer2package.controller('mapController', [
+    '$scope', 'mapService', 'socket', function($scope, mapService, socket) {
+      return $scope.moveToPosition = function() {
+        return mapService.moveCenter();
+      };
+    }
+  ]);
 
   peer2package.service('gpsService', [
     '$rootScope', '$geolocation', function($rootScope, $geolocation) {
@@ -156,11 +250,10 @@
   peer2package.controller('gpsController', ['$scope', 'gpsService', function($scope, gpsService) {}]);
 
   peer2package.directive('loading', [
-    '$http', function($http) {
+    '$http', '$rootScope', function($http, $rootScope) {
       return {
         restrict: 'A',
         link: function(scope, element, attributes) {
-          scope.loading = true;
           scope.isLoading = function() {
             return $http.pendingRequests.length > 0;
           };
@@ -168,8 +261,7 @@
             if (value) {
               return element.removeClass('hidden');
             } else {
-              element.addClass('hidden');
-              return scope.loading = false;
+              return element.addClass('hidden');
             }
           });
         }
@@ -178,11 +270,16 @@
   ]);
 
   peer2package.controller('accountController', [
-    '$scope', 'userService', function($scope, userService) {
+    '$scope', 'userService', '$location', function($scope, userService, $location) {
       $scope.currentUser = userService.currentUser();
       $scope.name = $scope.currentUser.fname + ' ' + $scope.currentUser.lname;
       $scope.balance = 0.00;
-      return $scope.deleteAccount = function() {};
+      return $scope.deleteAccount = function(user) {
+        return userService["delete"](user).then(function(response) {
+          $localStorage.$reset();
+          return $location.path('/');
+        });
+      };
     }
   ]);
 

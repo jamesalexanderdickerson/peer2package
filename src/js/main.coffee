@@ -30,6 +30,12 @@ peer2package.factory 'userService', ($http) ->
         currentUser = response.data.user
       )
       return $postedUser
+
+    delete: (user) ->
+      $postedUser = $http.post('/delete', user)
+      $postedUser.then((response) ->
+        currentUser = ''
+      )
     logout: () ->
 
     isLoggedIn: () ->
@@ -84,7 +90,75 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
     , 500
 ]
 
-peer2package.controller 'mapController', ($scope, socket) ->
+peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$interval', ($rootScope, $geolocation, socket, $interval) ->
+  $rootScope.loading = true
+  longitude = null
+  latitude = null
+  $rootScope.$on('$viewContentLoaded', () ->
+    $geolocation.getCurrentPosition({
+      timeout: 60000
+    })
+    .then (position) ->
+      longitude = position.coords.longitude
+      latitude = position.coords.latitude
+      $rootScope.myPosition = position
+      $interval (->
+        $geolocation.getCurrentPosition(timeout: 60000).then (position) ->
+          $rootScope.myPosition = position
+          longitude = position.coords.longitude
+          latitude = position.coords.latitude
+          return
+        return
+      ), 1000
+      $rootScope.$watch('myPosition.coords', (newValue, oldValue) ->
+        longitude = newValue.longitude
+        latitude = newValue.latitude
+        url = 'http://localhost:8000/user_location'
+        yourPosition = longitude + ', ' + latitude
+        source.setData(url)
+        socket.emit 'LngLat', yourPosition
+      )
+      mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
+      map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+        zoom: 19
+      })
+      url = 'http://localhost:8000/user_location'
+      source = new mapboxgl.GeoJSONSource {data:url}
+      map.on 'load', () ->
+        $rootScope.loading = false
+        map.addSource 'You', source
+        map.addLayer({
+          "id": "You",
+          "type": "circle",
+          "source": "You",
+          "paint": {
+            "circle-radius": 20,
+            "circle-color": "#E65D5D"
+          }
+        })
+        map.setCenter([longitude, latitude])
+        console.log(longitude + ',' + latitude)
+        map.on 'click', (e) ->
+          features = map.queryRenderedFeatures e.point, {layers:['You']}
+          if (!features.length)
+            return
+          feature = features[0]
+          popup = new mapboxgl.Popup({closeButton:false}).setLngLat([longitude, latitude]).setHTML(feature.properties.description).addTo(map)
+
+
+    moveCenter = () ->
+      return map.flyTo {center:[longitude,latitude]}
+
+
+  )
+]
+
+peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', ($scope, mapService, socket) ->
+  $scope.moveToPosition = () ->
+    mapService.moveCenter()
+]
 
 peer2package.service 'gpsService', ['$rootScope', '$geolocation', ($rootScope, $geolocation) ->
   longitude = null
@@ -124,11 +198,10 @@ peer2package.service 'gpsService', ['$rootScope', '$geolocation', ($rootScope, $
 peer2package.controller 'gpsController', ['$scope', 'gpsService', ($scope, gpsService) ->
 ]
 
-peer2package.directive 'loading', ['$http', ($http) ->
+peer2package.directive 'loading', ['$http', '$rootScope', ($http, $rootScope) ->
   return {
     restrict: 'A',
     link: (scope, element, attributes) ->
-      scope.loading = true
       scope.isLoading = () ->
         return $http.pendingRequests.length > 0
       scope.$watch(scope.isLoading, (value) ->
@@ -136,17 +209,21 @@ peer2package.directive 'loading', ['$http', ($http) ->
           element.removeClass('hidden')
         else
           element.addClass('hidden')
-          scope.loading = false
       )
   }
 ]
 
 
-peer2package.controller 'accountController', ['$scope', 'userService', ($scope, userService) ->
+peer2package.controller 'accountController', ['$scope', 'userService', '$location', ($scope, userService, $location) ->
   $scope.currentUser = userService.currentUser()
   $scope.name = $scope.currentUser.fname + ' ' + $scope.currentUser.lname
   $scope.balance = 0.00
-  $scope.deleteAccount = () ->
+  $scope.deleteAccount = (user) ->
+    userService.delete(user).then((response) ->
+      $localStorage.$reset()
+      $location.path '/'
+    )
+
 ]
 
 peer2package.controller 'photoController', ($scope) ->

@@ -26,6 +26,7 @@
     "jshint": "^2.9.2"
   },
   "dependencies": {
+    "async": "^2.0.1",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
     "connect-flash": "^0.1.1",

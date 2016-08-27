@@ -511,3 +511,30 @@
 2016-08-25T05:18:39.730830000 0.425883s notice: Server ready, "Jamess_MBP_3_lan_ujf" 3894937b-5bd2-402e-acdb-337331b5dcc3
 2016-08-25T05:18:41.349677000 2.044807s info: Table a54e5688-a814-4bbd-ae54-ffac32c1b909: Starting a new Raft election for term 4.
 2016-08-25T05:18:41.358457000 2.053587s info: Table a54e5688-a814-4bbd-ae54-ffac32c1b909: This server is Raft leader for term 4. Latest log index is 9.
+2016-08-25T13:48:19.673656000 20574.805866s info: Table 799d1150-fcbc-4192-8641-06859cb11108: Starting a new Raft election for term 1.
+2016-08-25T13:48:19.674119000 20574.806329s info: Table 799d1150-fcbc-4192-8641-06859cb11108: Added replica on this server.
+2016-08-25T13:48:19.682596000 20574.814805s info: Table 799d1150-fcbc-4192-8641-06859cb11108: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-25T13:49:51.243274000 20666.378803s info: Table 4628fa54-8dc2-4242-aaf9-770d293347a2: Starting a new Raft election for term 1.
+2016-08-25T13:49:51.243550000 20666.379079s info: Table 4628fa54-8dc2-4242-aaf9-770d293347a2: Added replica on this server.
+2016-08-25T13:49:51.252737000 20666.388266s info: Table 4628fa54-8dc2-4242-aaf9-770d293347a2: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-25T13:51:36.691778000 20771.831041s info: Table 60b000d6-db63-4802-aae7-9a4f56b0109d: Starting a new Raft election for term 1.
+2016-08-25T13:51:36.692061000 20771.831324s info: Table 60b000d6-db63-4802-aae7-9a4f56b0109d: Added replica on this server.
+2016-08-25T13:51:36.699604000 20771.838866s info: Table 60b000d6-db63-4802-aae7-9a4f56b0109d: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-25T13:54:56.167279000 20971.313665s info: Table 4beff0f0-47f1-4616-ba07-2fda216d2a34: Starting a new Raft election for term 1.
+2016-08-25T13:54:56.167543000 20971.313928s info: Table 4beff0f0-47f1-4616-ba07-2fda216d2a34: Added replica on this server.
+2016-08-25T13:54:56.176076000 20971.322462s info: Table 4beff0f0-47f1-4616-ba07-2fda216d2a34: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-25T13:59:37.715783000 21252.872265s info: Table 91ed8173-357b-4b86-9693-a06418f98da7: Starting a new Raft election for term 1.
+2016-08-25T13:59:37.716090000 21252.872572s info: Table 91ed8173-357b-4b86-9693-a06418f98da7: Added replica on this server.
+2016-08-25T13:59:37.724596000 21252.881078s info: Table 91ed8173-357b-4b86-9693-a06418f98da7: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-25T14:00:56.956663000 21332.115980s info: Table fa0e3146-6c2b-43e7-b85a-64135e77d4d9: Starting a new Raft election for term 1.
+2016-08-25T14:00:56.956911000 21332.116228s info: Table fa0e3146-6c2b-43e7-b85a-64135e77d4d9: Added replica on this server.
+2016-08-25T14:00:56.964703000 21332.124019s info: Table fa0e3146-6c2b-43e7-b85a-64135e77d4d9: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-25T14:23:58.169164000 22713.377500s info: Table d0339597-af7a-448d-b5d3-a288a19348ed: Starting a new Raft election for term 1.
+2016-08-25T14:23:58.169369000 22713.377705s info: Table d0339597-af7a-448d-b5d3-a288a19348ed: Added replica on this server.
+2016-08-25T14:23:58.176948000 22713.385285s info: Table d0339597-af7a-448d-b5d3-a288a19348ed: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-25T14:25:57.516160000 22832.728749s info: Table 4fe6ac91-4005-455d-a405-1a2b8092797e: Starting a new Raft election for term 1.
+2016-08-25T14:25:57.516678000 22832.729266s info: Table 4fe6ac91-4005-455d-a405-1a2b8092797e: Added replica on this server.
+2016-08-25T14:25:57.525752000 22832.738341s info: Table 4fe6ac91-4005-455d-a405-1a2b8092797e: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-27T18:30:23.860175000 39690.236363s info: Table 4fa2fefb-9655-4301-8179-69f74ecd3de2: Starting a new Raft election for term 1.
+2016-08-27T18:30:23.861028000 39690.237214s info: Table 4fa2fefb-9655-4301-8179-69f74ecd3de2: Added replica on this server.
+2016-08-27T18:30:23.882126000 39690.258312s info: Table 4fa2fefb-9655-4301-8179-69f74ecd3de2: This server is Raft leader for term 1. Latest log index is 0.

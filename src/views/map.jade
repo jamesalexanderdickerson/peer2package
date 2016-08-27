@@ -1,107 +1,93 @@
-doctype
-html(lang='en')
-	head
-		meta(charset='UTF-8')
-		meta(name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no')
-		title Document
-		link(rel='stylesheet' href='stylesheets/main.css')
-		script(src='../bower_components/angular/angular.js')
-		script(src='../bower_components/angular-ui-router/release/angular-ui-router.js')
-		script(rel='preload' src='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js')
-		link(rel='preload' href='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css')
-		script(src='../bower_components/socket.io-client/socket.io.js')
-		script.
-			var map = null;
-			var lat = null;
-			var lng = null;
-			var socket = io();
-
-			function getLocation() {
-				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(showPosition);
-				} else {
-					x.innerHTML = "Geolocation is not supported by this browser.";
-				};
-			};
-
-			function showPosition(position) {
-				lat = position.coords["latitude"];
-				lng = position.coords["longitude"];
-				mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
-				map = new mapboxgl.Map({
-					container: 'map',
-					style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
-					zoom: 19,
-					center: [lng,lat]
-				});
-				var url = 'http://localhost:8000/user_location';
-				var source = new mapboxgl.GeoJSONSource({
-					data: url
-					});
-				window.setInterval(function() {
-					navigator.geolocation.getCurrentPosition(function(position) {
-						lat = position.coords["latitude"];	
-						lng = position.coords["longitude"];
-					});
-					var yourPosition = lng + ',' + lat;
-					socket.emit('LngLat', yourPosition);
-					source.setData(url);
-					}, 1000);
-
-				map.on('load', function () {
-					map.addSource('You', source);
-					map.addLayer({
-						"id": "You",
-						"type": "circle",
-						"source": "You",
-						"paint": {
-							"circle-radius": 20,
-							"circle-color": "#E65D5D"
-						}
-					});
-				});
-
-				map.on('click', function (e) {
-					var features = map.queryRenderedFeatures(e.point, { layers: ['You'] });
-					if (!features.length) {
-						return;
-					}
-					var feature = features[0];
-					var popup = new mapboxgl.Popup()
-						.setLngLat(feature.geometry.coordinates)
-						.setHTML(feature.properties.description)
-						.addTo(map);
-				});
-				var preloader = document.getElementById('preloader');
-				setTimeout(function () {
-					preloader.classList.add('hidden'); }, 0					
-				);
-			};
-
-			function moveToPosition() {
-				map.flyTo({center: [lng, lat]});	
-			}
-
-
-			window.onload = function () {
-				getLocation();
-			};
-body
-	div#preloader(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
+//- doctype
+//- html(lang='en')
+//- 	head
+//- 		meta(charset='UTF-8')
+//- 		meta(name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no')
+//- 		title Document
+//- 		link(rel='stylesheet' href='stylesheets/main.css')
+//- 		script(src='../bower_components/angular/angular.js')
+//- 		script(src='../bower_components/angular-ui-router/release/angular-ui-router.js')
+//- 		script(rel='preload' src='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js')
+//- 		link(rel='preload' href='https://api.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css')
+//- 		script(src='../bower_components/socket.io-client/socket.io.js')
+//- 		script.
+//- 			var map = null;
+//- 			var lat = null;
+//- 			var lng = null;
+//- 			var socket = io();
+//- 
+//- 			function getLocation() {
+//- 				if (navigator.geolocation) {
+//- 					navigator.geolocation.getCurrentPosition(showPosition);
+//- 				} else {
+//- 					x.innerHTML = "Geolocation is not supported by this browser.";
+//- 				};
+//- 			};
+//- 
+//- 			function showPosition(position) {
+//- 				lat = position.coords["latitude"];
+//- 				lng = position.coords["longitude"];
+//- 				mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
+//- 				map = new mapboxgl.Map({
+//- 					container: 'map',
+//- 					style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+//- 					zoom: 19,
+//- 					center: [lng,lat]
+//- 				});
+//- 				var url = 'http://localhost:8000/user_location';
+//- 				var source = new mapboxgl.GeoJSONSource({
+//- 					data: url
+//- 					});
+//- 				window.setInterval(function() {
+//- 					navigator.geolocation.getCurrentPosition(function(position) {
+//- 						lat = position.coords["latitude"];	
+//- 						lng = position.coords["longitude"];
+//- 					});
+//- 					var yourPosition = lng + ',' + lat;
+//- 					socket.emit('LngLat', yourPosition);
+//- 					source.setData(url);
+//- 					}, 1000);
+//- 
+//- 				map.on('load', function () {
+//- 					map.addSource('You', source);
+//- 					map.addLayer({
+//- 						"id": "You",
+//- 						"type": "circle",
+//- 						"source": "You",
+//- 						"paint": {
+//- 							"circle-radius": 20,
+//- 							"circle-color": "#E65D5D"
+//- 						}
+//- 					});
+//- 				});
+//- 
+//- 				map.on('click', function (e) {
+//- 					var features = map.queryRenderedFeatures(e.point, { layers: ['You'] });
+//- 					if (!features.length) {
+//- 						return;
+//- 					}
+//- 					var feature = features[0];
+//- 					var popup = new mapboxgl.Popup()
+//- 						.setLngLat(feature.geometry.coordinates)
+//- 						.setHTML(feature.properties.description)
+//- 						.addTo(map);
+//- 				});
+//- 				var preloader = document.getElementById('preloader');
+//- 				setTimeout(function () {
+//- 					preloader.classList.add('hidden'); }, 0					
+//- 				);
+//- 			};
+//- 
+//- 			function moveToPosition() {
+//- 				map.flyTo({center: [lng, lat]});	
+//- 			}
+//- 
+//- 
+//- 			window.onload = function () {
+//- 				getLocation();
+//- 			};
+//- body
+div(controller='mapController')
+	div#preloader(ng-class='{"hidden":!loading}' style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
 		img(src='./img/preloader.gif')
-	div#menu
-		span
-		span
-		span
-		span
-	div#bar
-		div#centerMap(onclick='moveToPosition()') 
-			img(src='img/center.svg')
 	div#map
-	script.
-		var menu = document.getElementById('menu');
-		console.log(menu);
-
-		menu.addEventListener('click', function () {
-			menu.classList.toggle('open');
-		});
