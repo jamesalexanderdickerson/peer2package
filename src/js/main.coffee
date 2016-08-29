@@ -166,9 +166,15 @@ peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', ($sc
 
   $scope.close_chat = () ->
     $scope.chat_open = false
-  $scope.submitChat = () ->
-    $scope.user.sent = $scope.user.message
-    $scope.user.message = ''
+  $scope.submitChat = (message) ->
+    socket.emit 'chat message', {
+      message: message
+    }
+    $scope.sent = message
+    $scope.message = ''
+  socket.on 'chat message', (message) ->
+    messagelist = angular.element(document.querySelector('#messages'))
+    messagelist.append('<li>' + message + '</li>')
 
 ]
 

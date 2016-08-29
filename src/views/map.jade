@@ -93,12 +93,11 @@ div(controller='mapController')
 	div#map
 	div#chat_menu
 		div#messages
-			{{user.sent}}
 		div#chat_button
 			button(ng-show='!chat_open' ng-click='open_chat()') Open Chat
 			button(ng-show='chat_open' ng-click='close_chat()') Close Chat
 			div#chat_form(ng-show='chat_open')
-				form#chatForm(ng-submit='submitChat(user)' name='chat')
+				form#chatForm(ng-submit='submitChat(message)' name='chat')
 					div.inputs
-						input#message(type='text' ng-model='user.message')
+						input#message(type='text' ng-model='message')
 						button(type='submit') Send

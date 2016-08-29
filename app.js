@@ -209,6 +209,10 @@ io.on('connection', function (socket) {
       console.log('error occured', err);
     });
   });
+  socket.on('chat message', function (message) {
+    console.log('message: ' + message.message)
+    io.emit('chat message', message.message)
+  })
   socket.on('disconnect', function () {
     console.log('A user has disconnected');
   })

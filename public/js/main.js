@@ -212,10 +212,18 @@
       $scope.close_chat = function() {
         return $scope.chat_open = false;
       };
-      return $scope.submitChat = function() {
-        $scope.user.sent = $scope.user.message;
-        return $scope.user.message = '';
+      $scope.submitChat = function(message) {
+        socket.emit('chat message', {
+          message: message
+        });
+        $scope.sent = message;
+        return $scope.message = '';
       };
+      return socket.on('chat message', function(message) {
+        var messagelist;
+        messagelist = angular.element(document.querySelector('#messages'));
+        return messagelist.append('<li>' + message + '</li>');
+      });
     }
   ]);
 
