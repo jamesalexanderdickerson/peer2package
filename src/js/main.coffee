@@ -158,6 +158,18 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
 peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', ($scope, mapService, socket) ->
   $scope.moveToPosition = () ->
     mapService.moveCenter()
+
+  $scope.chat_open = false
+
+  $scope.open_chat = () ->
+    $scope.chat_open = true
+
+  $scope.close_chat = () ->
+    $scope.chat_open = false
+  $scope.submitChat = () ->
+    $scope.user.sent = $scope.user.message
+    $scope.user.message = ''
+
 ]
 
 peer2package.service 'gpsService', ['$rootScope', '$geolocation', ($rootScope, $geolocation) ->

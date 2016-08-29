@@ -202,8 +202,19 @@
 
   peer2package.controller('mapController', [
     '$scope', 'mapService', 'socket', function($scope, mapService, socket) {
-      return $scope.moveToPosition = function() {
+      $scope.moveToPosition = function() {
         return mapService.moveCenter();
+      };
+      $scope.chat_open = false;
+      $scope.open_chat = function() {
+        return $scope.chat_open = true;
+      };
+      $scope.close_chat = function() {
+        return $scope.chat_open = false;
+      };
+      return $scope.submitChat = function() {
+        $scope.user.sent = $scope.user.message;
+        return $scope.user.message = '';
       };
     }
   ]);

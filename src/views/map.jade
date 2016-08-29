@@ -91,3 +91,14 @@ div(controller='mapController')
 	div#preloader(ng-class='{"hidden":!loading}' style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;')
 		img(src='./img/preloader.gif')
 	div#map
+	div#chat_menu
+		div#messages
+			{{user.sent}}
+		div#chat_button
+			button(ng-show='!chat_open' ng-click='open_chat()') Open Chat
+			button(ng-show='chat_open' ng-click='close_chat()') Close Chat
+			div#chat_form(ng-show='chat_open')
+				form#chatForm(ng-submit='submitChat(user)' name='chat')
+					div.inputs
+						input#message(type='text' ng-model='user.message')
+						button(type='submit') Send

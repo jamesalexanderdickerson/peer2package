@@ -164,6 +164,11 @@ div#navcontainer-login
 div#navcontainer-register
   margin-right 8px
 
+div#chat_form div.inputs > input
+  border-radius 2px
+  width 90%
+  height 44px
+
 div#navcontainer-login div.inputs
   margin 0 0 40px 0
   border-radius 2px
@@ -574,5 +579,38 @@ div.profile_data
 
 span#userName
   font-size 1.5em
+
 span#balance
   color foregroundcolor
+
+div.row
+  display flex
+  flex-direction row
+  justify-content space-around
+  align-items center
+  font-size 1.5em
+
+div#chat_menu
+  z-index 9997
+  pointer-events none
+  position absolute
+  display flex
+  flex-direction row
+  justify-content center
+  align-items center
+  bottom 50px
+  left 0
+  right 0
+
+div#chat_button
+  pointer-events all
+
+div#chat_form
+  opacity 1
+
+div#chat_form.hidden
+  opacity 0
+
+div#messages
+  width 100%
+  height 100%
