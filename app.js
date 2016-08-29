@@ -89,6 +89,7 @@ app.get('/', function (req, res) {
 
 app.post('/register', function (req, res) {
   var user = req.body;
+  uname = user.fname + ' ' + user.lname
   var hash = bcrypt.hashSync(user.pword, salt);
   user.pword = hash;
   delete user.password;
@@ -210,8 +211,8 @@ io.on('connection', function (socket) {
     });
   });
   socket.on('chat message', function (message) {
-    console.log('message: ' + message.message)
-    io.emit('chat message', message.message)
+    console.log(uname + ': ' + message.message)
+    io.emit('chat message', uname + ': ' + message.message)
   })
   socket.on('disconnect', function () {
     console.log('A user has disconnected');

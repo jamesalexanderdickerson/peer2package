@@ -173,7 +173,7 @@ peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', ($sc
     $scope.sent = message
     $scope.message = ''
   socket.on 'chat message', (message) ->
-    messagelist = angular.element(document.querySelector('#messages'))
+    messagelist = angular.element(document.querySelector('#messages > ul'))
     messagelist.append('<li>' + message + '</li>')
 
 ]

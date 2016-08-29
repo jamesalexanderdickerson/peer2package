@@ -92,7 +92,6 @@ div(controller='mapController')
 		img(src='./img/preloader.gif')
 	div#map
 	div#chat_menu
-		div#messages
 		div#chat_button
 			button(ng-show='!chat_open' ng-click='open_chat()') Open Chat
 			button(ng-show='chat_open' ng-click='close_chat()') Close Chat
@@ -101,3 +100,5 @@ div(controller='mapController')
 					div.inputs
 						input#message(type='text' ng-model='message')
 						button(type='submit') Send
+				div#messages(ng-show='chat_open')
+					ul

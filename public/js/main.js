@@ -221,7 +221,7 @@
       };
       return socket.on('chat message', function(message) {
         var messagelist;
-        messagelist = angular.element(document.querySelector('#messages'));
+        messagelist = angular.element(document.querySelector('#messages > ul'));
         return messagelist.append('<li>' + message + '</li>');
       });
     }
