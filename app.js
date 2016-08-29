@@ -107,9 +107,9 @@ app.post('/register', function (req, res) {
         uname = user.fname + ' ' + user.lname;
         res.send({
           user: {
-            email: rows[0].email,
-            fname: rows[0].fname,
-            lname: rows[0].lname
+            email: user.email,
+            fname: user.fname,
+            lname: user.lname
           },
           token: user.token
         });
