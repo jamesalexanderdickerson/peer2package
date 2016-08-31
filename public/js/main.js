@@ -59,7 +59,6 @@
           return currentUser = '';
         });
       },
-      logout: function() {},
       isLoggedIn: function() {},
       currentUser: function() {
         return currentUser;
@@ -68,7 +67,7 @@
   });
 
   peer2package.controller('menuController', [
-    '$scope', '$http', '$localStorage', 'userService', function($scope, $http, $localStorage, userService) {
+    '$scope', '$http', '$localStorage', 'userService', 'socket', function($scope, $http, $localStorage, userService, socket) {
       var arrow, btn_home, btn_logout, menu, menubox, sidenavmenu;
       $scope.message = null;
       menu = document.getElementById('menu');
@@ -107,6 +106,7 @@
         });
       };
       return $scope.logout = function() {
+        socket.disconnect();
         $scope.regForm.user = {};
         $scope.loginForm.user = {};
         menubox.classList.remove('loggedIn');
@@ -130,11 +130,11 @@
         $geolocation.getCurrentPosition({
           timeout: 60000
         }).then(function(position) {
-          var map, source, url;
+          var map, myInterval, source, url;
           longitude = position.coords.longitude;
           latitude = position.coords.latitude;
           $rootScope.myPosition = position;
-          $interval((function() {
+          myInterval = $interval((function() {
             $geolocation.getCurrentPosition({
               timeout: 60000
             }).then(function(position) {
@@ -167,12 +167,12 @@
             map.addSource('You', source);
             map.addLayer({
               "id": "You",
-              "type": "circle",
+              "type": "symbol",
               "source": "You",
-              "paint": {
-                "circle-radius": 20,
-                "circle-color": "#E65D5D"
-              }
+              "layout": {
+                "icon-image": "car"
+              },
+              "paint": {}
             });
             map.setCenter([longitude, latitude]);
             console.log(longitude + ',' + latitude);
@@ -201,7 +201,7 @@
   ]);
 
   peer2package.controller('mapController', [
-    '$scope', 'mapService', 'socket', function($scope, mapService, socket) {
+    '$scope', 'mapService', 'socket', 'userService', function($scope, mapService, socket, userService) {
       $scope.moveToPosition = function() {
         return mapService.moveCenter();
       };
@@ -327,6 +327,9 @@
             }
           });
         });
+      },
+      disconnect: function() {
+        return socket.disconnect();
       }
     };
   });

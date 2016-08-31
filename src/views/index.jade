@@ -82,6 +82,8 @@ html(lang='en')
 								div.valid
 									img(src='img/valid.svg' ng-show='regForm.user.pword == regForm.user.password && regForm.user.pword')
 									img(src='img/invalid.svg' ng-show='regForm.user.pword != regForm.user.password || !regForm.user.pword')
+							div.inputs
+								input#uploadImg(type=)
 							button(type='submit' ng-class='{ "disabled": regForm.$invalid || regForm.user.pword != regForm.user.password }' ng-disabled='regForm.$invalid') Submit
 							a.small(ng-click="menuClass=''") or login
 							div#reg_error.error

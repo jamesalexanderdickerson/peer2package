@@ -12,5 +12,6 @@ div.container(ng-controller='accountController')
 		p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius blanditiis commodi facere, necessitatibus esse ex nihil suscipit dolore in delectus, harum est quibusdam nobis vitae ad obcaecati sit. Repellat, tempora.
 		p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi corporis sunt veniam distinctio earum commodi tenetur aperiam, rem magni cum dolore facilis consequatur a natus quisquam dolorum, non, rerum dolores.
 		p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet id magni provident veritatis sequi dolores ea vel, veniam velit maiores doloribus officia sit perspiciatis earum dolorum qui alias tempora ut.
-		button(ng-click='deleteAccount(currentUser)') Delete Account
-		a(ui-sref='photoUpload') Upload Photo
+		div.buttons
+			button.account(ui-sref='photoUpload') Upload Photo
+			button.delete(ng-click='deleteAccount(currentUser)') Delete Account

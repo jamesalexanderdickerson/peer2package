@@ -388,7 +388,9 @@ div#navcontainer-login button {
   font-size: 2em;
   cursor: pointer;
 }
-div#navcontainer-register button {
+div#navcontainer-register button,
+button.account,
+button.delete {
   width: 88%;
   height: 42px;
   border-radius: 2px;
@@ -399,6 +401,15 @@ div#navcontainer-register button {
   cursor: pointer;
   -webkit-transition: 0.25s ease-in-out;
   transition: 0.25s ease-in-out;
+}
+button.account,
+button.delete {
+  width: 100%;
+  margin-bottom: 10px;
+}
+button.delete {
+  color: #de5061;
+  border-color: #de5061;
 }
 div#navcontainer-login button.disabled,
 div#navcontainer-register button.disabled {
@@ -413,11 +424,35 @@ div#navcontainer-register button.disabled:hover {
   border: 1px solid #808080;
 }
 div#navcontainer-login button:hover,
-div#navcontainer-register button:hover {
+div#navcontainer-register button:hover,
+button.account:hover {
   border-color: #fff;
   color: #fff;
   -webkit-transition: 0.25s ease-in-out;
   transition: 0.25s ease-in-out;
+}
+button.delete:hover {
+  border-color: #ff0a0a;
+  color: #ff0a0a;
+  -webkit-transition: 0.25s ease-in-out;
+  transition: 0.25s ease-in-out;
+}
+div.buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 50%;
+  height: 200px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 nav#side-nav-menu a {
   font-size: 3em;

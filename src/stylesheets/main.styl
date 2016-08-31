@@ -290,7 +290,7 @@ div#navcontainer-login button
   cursor pointer
 
 
-div#navcontainer-register button
+div#navcontainer-register button, button.account, button.delete
   width 88%
   height 42px
   border-radius 2px
@@ -300,6 +300,14 @@ div#navcontainer-register button
   font-size 1em
   cursor pointer
   transition 0.25s ease-in-out
+
+button.account, button.delete
+  width 100%
+  margin-bottom 10px
+
+button.delete
+  color #de5061
+  border-color #de5061
 
 div#navcontainer-login button.disabled, div#navcontainer-register button.disabled
   opacity 0.5
@@ -312,10 +320,23 @@ div#navcontainer-login button.disabled:hover, div#navcontainer-register button.d
   border 1px solid gray
 
 
-div#navcontainer-login button:hover, div#navcontainer-register button:hover
+div#navcontainer-login button:hover, div#navcontainer-register button:hover, button.account:hover
   border-color white
   color white
   transition 0.25s ease-in-out
+
+button.delete:hover
+  border-color rgb(255, 10, 10)
+  color rgb(255, 10, 10)
+  transition 0.25s ease-in-out
+
+div.buttons
+  display flex
+  width 50%
+  height 200px
+  flex-direction column
+  justify-content flex-start
+  align-items flex-start
 
 nav#side-nav-menu a
   font-size 3em

@@ -96,7 +96,7 @@ div(controller='mapController')
 			button(ng-show='!chat_open' ng-click='open_chat()') Open Chat
 			button(ng-show='chat_open' ng-click='close_chat()') Close Chat
 			div#chat_form(ng-show='chat_open')
-				form#chatForm(ng-submit='submitChat(message)' name='chat')
+				form#chatForm(ng-submit='submitChat(message)' name='chat' novalidate autocomplete='off')
 					div.inputs
 						input#message(type='text' ng-model='message')
 						button(type='submit') Send

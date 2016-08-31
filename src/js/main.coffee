@@ -36,7 +36,6 @@ peer2package.factory 'userService', ($http) ->
       $postedUser.then((response) ->
         currentUser = ''
       )
-    logout: () ->
 
     isLoggedIn: () ->
 
@@ -44,7 +43,7 @@ peer2package.factory 'userService', ($http) ->
       return currentUser
   }
 
-peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', 'userService', ($scope, $http, $localStorage, userService) ->
+peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', 'userService', 'socket', ($scope, $http, $localStorage, userService, socket) ->
   $scope.message = null
   menu = document.getElementById 'menu'
   arrow = document.getElementById 'arrow'
@@ -80,6 +79,7 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
       )
 
   $scope.logout = () ->
+    socket.disconnect()
     $scope.regForm.user = {}
     $scope.loginForm.user = {}
     menubox.classList.remove 'loggedIn'
@@ -102,7 +102,7 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
       longitude = position.coords.longitude
       latitude = position.coords.latitude
       $rootScope.myPosition = position
-      $interval (->
+      myInterval = $interval (->
         $geolocation.getCurrentPosition(timeout: 60000).then (position) ->
           $rootScope.myPosition = position
           longitude = position.coords.longitude
@@ -131,11 +131,12 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
         map.addSource 'You', source
         map.addLayer({
           "id": "You",
-          "type": "circle",
+          "type": "symbol",
           "source": "You",
+          "layout": {
+            "icon-image": "car",
+          }
           "paint": {
-            "circle-radius": 20,
-            "circle-color": "#E65D5D"
           }
         })
         map.setCenter([longitude, latitude])
@@ -155,7 +156,7 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
   )
 ]
 
-peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', ($scope, mapService, socket) ->
+peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', 'userService', ($scope, mapService, socket, userService) ->
   $scope.moveToPosition = () ->
     mapService.moveCenter()
 
@@ -175,7 +176,6 @@ peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', ($sc
   socket.on 'chat message', (message) ->
     messagelist = angular.element(document.querySelector('#messages > ul'))
     messagelist.append('<li>' + message + '</li>')
-
 ]
 
 peer2package.service 'gpsService', ['$rootScope', '$geolocation', ($rootScope, $geolocation) ->
@@ -266,6 +266,8 @@ peer2package.factory 'socket', ($rootScope) ->
           return
         return
       return
+    disconnect: () ->
+      socket.disconnect()
   }
 
 peer2package.directive 'menuChange', () ->

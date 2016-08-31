@@ -6,6 +6,8 @@ var app = require('express')(),
   bodyParser = require('body-parser'),
   morgan = require('morgan'),
   mysql = require('mysql'),
+  mongodb = require('mongodb'),
+  mongoose = require('mongoose'),
   session = require('express-session'),
   io = require('socket.io')(http),
   bcrypt = require('bcrypt'),
@@ -13,12 +15,18 @@ var app = require('express')(),
   jwt = require('jsonwebtoken'),
   dotenv = require('dotenv');
 
+
+// CONNECT TO ReThinkDB
   var rethinkdb = null;
   r.connect({host: 'localhost', port: 28015, db: 'peer2package'}, function (err, conn) {
     if (err) throw err;
     rethinkdb = conn;
   });
 
+// CONNECT TO MongoDB
+mongoose.connect('mongodb://localhost/peer2package');
+
+var Locations = mongoose.model('Location', {email: String, lng: Number, lat: Number});
 
 // IMPORT VARIABLES FROM .ENV FILE
 dotenv.load();
@@ -30,11 +38,14 @@ const salt = process.env.BCRYPT_SALT;
 var lng = '';
 var lat = '';
 var uname = '';
+var email = '';
+var fname = '';
+var lname = '';
+var myPosition = '';
+var generatedKeys = ''
 
 // DEFINE A PORT WE WANT TO USE
 const PORT=8000;
-var myPosition = '';
-var generatedKeys = ''
 
 // LOAD IN ENVIRONMENT VARIABLES
 const secret = process.env.JWT_SECRET;
@@ -89,7 +100,6 @@ app.get('/', function (req, res) {
 
 app.post('/register', function (req, res) {
   var user = req.body;
-  uname = user.fname + ' ' + user.lname
   var hash = bcrypt.hashSync(user.pword, salt);
   user.pword = hash;
   delete user.password;
@@ -106,6 +116,9 @@ app.post('/register', function (req, res) {
         console.log('Registration successful!');
         user.token = jwt.sign(user, process.env.JWT_SECRET);
         uname = user.fname + ' ' + user.lname;
+        email = user.email;
+        fname = user.fname;
+        lname = user.lname;
         res.send({
           user: {
             email: user.email,
@@ -132,6 +145,9 @@ app.post('/login', function (req, res) {
         console.log('User logged in successfully!');
         user.token = jwt.sign(user, process.env.JWT_SECRET);
         uname = rows[0].fname + ' ' + rows[0].lname
+        email = rows[0].email
+        fname = rows[0].fname
+        lname = rows[0].lname
         res.send({
           user: {
             id: rows[0].id,
@@ -172,6 +188,14 @@ app.get('/map', function (req, res) {
 });
 
 app.get('/other_positions', function (req, res) {
+  r.table('locations').get(generatedKeys).run(rethinkdb, function(err, result) {
+    if (err) throw err;
+    if (result) {
+      lng = result.lng;
+      lat = result.lat;
+    }
+  })
+  console.log('longitude:' + lng + ', latitude:' + lat);
 });
 
 app.get('/user_location', function (req, res) {
@@ -190,7 +214,7 @@ app.get('/user_location', function (req, res) {
     "type": "Feature",
     "properties": {
       "title": "You",
-      "description": "<style>div.profile{display:flex;width:100%;justify-content:space-between;}div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;font:20px'Helvetica Neue',Arial,Helvetica,sans-serif;border-radius:4px;margin-top:-80px;align-self:flex-start;}h1{align-self:flex-end;font-size:1.5em;}button.mapboxgl-popup-close-button {display:none;}svg{margin:0 41% 0 ;display:block;position:absolute}</style><div class='profile'><img src='../img/profile.gif' /><h1> " + uname + " </h1></div><p>This is your current location." + lng + "," + lat + "</p><br /><svg xmlns='http://www.w3.org/2000/svg' width='54.875' height='29.875' viewBox='0 0 54.875 29.875'><path fill='#1C283B' d='M.916-.333l53.81.214L26.916 30z'/></svg>"
+      "description": "<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><div class='profile'><img src='../img/profile.gif' /><span#userName> " + uname + " </h1></div>"
     }
   });
 });
@@ -212,7 +236,7 @@ io.on('connection', function (socket) {
   });
   socket.on('chat message', function (message) {
     console.log(uname + ': ' + message.message)
-    io.emit('chat message', uname + ': ' + message.message)
+    io.emit('chat message', message.message)
   })
   socket.on('disconnect', function () {
     console.log('A user has disconnected');

@@ -538,3 +538,4 @@
 2016-08-27T18:30:23.860175000 39690.236363s info: Table 4fa2fefb-9655-4301-8179-69f74ecd3de2: Starting a new Raft election for term 1.
 2016-08-27T18:30:23.861028000 39690.237214s info: Table 4fa2fefb-9655-4301-8179-69f74ecd3de2: Added replica on this server.
 2016-08-27T18:30:23.882126000 39690.258312s info: Table 4fa2fefb-9655-4301-8179-69f74ecd3de2: This server is Raft leader for term 1. Latest log index is 0.
+2016-08-30T21:32:55.824580000 172804.499436s notice: A newer version of the RethinkDB server is available: 2.3.5. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
