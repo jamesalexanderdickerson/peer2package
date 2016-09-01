@@ -25,7 +25,11 @@
     });
   });
 
-  peer2package.controller('mainController', function($scope, $localStorage) {
+  peer2package.controller('mainController', function($scope, $localStorage, mapService) {
+    $scope.killMap = function() {
+      return $scope.mapOff($scope.myInterval);
+    };
+    $scope.killMap();
     if ($localStorage.token) {
       return $scope.token = $localStorage.token;
     }
@@ -67,7 +71,7 @@
   });
 
   peer2package.controller('menuController', [
-    '$scope', '$http', '$localStorage', 'userService', 'socket', function($scope, $http, $localStorage, userService, socket) {
+    '$scope', '$http', '$localStorage', 'userService', 'socket', function($scope, $http, $localStorage, userService, socket, mapService) {
       var arrow, btn_home, btn_logout, menu, menubox, sidenavmenu;
       $scope.message = null;
       menu = document.getElementById('menu');
@@ -106,7 +110,7 @@
         });
       };
       return $scope.logout = function() {
-        socket.disconnect();
+        $scope.mapOff($scope.myInterval);
         $scope.regForm.user = {};
         $scope.loginForm.user = {};
         menubox.classList.remove('loggedIn');
@@ -122,6 +126,9 @@
   peer2package.service('mapService', [
     '$rootScope', '$geolocation', 'socket', '$interval', function($rootScope, $geolocation, socket, $interval) {
       var latitude, longitude;
+      $rootScope.mapOff = function(arg) {
+        return $interval.cancel(arg);
+      };
       $rootScope.loading = true;
       longitude = null;
       latitude = null;
@@ -130,66 +137,66 @@
         $geolocation.getCurrentPosition({
           timeout: 60000
         }).then(function(position) {
-          var map, myInterval, source, url;
+          var map, source, url;
           longitude = position.coords.longitude;
           latitude = position.coords.latitude;
           $rootScope.myPosition = position;
-          myInterval = $interval((function() {
+          $rootScope.myInterval = $interval((function() {
             $geolocation.getCurrentPosition({
               timeout: 60000
             }).then(function(position) {
+              var url, yourPosition;
               $rootScope.myPosition = position;
               longitude = position.coords.longitude;
               latitude = position.coords.latitude;
+              url = 'http://localhost:8000/user_location';
+              yourPosition = longitude + ', ' + latitude;
+              source.setData(url);
+              socket.emit('LngLat', yourPosition);
             });
           }), 1000);
-          $rootScope.$watch('myPosition.coords', function(newValue, oldValue) {
-            var url, yourPosition;
-            longitude = newValue.longitude;
-            latitude = newValue.latitude;
-            url = 'http://localhost:8000/user_location';
-            yourPosition = longitude + ', ' + latitude;
-            source.setData(url);
-            return socket.emit('LngLat', yourPosition);
-          });
           mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
-          map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
-            zoom: 19
-          });
+          if (document.getElementById('map')) {
+            map = new mapboxgl.Map({
+              container: 'map',
+              style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
+              zoom: 19
+            });
+          }
           url = 'http://localhost:8000/user_location';
           source = new mapboxgl.GeoJSONSource({
             data: url
           });
-          return map.on('load', function() {
-            $rootScope.loading = false;
-            map.addSource('You', source);
-            map.addLayer({
-              "id": "You",
-              "type": "symbol",
-              "source": "You",
-              "layout": {
-                "icon-image": "car"
-              },
-              "paint": {}
-            });
-            map.setCenter([longitude, latitude]);
-            console.log(longitude + ',' + latitude);
-            return map.on('click', function(e) {
-              var feature, features, popup;
-              features = map.queryRenderedFeatures(e.point, {
-                layers: ['You']
+          if (document.getElementById('map')) {
+            return map.on('load', function() {
+              $rootScope.loading = false;
+              map.addSource('You', source);
+              map.addLayer({
+                "id": "You",
+                "type": "symbol",
+                "source": "You",
+                "layout": {
+                  "icon-image": "car"
+                },
+                "paint": {}
               });
-              if (!features.length) {
-                return;
-              }
-              feature = features[0];
-              return popup = new mapboxgl.Popup({
-                closeButton: false
-              }).setLngLat([longitude, latitude]).setHTML(feature.properties.description).addTo(map);
+              map.setCenter([longitude, latitude]);
+              console.log(longitude + ',' + latitude);
+              return map.on('click', function(e) {
+                var feature, features, popup;
+                features = map.queryRenderedFeatures(e.point, {
+                  layers: ['You']
+                });
+                if (!features.length) {
+                  return;
+                }
+                feature = features[0];
+                return popup = new mapboxgl.Popup({
+                  closeButton: false
+                }).setLngLat([longitude, latitude]).setHTML(feature.properties.description).addTo(map);
+              });
             });
-          });
+          }
         });
         return moveCenter = function() {
           return map.flyTo({
@@ -289,7 +296,11 @@
   ]);
 
   peer2package.controller('accountController', [
-    '$scope', 'userService', '$location', function($scope, userService, $location) {
+    '$scope', 'userService', '$location', function($scope, userService, $location, mapService) {
+      $scope.killMap = function() {
+        return $scope.mapOff($scope.myInterval);
+      };
+      $scope.killMap();
       $scope.currentUser = userService.currentUser();
       $scope.name = $scope.currentUser.fname + ' ' + $scope.currentUser.lname;
       $scope.balance = 0.00;

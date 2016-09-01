@@ -26,7 +26,7 @@ var app = require('express')(),
 // CONNECT TO MongoDB
 mongoose.connect('mongodb://localhost/peer2package');
 
-var Locations = mongoose.model('Location', {email: String, lng: Number, lat: Number});
+var Location = mongoose.model('Location', {email: String, lng: Number, lat: Number});
 
 // IMPORT VARIABLES FROM .ENV FILE
 dotenv.load();
@@ -41,6 +41,7 @@ var uname = '';
 var email = '';
 var fname = '';
 var lname = '';
+var location = null;
 var myPosition = '';
 var generatedKeys = ''
 
@@ -206,6 +207,7 @@ app.get('/user_location', function (req, res) {
       lat = result.lat;
     }
   })
+
   res.send({
     "geometry": {
       "type": "Point",

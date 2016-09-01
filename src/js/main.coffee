@@ -9,7 +9,10 @@ peer2package.config ($stateProvider, $urlRouterProvider) ->
     .state 'photoUpload', {templateUrl: 'photo_upload.html', controller: 'photoController'}
     .state 'gps', {templateUrl: 'gps.html', controller: 'gpsController'}
 
-peer2package.controller 'mainController', ($scope, $localStorage) ->
+peer2package.controller 'mainController', ($scope, $localStorage, mapService) ->
+  $scope.killMap = () ->
+    $scope.mapOff($scope.myInterval)
+  $scope.killMap()
   if $localStorage.token
     $scope.token = $localStorage.token
 
@@ -43,7 +46,7 @@ peer2package.factory 'userService', ($http) ->
       return currentUser
   }
 
-peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', 'userService', 'socket', ($scope, $http, $localStorage, userService, socket) ->
+peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', 'userService', 'socket', ($scope, $http, $localStorage, userService, socket, mapService) ->
   $scope.message = null
   menu = document.getElementById 'menu'
   arrow = document.getElementById 'arrow'
@@ -79,7 +82,7 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
       )
 
   $scope.logout = () ->
-    socket.disconnect()
+    $scope.mapOff($scope.myInterval)
     $scope.regForm.user = {}
     $scope.loginForm.user = {}
     menubox.classList.remove 'loggedIn'
@@ -91,6 +94,9 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
 ]
 
 peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$interval', ($rootScope, $geolocation, socket, $interval) ->
+  $rootScope.mapOff = (arg) ->
+    $interval.cancel(arg)
+
   $rootScope.loading = true
   longitude = null
   latitude = null
@@ -102,51 +108,61 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
       longitude = position.coords.longitude
       latitude = position.coords.latitude
       $rootScope.myPosition = position
-      myInterval = $interval (->
+      $rootScope.myInterval = $interval (->
         $geolocation.getCurrentPosition(timeout: 60000).then (position) ->
           $rootScope.myPosition = position
           longitude = position.coords.longitude
           latitude = position.coords.latitude
+          url = 'http://localhost:8000/user_location'
+          # url2 = 'http://localhost:8000/other_positions'
+          yourPosition = longitude + ', ' + latitude
+          source.setData(url)
+          # source2.setData(url2)
+          socket.emit 'LngLat', yourPosition
           return
         return
       ), 1000
-      $rootScope.$watch('myPosition.coords', (newValue, oldValue) ->
-        longitude = newValue.longitude
-        latitude = newValue.latitude
-        url = 'http://localhost:8000/user_location'
-        yourPosition = longitude + ', ' + latitude
-        source.setData(url)
-        socket.emit 'LngLat', yourPosition
-      )
       mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw'
       map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
         zoom: 19
-      })
+      }) if document.getElementById 'map'
       url = 'http://localhost:8000/user_location'
+      # url2 = 'http://localhost:8000/other_positions'
       source = new mapboxgl.GeoJSONSource {data:url}
-      map.on 'load', () ->
-        $rootScope.loading = false
-        map.addSource 'You', source
-        map.addLayer({
-          "id": "You",
-          "type": "symbol",
-          "source": "You",
-          "layout": {
-            "icon-image": "car",
-          }
-          "paint": {
-          }
-        })
-        map.setCenter([longitude, latitude])
-        console.log(longitude + ',' + latitude)
-        map.on 'click', (e) ->
-          features = map.queryRenderedFeatures e.point, {layers:['You']}
-          if (!features.length)
-            return
-          feature = features[0]
-          popup = new mapboxgl.Popup({closeButton:false}).setLngLat([longitude, latitude]).setHTML(feature.properties.description).addTo(map)
+      # source2 = new mapboxgl.GeoJSONSource {data:url2}
+      if document.getElementById 'map'
+        map.on 'load', () ->
+          $rootScope.loading = false
+          map.addSource 'You', source
+          # map.addSource 'Others', source2
+          map.addLayer({
+            "id": "You",
+            "type": "symbol",
+            "source": "You",
+            "layout": {
+              "icon-image": "car",
+            },
+            "paint": {}
+          })
+          # map.addLayer({
+          #   "id": "Others",
+          #   "type": "symbol",
+          #   "source": "Others",
+          #   "layout": {
+          #     "icon-image": "packages",
+          #   },
+          #   "paint": {}
+          #   })
+          map.setCenter([longitude, latitude])
+          console.log(longitude + ',' + latitude)
+          map.on 'click', (e) ->
+            features = map.queryRenderedFeatures e.point, {layers:['You']}
+            if (!features.length)
+              return
+            feature = features[0]
+            popup = new mapboxgl.Popup({closeButton:false}).setLngLat([longitude, latitude]).setHTML(feature.properties.description).addTo(map)
 
 
     moveCenter = () ->
@@ -232,7 +248,10 @@ peer2package.directive 'loading', ['$http', '$rootScope', ($http, $rootScope) ->
 ]
 
 
-peer2package.controller 'accountController', ['$scope', 'userService', '$location', ($scope, userService, $location) ->
+peer2package.controller 'accountController', ['$scope', 'userService', '$location', ($scope, userService, $location, mapService) ->
+  $scope.killMap = () ->
+    $scope.mapOff($scope.myInterval)
+  $scope.killMap()
   $scope.currentUser = userService.currentUser()
   $scope.name = $scope.currentUser.fname + ' ' + $scope.currentUser.lname
   $scope.balance = 0.00
