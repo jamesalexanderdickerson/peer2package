@@ -1,0 +1,1 @@
+(function(){var n;n=angular.module("peer2package"),n.factory("socket",function(n){var c;return c=io.connect(),{on:function(t,o){c.on(t,function(){var t;t=arguments,n.$apply(function(){o.apply(c,t)})})},emit:function(t,o,i){c.emit(t,o,function(){var t;t=arguments,n.$apply(function(){i&&i.apply(c,t)})})},disconnect:function(){return c.disconnect()}}})}).call(this);

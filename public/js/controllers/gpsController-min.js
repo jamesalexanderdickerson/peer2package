@@ -1,0 +1,1 @@
+(function(){var e;e=angular.module("peer2package"),e.controller("gpsController",["$scope","gpsService",function(e,l){}])}).call(this);

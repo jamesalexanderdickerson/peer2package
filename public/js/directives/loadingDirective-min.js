@@ -1,0 +1,1 @@
+(function(){var n;n=angular.module("peer2package"),n.directive("loading",["$http","$rootScope",function(n,e){return{restrict:"A",link:function(e,t,i){return e.isLoading=function(){return n.pendingRequests.length>0},e.$watch(e.isLoading,function(n){return n?t.removeClass("hidden"):t.addClass("hidden")})}}}])}).call(this);

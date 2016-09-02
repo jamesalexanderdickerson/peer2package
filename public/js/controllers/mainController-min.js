@@ -1,0 +1,1 @@
+(function(){var n;n=angular.module("peer2package"),n.controller("mainController",function(n,l,e){if(n.killMap=function(){return n.mapOff(n.myInterval)},n.killMap(),l.token)return n.token=l.token})}).call(this);

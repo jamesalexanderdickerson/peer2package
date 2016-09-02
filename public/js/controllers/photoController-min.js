@@ -1,0 +1,1 @@
+(function(){var o;o=angular.module("peer2package"),o.controller("photoController",function(o){})}).call(this);
