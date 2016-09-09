@@ -23,6 +23,7 @@
     "socket.io-client": "^1.4.8",
     "angular-animate": "^1.5.8",
     "ngstorage": "^0.3.11",
-    "ngGeolocation": "^0.0.8"
+    "ngGeolocation": "^0.0.8",
+    "jwt-decode": "^2.1.0"
   }
 }

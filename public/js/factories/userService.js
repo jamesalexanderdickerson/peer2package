@@ -3,7 +3,7 @@
 
   peer2package = angular.module('peer2package');
 
-  peer2package.factory('userService', function($http) {
+  peer2package.factory('userService', function($http, $localStorage) {
     var currentUser;
     currentUser = {};
     return {
@@ -11,7 +11,8 @@
         var $postedUser;
         $postedUser = $http.post('/login', user);
         $postedUser.then(function(response) {
-          return currentUser = response.data.user;
+          $localStorage.token = response.data.token;
+          return currentUser = jwt_decode($localStorage.token);
         });
         return $postedUser;
       },
@@ -19,7 +20,8 @@
         var $postedUser;
         $postedUser = $http.post('/register', user);
         $postedUser.then(function(response) {
-          return currentUser = response.data.user;
+          $localStorage.token = response.data.token;
+          return currentUser = jwt_decode($localStorage.token);
         });
         return $postedUser;
       },
@@ -29,6 +31,9 @@
         return $postedUser.then(function(response) {
           return currentUser = '';
         });
+      },
+      logout: function() {
+        return currentUser = '';
       },
       isLoggedIn: function() {},
       currentUser: function() {

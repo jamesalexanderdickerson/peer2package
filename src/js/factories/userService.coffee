@@ -1,18 +1,20 @@
 peer2package = angular.module 'peer2package'
-peer2package.factory 'userService', ($http) ->
+peer2package.factory 'userService', ($http, $localStorage) ->
   currentUser = {}
   return {
     login: (user) ->
       $postedUser = $http.post('/login', user)
       $postedUser.then((response) ->
-        currentUser = response.data.user
+        $localStorage.token = response.data.token
+        currentUser = jwt_decode($localStorage.token)
       )
       return $postedUser
 
     register: (user) ->
       $postedUser = $http.post('/register', user)
       $postedUser.then((response) ->
-        currentUser = response.data.user
+        $localStorage.token = response.data.token
+        currentUser = jwt_decode($localStorage.token)
       )
       return $postedUser
 
@@ -22,6 +24,8 @@ peer2package.factory 'userService', ($http) ->
         currentUser = ''
       )
 
+    logout: () ->
+      currentUser = ''
     isLoggedIn: () ->
 
     currentUser: () ->

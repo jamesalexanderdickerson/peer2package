@@ -13,13 +13,14 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
 
   $scope.submitReg = (user) ->
     userService.register(user).then((response) ->
+      console.log user
       btn_home.classList.add 'active'
-      arrow.classList.remove 'logoout'
+      arrow.classList.remove 'logout'
       btn_logout.classList.remove 'active'
-      $scope.token = response.data.token || null
       $scope.messageReg = response.data.message
-      if (response.data.token)
-        $localStorage.token = response.data.token
+      if (response.data)
+        $scope.token = response.data.token || null
+        $localStorage.token = response.data.token || null
         $scope.loggedIn()
       )
   $scope.submitLog = (user) ->
@@ -27,14 +28,16 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
       btn_home.classList.add 'active'
       arrow.classList.remove 'logout'
       btn_logout.classList.remove 'active'
-      $scope.token = response.data.token || null
       $scope.messageLog = response.data.message
-      if (response.data.token)
-        $localStorage.token = response.data.token
+      if (response.data)
+        $scope.token = response.data.token || null
+        $localStorage.token = response.data.token || null
         $scope.loggedIn()
       )
 
   $scope.logout = () ->
+    $scope.token = ''
+    userService.logout()
     $scope.mapOff($scope.myInterval)
     $scope.regForm.user = {}
     $scope.loginForm.user = {}

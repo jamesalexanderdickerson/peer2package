@@ -18,13 +18,14 @@
       };
       $scope.submitReg = function(user) {
         return userService.register(user).then(function(response) {
+          console.log(user);
           btn_home.classList.add('active');
-          arrow.classList.remove('logoout');
+          arrow.classList.remove('logout');
           btn_logout.classList.remove('active');
-          $scope.token = response.data.token || null;
           $scope.messageReg = response.data.message;
-          if (response.data.token) {
-            $localStorage.token = response.data.token;
+          if (response.data) {
+            $scope.token = response.data.token || null;
+            $localStorage.token = response.data.token || null;
             return $scope.loggedIn();
           }
         });
@@ -34,15 +35,17 @@
           btn_home.classList.add('active');
           arrow.classList.remove('logout');
           btn_logout.classList.remove('active');
-          $scope.token = response.data.token || null;
           $scope.messageLog = response.data.message;
-          if (response.data.token) {
-            $localStorage.token = response.data.token;
+          if (response.data) {
+            $scope.token = response.data.token || null;
+            $localStorage.token = response.data.token || null;
             return $scope.loggedIn();
           }
         });
       };
       return $scope.logout = function() {
+        $scope.token = '';
+        userService.logout();
         $scope.mapOff($scope.myInterval);
         $scope.regForm.user = {};
         $scope.loginForm.user = {};
