@@ -50,7 +50,6 @@ router.get('/', function(req, res) {
           user.email = rows[0].email
           user.fname = rows[0].fname
           user.lname = rows[0].lname
-          user.pword = rows[0].pword
           user.token = jwt.sign(user, process.env.JWT_SECRET);
           res.locals.user = user;
           console.log(user)
@@ -87,6 +86,7 @@ router.post('/register', function (req, res) {
       var newQuery = 'INSERT INTO users (email, fname, lname, pword) VALUES ("'+user.email+'","'+user.fname+'","'+user.lname+'","'+user.pword+'");';
       connection.query(newQuery, function(err, rows) {
         console.log('Registration successful!');
+        delete user.pword;
         user.token = jwt.sign(user, process.env.JWT_SECRET);
         req.session.user = user;
         uname = user.fname + ' ' + user.lname;

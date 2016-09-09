@@ -14,8 +14,12 @@
       menubox = document.getElementById('menubox');
       sidenavmenu = document.getElementById('side-nav-menu');
       $scope.loggedIn = function() {
-        return menubox.classList.add('loggedIn');
+        menubox.classList.add('loggedIn');
+        return userService.currentUser();
       };
+      if ($localStorage.token) {
+        $scope.loggedIn();
+      }
       $scope.submitReg = function(user) {
         return userService.register(user).then(function(response) {
           console.log(user);

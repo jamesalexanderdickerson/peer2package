@@ -10,6 +10,10 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
 
   $scope.loggedIn = () ->
     menubox.classList.add 'loggedIn'
+    userService.currentUser()
+
+  if ($localStorage.token)
+    $scope.loggedIn()
 
   $scope.submitReg = (user) ->
     userService.register(user).then((response) ->

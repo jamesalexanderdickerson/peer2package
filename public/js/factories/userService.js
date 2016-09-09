@@ -37,6 +37,7 @@
       },
       isLoggedIn: function() {},
       currentUser: function() {
+        currentUser = jwt_decode($localStorage.token);
         return currentUser;
       }
     };
