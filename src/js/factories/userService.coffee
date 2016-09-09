@@ -21,7 +21,7 @@ peer2package.factory 'userService', ($http, $localStorage) ->
     delete: (user) ->
       $postedUser = $http.post('/delete', user)
       $postedUser.then((response) ->
-        currentUser = ''
+        $localStorage.$reset()
       )
 
     logout: () ->

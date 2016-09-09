@@ -3,30 +3,26 @@ var app = require('express')(),
   express = require('express'),
   flash = require('connect-flash'),
   http = require('http').Server(app),
+  io = require('socket.io')(http),
   bodyParser = require('body-parser'),
   logger = require('morgan'),
-  mongodb = require('mongodb'),
-  mongoose = require('mongoose'),
   session = require('express-session'),
   RedisStore = require('connect-redis')(session),
-  io = require('socket.io')(http),
   bcrypt = require('bcrypt'),
   r = require('rethinkdb'),
+  mysql = require('mysql'),
+  connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : '',
+    database : 'peer2package'
+  }),
+
+  mongodb = require('mongodb'),
+  mongoose = require('mongoose'),
   jwt = require('jsonwebtoken'),
-  routes = require('./routes'),
   dotenv = require('dotenv');
 
-  // CONNECT TO ReThinkDB
-    var rethinkdb = null;
-    r.connect({host: 'localhost', port: 28015, db: 'peer2package'}, function (err, conn) {
-      if (err) throw err;
-      rethinkdb = conn;
-    });
-
-  // CONNECT TO MongoDB
-  mongoose.connect('mongodb://localhost/peer2package');
-
-  var Locations = mongoose.model('Location', {email: String, lng: Number, lat: Number});
 
   // IMPORT VARIABLES FROM .ENV FILE
   dotenv.load();
@@ -37,10 +33,8 @@ var app = require('express')(),
 
   var lng = '';
   var lat = '';
-  var uname = '';
-  var email = '';
-  var fname = '';
-  var lname = '';
+  var user = {};
+  var uname = user.fname + ' ' + user.lname
   var myPosition = '';
   var generatedKeys = ''
 
@@ -49,6 +43,21 @@ const PORT=8000;
 
 // LOAD IN ENVIRONMENT VARIABLES
 const secret = process.env.JWT_SECRET;
+
+// CONNECT TO MongoDB
+mongoose.connect('mongodb://localhost/peer2package');
+var LocationSchema = mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  lng: String,
+  lat: String
+});
+var Location = mongoose.model('Location', LocationSchema);
+var db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('mongoose connection established')
+})
+
 
 // CONFIGURE APP
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,39 +81,125 @@ app.use(session({
 }));
 app.use(logger('dev'));
 
-function ensureAuthorized(req, res, next) {
-  var bearerToken
-  var bearerHeader = req.headers["authorization"]
-  if (typeof bearerHeader !== 'undefined') {
-    var bearer = bearerHeader.split(" ")
-    bearerToken = bearer[1]
-    req.token = bearerToken
-    next()
-  } else {
-    res.send(403)
-  }
-}
+// CONFIGURE ROUTES
+app.get('/', function(req, res) {
+    res.sendFile('index.html');
+});
 
-app.use(logger('dev'));
-app.use('/', routes);
+app.post('/register', function (req, res) {
+  user.email = req.body.email;
+  user.fname = req.body.fname;
+  user.lname = req.body.lname;
+  user.pword = bcrypt.hashSync(req.body.password, salt);
+  var insertQuery = 'SELECT * FROM users WHERE email="'+user.email+'";';
+  connection.query(insertQuery, function(err, rows) {
+    if (err) {
+      res.send(err);
+    }
+    if (rows.length) {
+        res.send({message: 'That email is already in use!'});
+    } else {
+      var newQuery = 'INSERT INTO users (email, fname, lname, pword) VALUES ("'+user.email+'","'+user.fname+'","'+user.lname+'","'+user.pword+'");';
+      connection.query(newQuery, function(err, rows) {
+        delete user.pword;
+        user.token = jwt.sign(user, process.env.JWT_SECRET);
+        req.session.user = user;
+        uname = user.fname + ' ' + user.lname;
+        email = user.email;
+        fname = user.fname;
+        lname = user.lname;
+        res.send({token: user.token});
+      })
+    }
+  })
+});
+
+app.post('/login', function (req, res) {
+  console.log(req.session);
+  var testUser = req.body
+  var hash = bcrypt.hashSync(testUser.password, salt);
+  testUser.password = hash;
+  var insertQuery = 'SELECT * FROM users WHERE email="'+testUser.email+'";';
+  connection.query(insertQuery, function(err, rows) {
+    if (err) throw err;
+    if (rows.length) {
+      if (rows[0].pword === testUser.password) {
+        user.email = rows[0].email
+        user.fname = rows[0].fname
+        user.lname = rows[0].lname
+        user.pword = rows[0].pword
+        user.token = jwt.sign(user, process.env.JWT_SECRET);
+        req.session.user = user
+        res.send({token: user.token});
+      } else {
+        res.send({message: 'The password is incorrect!'})
+      }
+    } else {
+      res.send({message: 'That email does not exist.'})
+    }
+  })
+});
+
+app.get('/logout', function(req, res) {
+  req.session.destroy();
+  res.redirect('/');
+})
+
+app.post('/delete', function (req, res) {
+  var user = req.body
+  var insertQuery = 'DELETE FROM users WHERE id="' + user.id + '";'
+  connection.query(insertQuery, function (err, rows) {
+    if (err) throw err;
+    if (rows.length) {
+      res.send({
+        message: 'User deleted.'
+      })
+    }
+  })
+});
+
+
+app.get('/map', function (req, res) {
+  res.sendFile(__dirname + '/public/map.html');
+});
+
+app.get('/other_positions', function (req, res) {
+});
+
+app.get('/user_location', function (req, res) {
+  Location.find({email: email}, function(err, location) {
+    if(err) throw err;
+    console.log(location);
+  });
+
+  res.send({
+    "geometry": {
+      "type": "Point",
+      "coordinates": [ lng, lat ]
+    },
+    "type": "Feature",
+    "properties": {
+      "title": "You",
+      "description": "<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><div class='profile'><img src='../img/profile.gif' /><span#userName> " + uname + " </h1></div>"
+    }
+  });
+});
+
 
 // SOCKET.IO
 io.on('connection', function (socket) {
   console.log('A user has connected');
   socket.on('LngLat', function (yourPosition) {
     myPosition = yourPosition.split(',');
-    r.table('locations').insert({
-        lng: myPosition[0],
-        lat: myPosition[1]
-    }).run(rethinkdb).then(function (response) {
-      var genKey = JSON.stringify(response.generated_keys).replace(/[[\]]/g,'');
-      generatedKeys = genKey.replace(/"/g, '');
-    }).error(function (err) {
-      console.log('error occured', err);
+    console.log(myPosition)
+    email = myPosition[0];
+    lng = myPosition[1];
+    lat = myPosition[2];
+    Location.findOneAndUpdate({email: email}, {lng: lng, lat: lat}, {upsert: true}, function (err, location) {
+      console.log('location updated');
     });
   });
   socket.on('chat message', function (message) {
-    console.log(uname + ': ' + message.message)
     io.emit('chat message', message.message)
   })
   socket.on('disconnect', function () {

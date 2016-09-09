@@ -4,8 +4,9 @@
   peer2package = angular.module('peer2package');
 
   peer2package.service('mapService', [
-    '$rootScope', '$geolocation', 'socket', '$interval', function($rootScope, $geolocation, socket, $interval) {
-      var latitude, longitude;
+    '$rootScope', '$geolocation', 'socket', '$interval', 'userService', function($rootScope, $geolocation, socket, $interval, userService) {
+      var currentUser, latitude, longitude;
+      currentUser = userService.currentUser();
       $rootScope.mapOff = function(arg) {
         return $interval.cancel(arg);
       };
@@ -30,9 +31,9 @@
               longitude = position.coords.longitude;
               latitude = position.coords.latitude;
               url = 'http://localhost:8000/user_location';
-              yourPosition = longitude + ', ' + latitude;
-              source.setData(url);
+              yourPosition = currentUser.email + ', ' + longitude + ', ' + latitude;
               socket.emit('LngLat', yourPosition);
+              source.setData(url);
             });
           }), 1000);
           mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';

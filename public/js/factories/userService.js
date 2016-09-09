@@ -29,7 +29,7 @@
         var $postedUser;
         $postedUser = $http.post('/delete', user);
         return $postedUser.then(function(response) {
-          return currentUser = '';
+          return $localStorage.$reset();
         });
       },
       logout: function() {

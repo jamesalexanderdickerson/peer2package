@@ -1,5 +1,6 @@
 peer2package = angular.module 'peer2package'
-peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$interval', ($rootScope, $geolocation, socket, $interval) ->
+peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$interval', 'userService', ($rootScope, $geolocation, socket, $interval, userService) ->
+  currentUser = userService.currentUser()
   $rootScope.mapOff = (arg) ->
     $interval.cancel(arg)
 
@@ -21,10 +22,10 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
           latitude = position.coords.latitude
           url = 'http://localhost:8000/user_location'
           # url2 = 'http://localhost:8000/other_positions'
-          yourPosition = longitude + ', ' + latitude
+          yourPosition = currentUser.email + ', ' + longitude + ', ' + latitude
+          socket.emit 'LngLat', yourPosition
           source.setData(url)
           # source2.setData(url2)
-          socket.emit 'LngLat', yourPosition
           return
         return
       ), 1000
