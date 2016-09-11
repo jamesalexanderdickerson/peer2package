@@ -1,6 +1,5 @@
 peer2package = angular.module 'peer2package'
 peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$interval', 'userService', ($rootScope, $geolocation, socket, $interval, userService) ->
-  currentUser = userService.currentUser()
   $rootScope.mapOff = (arg) ->
     $interval.cancel(arg)
 
@@ -18,14 +17,15 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
       $rootScope.myInterval = $interval (->
         $geolocation.getCurrentPosition(timeout: 60000).then (position) ->
           $rootScope.myPosition = position
+          currentUser = userService.currentUser()
           longitude = position.coords.longitude
           latitude = position.coords.latitude
           url = 'http://localhost:8000/user_location'
-          # url2 = 'http://localhost:8000/other_positions'
+          url2 = 'http://localhost:8000/other_positions/'
           yourPosition = currentUser.email + ', ' + longitude + ', ' + latitude
           socket.emit 'LngLat', yourPosition
           source.setData(url)
-          # source2.setData(url2)
+          source2.setData(url2)
           return
         return
       ), 1000
@@ -36,14 +36,14 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
         zoom: 19
       }) if document.getElementById 'map'
       url = 'http://localhost:8000/user_location'
-      # url2 = 'http://localhost:8000/other_positions'
+      url2 = 'http://localhost:8000/other_positions'
       source = new mapboxgl.GeoJSONSource {data:url}
-      # source2 = new mapboxgl.GeoJSONSource {data:url2}
+      source2 = new mapboxgl.GeoJSONSource {data:url2}
       if document.getElementById 'map'
         map.on 'load', () ->
           $rootScope.loading = false
           map.addSource 'You', source
-          # map.addSource 'Others', source2
+          map.addSource 'Others', source2
           map.addLayer({
             "id": "You",
             "type": "symbol",
@@ -53,15 +53,15 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
             },
             "paint": {}
           })
-          # map.addLayer({
-          #   "id": "Others",
-          #   "type": "symbol",
-          #   "source": "Others",
-          #   "layout": {
-          #     "icon-image": "packages",
-          #   },
-          #   "paint": {}
-          #   })
+          map.addLayer({
+            "id": "Others",
+            "type": "symbol",
+            "source": "Others",
+            "layout": {
+              "icon-image": "car2",
+            },
+            "paint": {}
+            })
           map.setCenter([longitude, latitude])
           console.log(longitude + ',' + latitude)
           map.on 'click', (e) ->

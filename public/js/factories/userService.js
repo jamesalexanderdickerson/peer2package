@@ -37,7 +37,11 @@
       },
       isLoggedIn: function() {},
       currentUser: function() {
-        currentUser = jwt_decode($localStorage.token);
+        if ($localStorage.token) {
+          currentUser = jwt_decode($localStorage.token);
+        } else {
+          currentUser = '';
+        }
         return currentUser;
       }
     };

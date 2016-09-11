@@ -35,6 +35,7 @@ var app = require('express')(),
   var lat = '';
   var user = {};
   var uname = user.fname + ' ' + user.lname
+  var email = '';
   var myPosition = '';
   var generatedKeys = ''
 
@@ -81,6 +82,7 @@ app.use(session({
 }));
 app.use(logger('dev'));
 
+
 // CONFIGURE ROUTES
 app.get('/', function(req, res) {
     res.sendFile('index.html');
@@ -115,7 +117,6 @@ app.post('/register', function (req, res) {
 });
 
 app.post('/login', function (req, res) {
-  console.log(req.session);
   var testUser = req.body
   var hash = bcrypt.hashSync(testUser.password, salt);
   testUser.password = hash;
@@ -164,13 +165,31 @@ app.get('/map', function (req, res) {
 });
 
 app.get('/other_positions', function (req, res) {
+
+  Location.find({email: {$ne: email}}, function(err, location) {
+    if (err) throw err;
+    var locations = [];
+    locations.push(JSON.parse(JSON.stringify(location)));
+    locations = locations[0];
+    var points = '{"type":"FeatureCollection","features":[';
+    var json = '';
+    for (i = 0; i < locations.length; i++) {
+      json += '{"type":"Feature","geometry":{"type":"Point","coordinates":[' + locations[i].lng + ',' + locations[i].lat + ']},"type":"Feature","properties":{"title":"A Person","description":"HTML GOES HERE"}}';
+      if (i < locations.length -1) {
+        json += ','
+      }
+      points += json
+    }
+    points += ']}'
+    points = JSON.parse(points);
+    console.log(points);
+    res.send(points)
+  });
+
+  // console.log(points)
 });
 
 app.get('/user_location', function (req, res) {
-  Location.find({email: email}, function(err, location) {
-    if(err) throw err;
-    console.log(location);
-  });
 
   res.send({
     "geometry": {
@@ -180,7 +199,7 @@ app.get('/user_location', function (req, res) {
     "type": "Feature",
     "properties": {
       "title": "You",
-      "description": "<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><div class='profile'><img src='../img/profile.gif' /><span#userName> " + uname + " </h1></div>"
+      "description": "<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><div class='profile'><img src='../img/profile.gif' /><span#userName> " + uname + " </div>"
     }
   });
 });
@@ -191,13 +210,16 @@ io.on('connection', function (socket) {
   console.log('A user has connected');
   socket.on('LngLat', function (yourPosition) {
     myPosition = yourPosition.split(',');
-    console.log(myPosition)
     email = myPosition[0];
     lng = myPosition[1];
     lat = myPosition[2];
-    Location.findOneAndUpdate({email: email}, {lng: lng, lat: lat}, {upsert: true}, function (err, location) {
-      console.log('location updated');
-    });
+    if (email) {
+      Location.findOneAndUpdate({email: email}, {lng: lng, lat: lat}, {upsert: true}, function (err, location) {
+        if(err) throw err;
+        console.log('location updated');
+      });
+    }
+
   });
   socket.on('chat message', function (message) {
     io.emit('chat message', message.message)

@@ -29,6 +29,9 @@ peer2package.factory 'userService', ($http, $localStorage) ->
     isLoggedIn: () ->
 
     currentUser: () ->
-      currentUser = jwt_decode($localStorage.token)
+      if ($localStorage.token)
+        currentUser = jwt_decode($localStorage.token)
+      else
+        currentUser = ''
       return currentUser
   }
