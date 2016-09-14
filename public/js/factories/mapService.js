@@ -4,7 +4,7 @@
   peer2package = angular.module('peer2package');
 
   peer2package.service('mapService', [
-    '$rootScope', '$geolocation', 'socket', '$interval', 'userService', function($rootScope, $geolocation, socket, $interval, userService) {
+    '$rootScope', '$geolocation', 'socket', '$interval', 'userService', '$http', function($rootScope, $geolocation, socket, $interval, userService, $http) {
       var latitude, longitude;
       $rootScope.mapOff = function(arg) {
         return $interval.cancel(arg);
@@ -17,7 +17,7 @@
         $geolocation.getCurrentPosition({
           timeout: 60000
         }).then(function(position) {
-          var map, source, source2, url, url2;
+          var geojson, map, url;
           longitude = position.coords.longitude;
           latitude = position.coords.latitude;
           $rootScope.myPosition = position;
@@ -25,17 +25,14 @@
             $geolocation.getCurrentPosition({
               timeout: 60000
             }).then(function(position) {
-              var currentUser, url, url2, yourPosition;
+              var currentUser, url, yourPosition;
               $rootScope.myPosition = position;
               currentUser = userService.currentUser();
               longitude = position.coords.longitude;
               latitude = position.coords.latitude;
-              url = 'http://localhost:8000/user_location';
-              url2 = 'http://localhost:8000/other_positions/';
+              url = 'http://localhost:8000/locations';
               yourPosition = currentUser.email + ', ' + longitude + ', ' + latitude;
               socket.emit('LngLat', yourPosition);
-              source.setData(url);
-              source2.setData(url2);
             });
           }), 1000);
           mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXNhZGlja2Vyc29uIiwiYSI6ImNpbmNidGJqMzBwYzZ2OGtxbXljY3FrNGwifQ.5pIvQjtuO31x4OZm84xycw';
@@ -46,43 +43,33 @@
               zoom: 19
             });
           }
-          url = 'http://localhost:8000/user_location';
-          url2 = 'http://localhost:8000/other_positions';
-          source = new mapboxgl.GeoJSONSource({
-            data: url
-          });
-          source2 = new mapboxgl.GeoJSONSource({
-            data: url2
+          url = 'http://localhost:8000/locations';
+          geojson = null;
+          $http.get(url).then(function(response) {
+            geojson = response.data;
+            return console.log(geojson);
           });
           if (document.getElementById('map')) {
             return map.on('load', function() {
               $rootScope.loading = false;
-              map.addSource('You', source);
-              map.addSource('Others', source2);
-              map.addLayer({
-                "id": "You",
-                "type": "symbol",
-                "source": "You",
-                "layout": {
-                  "icon-image": "car"
-                },
-                "paint": {}
+              map.addSource('Locations', {
+                "type": 'geojson',
+                "data": geojson
               });
               map.addLayer({
-                "id": "Others",
+                "id": "Locations",
                 "type": "symbol",
-                "source": "Others",
+                "source": "Locations",
                 "layout": {
-                  "icon-image": "car2"
+                  "icon-image": "{icon}"
                 },
                 "paint": {}
               });
               map.setCenter([longitude, latitude]);
-              console.log(longitude + ',' + latitude);
               return map.on('click', function(e) {
                 var feature, features, popup;
                 features = map.queryRenderedFeatures(e.point, {
-                  layers: ['You']
+                  layers: ['Locations']
                 });
                 if (!features.length) {
                   return;

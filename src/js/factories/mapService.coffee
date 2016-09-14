@@ -1,5 +1,5 @@
 peer2package = angular.module 'peer2package'
-peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$interval', 'userService', ($rootScope, $geolocation, socket, $interval, userService) ->
+peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$interval', 'userService', '$http', ($rootScope, $geolocation, socket, $interval, userService, $http) ->
   $rootScope.mapOff = (arg) ->
     $interval.cancel(arg)
 
@@ -20,12 +20,10 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
           currentUser = userService.currentUser()
           longitude = position.coords.longitude
           latitude = position.coords.latitude
-          url = 'http://localhost:8000/user_location'
-          url2 = 'http://localhost:8000/other_positions/'
+          url = 'http://localhost:8000/locations'
           yourPosition = currentUser.email + ', ' + longitude + ', ' + latitude
           socket.emit 'LngLat', yourPosition
-          source.setData(url)
-          source2.setData(url2)
+          # source.setData(url)
           return
         return
       ), 1000
@@ -35,37 +33,32 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
         style: 'mapbox://styles/jamesadickerson/ciq1h3u9r0009b1lx99e6eujf',
         zoom: 19
       }) if document.getElementById 'map'
-      url = 'http://localhost:8000/user_location'
-      url2 = 'http://localhost:8000/other_positions'
-      source = new mapboxgl.GeoJSONSource {data:url}
-      source2 = new mapboxgl.GeoJSONSource {data:url2}
+      url = 'http://localhost:8000/locations'
+      geojson = null
+      $http.get(url).then((response) ->
+        geojson = response.data
+        console.log geojson
+      )
+      # source = new mapboxgl.GeoJSONSource {data:url}
       if document.getElementById 'map'
         map.on 'load', () ->
           $rootScope.loading = false
-          map.addSource 'You', source
-          map.addSource 'Others', source2
+          map.addSource 'Locations', {
+            "type": 'geojson',
+            "data": geojson
+          }
           map.addLayer({
-            "id": "You",
+            "id": "Locations",
             "type": "symbol",
-            "source": "You",
+            "source": "Locations",
             "layout": {
-              "icon-image": "car",
+              "icon-image": "{icon}",
             },
             "paint": {}
           })
-          map.addLayer({
-            "id": "Others",
-            "type": "symbol",
-            "source": "Others",
-            "layout": {
-              "icon-image": "car2",
-            },
-            "paint": {}
-            })
           map.setCenter([longitude, latitude])
-          console.log(longitude + ',' + latitude)
           map.on 'click', (e) ->
-            features = map.queryRenderedFeatures e.point, {layers:['You']}
+            features = map.queryRenderedFeatures e.point, {layers:['Locations']}
             if (!features.length)
               return
             feature = features[0]

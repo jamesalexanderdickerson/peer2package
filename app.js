@@ -34,7 +34,6 @@ var app = require('express')(),
   var lng = '';
   var lat = '';
   var user = {};
-  var uname = user.fname + ' ' + user.lname
   var email = '';
   var myPosition = '';
   var generatedKeys = ''
@@ -130,7 +129,6 @@ app.post('/login', function (req, res) {
         user.lname = rows[0].lname
         user.pword = rows[0].pword
         user.token = jwt.sign(user, process.env.JWT_SECRET);
-        req.session.user = user
         res.send({token: user.token});
       } else {
         res.send({message: 'The password is incorrect!'})
@@ -142,7 +140,9 @@ app.post('/login', function (req, res) {
 });
 
 app.get('/logout', function(req, res) {
-  req.session.destroy();
+  Location.remove({email:email}, function (err) {
+    if (err) throw err;
+  });
   res.redirect('/');
 })
 
@@ -164,17 +164,23 @@ app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');
 });
 
-app.get('/other_positions', function (req, res) {
+app.get('/locations', function (req, res) {
 
-  Location.find({email: {$ne: email}}, function(err, location) {
+  var uname = user.fname + ' ' + user.lname;
+
+  Location.find({}, function(err, location) {
     if (err) throw err;
     var locations = [];
     locations.push(JSON.parse(JSON.stringify(location)));
     locations = locations[0];
-    var points = '{"type":"FeatureCollection","features":[';
+    var points = '{ "type":"FeatureCollection","features":[';
     var json = '';
     for (i = 0; i < locations.length; i++) {
-      json += '{"type":"Feature","geometry":{"type":"Point","coordinates":[' + locations[i].lng + ',' + locations[i].lat + ']},"type":"Feature","properties":{"title":"A Person","description":"HTML GOES HERE"}}';
+      if (locations[i].email === email) {
+        json += '{"type":"Feature","geometry":{"type":"Point","coordinates":[' + locations[i].lng + ',' + locations[i].lat + ']},"type":"Feature","properties":{"title":"You", "icon": "car", "description":"<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><img src=\'../img/profile.gif\' ><span#userName> '+ uname + ' </span>"}}';
+      } else {
+        json += '{"type":"Feature","geometry":{"type":"Point","coordinates":[' + locations[i].lng + ',' + locations[i].lat + ']},"type":"Feature","properties":{"title":"A Person", "icon": "car2", "description":"<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><span#userName> '+ locations[i].email + ' </span>"}}';
+      }
       if (i < locations.length -1) {
         json += ','
       }
@@ -182,28 +188,12 @@ app.get('/other_positions', function (req, res) {
     }
     points += ']}'
     points = JSON.parse(points);
-    console.log(points);
+    console.log(JSON.stringify(points));
     res.send(points)
   });
 
   // console.log(points)
 });
-
-app.get('/user_location', function (req, res) {
-
-  res.send({
-    "geometry": {
-      "type": "Point",
-      "coordinates": [ lng, lat ]
-    },
-    "type": "Feature",
-    "properties": {
-      "title": "You",
-      "description": "<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><div class='profile'><img src='../img/profile.gif' /><span#userName> " + uname + " </div>"
-    }
-  });
-});
-
 
 // SOCKET.IO
 io.on('connection', function (socket) {
