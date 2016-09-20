@@ -28,6 +28,7 @@
               var currentUser, url, yourPosition;
               $rootScope.myPosition = position;
               currentUser = userService.currentUser();
+              console.log(currentUser);
               longitude = position.coords.longitude;
               latitude = position.coords.latitude;
               url = 'http://localhost:8000/locations';
@@ -46,8 +47,7 @@
           url = 'http://localhost:8000/locations';
           geojson = null;
           $http.get(url).then(function(response) {
-            geojson = response.data;
-            return console.log(geojson);
+            return geojson = response.data;
           });
           if (document.getElementById('map')) {
             return map.on('load', function() {

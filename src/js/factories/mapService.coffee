@@ -18,6 +18,7 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
         $geolocation.getCurrentPosition(timeout: 60000).then (position) ->
           $rootScope.myPosition = position
           currentUser = userService.currentUser()
+          console.log(currentUser);
           longitude = position.coords.longitude
           latitude = position.coords.latitude
           url = 'http://localhost:8000/locations'
@@ -37,7 +38,6 @@ peer2package.service 'mapService', ['$rootScope', '$geolocation', 'socket', '$in
       geojson = null
       $http.get(url).then((response) ->
         geojson = response.data
-        console.log geojson
       )
       # source = new mapboxgl.GeoJSONSource {data:url}
       if document.getElementById 'map'

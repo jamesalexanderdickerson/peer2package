@@ -52,6 +52,7 @@ var LocationSchema = mongoose.Schema({
   lat: String
 });
 var Location = mongoose.model('Location', LocationSchema);
+
 var db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -127,7 +128,6 @@ app.post('/login', function (req, res) {
         user.email = rows[0].email
         user.fname = rows[0].fname
         user.lname = rows[0].lname
-        user.pword = rows[0].pword
         user.token = jwt.sign(user, process.env.JWT_SECRET);
         res.send({token: user.token});
       } else {
@@ -164,6 +164,28 @@ app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');
 });
 
+app.get('/users', function (req, res) {
+  names = [];
+  insertQuery = "SELECT * FROM users;";
+  connection.query(insertQuery, function (err, rows) {
+    if (err) throw err;
+    if (rows.length) {
+      for (var i in rows) {
+        email = rows[i].email;
+        fname = rows[i].fname;
+        lname = rows[i].lname;
+        name = fname + ' ' + lname;
+        user = {email:email,name:name};
+        names.push(user);
+      }
+      console.log(names);
+      res.send({
+        names
+      })
+    }
+  })
+});
+
 app.get('/locations', function (req, res) {
 
   var uname = user.fname + ' ' + user.lname;
@@ -177,7 +199,7 @@ app.get('/locations', function (req, res) {
     var json = '';
     for (i = 0; i < locations.length; i++) {
       if (locations[i].email === email) {
-        json += '{"type":"Feature","geometry":{"type":"Point","coordinates":[' + locations[i].lng + ',' + locations[i].lat + ']},"type":"Feature","properties":{"title":"You", "icon": "car", "description":"<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><img src=\'../img/profile.gif\' ><span#userName> '+ uname + ' </span>"}}';
+        json += '{"type":"Feature","geometry":{"type":"Point","coordinates":[' + locations[i].lng + ',' + locations[i].lat + ']},"type":"Feature","properties":{"title":"You", "icon": "car", "description":"<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}img{height:50px;width:50px;}div.profile > span#userName{margin-right:10px}</style><img src=\'../img/profile.gif\' ><span#userName> '+ uname + ' </span><div id=\'chat_menu\'><div id=\'chat_button\'><button "}}';
       } else {
         json += '{"type":"Feature","geometry":{"type":"Point","coordinates":[' + locations[i].lng + ',' + locations[i].lat + ']},"type":"Feature","properties":{"title":"A Person", "icon": "car2", "description":"<style>div.profile > img{height:70px;width:70px;}div.mapboxgl-popup {padding:10px;width:50%;background-color:#1C283B;border-radius:4px;margin-top:-80px;align-self:flex-start;}div.profile > span#userName{margin-right:10px}</style><span#userName> '+ locations[i].email + ' </span>"}}';
       }
@@ -188,7 +210,6 @@ app.get('/locations', function (req, res) {
     }
     points += ']}'
     points = JSON.parse(points);
-    console.log(JSON.stringify(points));
     res.send(points)
   });
 
@@ -213,6 +234,10 @@ io.on('connection', function (socket) {
   });
   socket.on('chat message', function (message) {
     io.emit('chat message', message.message)
+    console.log(message);
+    insertQuery = 'INSERT INTO chat_messages (email, message, driver) VALUES ("' + message.from +'", "'+ message.message +'","' + message.to +'");';
+    connection.query(insertQuery);
+
   })
   socket.on('disconnect', function () {
     console.log('A user has disconnected');
