@@ -8,11 +8,9 @@
       $scope.chat_open = false;
       $scope.selectedUser = null;
       $scope.Users = null;
-      console.log(userService.currentUser());
+      $scope.currentUser = userService.currentUser();
       $http.get('/users').success(function(result) {
         return $scope.Users = result.names;
-      }).then(function() {
-        return console.log($scope.Users);
       });
       $scope.open_chat = function() {
         return $scope.chat_open = true;
@@ -22,7 +20,7 @@
       };
       $scope.submitChat = function(message) {
         socket.emit('chat message', {
-          from: userService.currentUser().fname + ' ' + userService.currentUser().lname,
+          from: $scope.currentUser.fname + ' ' + $scope.currentUser.lname,
           message: message,
           to: $scope.selectedUser
         });

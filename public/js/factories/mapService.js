@@ -28,7 +28,6 @@
               var currentUser, url, yourPosition;
               $rootScope.myPosition = position;
               currentUser = userService.currentUser();
-              console.log(currentUser);
               longitude = position.coords.longitude;
               latitude = position.coords.latitude;
               url = 'http://localhost:8000/locations';

@@ -4,12 +4,10 @@ peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', 'use
   $scope.chat_open = false
   $scope.selectedUser = null
   $scope.Users = null
-  console.log(userService.currentUser())
+  $scope.currentUser = userService.currentUser()
 
   $http.get('/users').success((result) ->
     $scope.Users = result.names
-  ).then(() ->
-    console.log $scope.Users
   )
 
   $scope.open_chat = () ->
@@ -20,7 +18,7 @@ peer2package.controller 'mapController', ['$scope', 'mapService', 'socket', 'use
 
   $scope.submitChat = (message) ->
     socket.emit 'chat message', {
-      from: userService.currentUser().fname + ' ' + userService.currentUser().lname,
+      from: $scope.currentUser.fname + ' ' + $scope.currentUser.lname,
       message: message,
       to: $scope.selectedUser
     }
