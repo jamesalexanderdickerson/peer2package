@@ -1,4 +1,13 @@
-form#photoUpload(enctype='multipart/form-data')
-	div.row
-		label(for='fileToUpload') Photo
-		input#myFileInput(type='file' accept='image/*;capture=camera')
+div(ng-controller='uploadController')
+	form#photoUpload(action='/photoUpload' method='post' enctype='multipart/form-data')
+		div Crop Image and Upload
+		button(ngf-select ng-model='picFile' accept='image/*') Select Image
+		div(ngf-drop ng-model='picFile' ngf-pattern='image/*' class='cropArea')
+			<img-crop image='picFile | ngfDataUrl' result-image='croppedDataUrl' ng-init='croppedDataUrl=""'></imgcrop>
+		div
+			<img ng-src="{{croppedDataUrl}}"/>	
+		button(ng-click='upload(croppedDataUrl, picFile.name)') Submit
+		span.progress(ng-show='progress >= 0')
+			div(style="width:{{progress}}%" ng-bind='progress + "%"')
+		span(ng-show='result') Upload Successful
+		span.err(ng-show='errorMsg') {{errorMsg}}

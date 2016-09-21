@@ -10,7 +10,8 @@ var app = require('express')(),
   session = require('express-session'),
   RedisStore = require('connect-redis')(session),
   bcrypt = require('bcrypt'),
-  r = require('rethinkdb'),
+  multer = require('multer'),
+  upload = multer({dest: 'public/img/uploads'}),
   mysql = require('mysql'),
   connection = mysql.createConnection({
     host     : 'localhost',
@@ -160,6 +161,9 @@ app.post('/delete', function (req, res) {
   })
 });
 
+app.post('/photoUpload', upload.any(), function (req, res) {
+  console.log(req.files);
+});
 
 app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');

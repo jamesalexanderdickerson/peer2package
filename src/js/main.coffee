@@ -1,4 +1,4 @@
-peer2package = angular.module 'peer2package', ['ui.router', 'ngStorage', 'ngGeolocation']
+peer2package = angular.module 'peer2package', ['ui.router', 'ngStorage', 'ngGeolocation', 'ngFileUpload', 'ngImgCrop']
 
 peer2package.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider

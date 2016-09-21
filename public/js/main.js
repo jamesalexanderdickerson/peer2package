@@ -1,7 +1,7 @@
 (function() {
   var peer2package;
 
-  peer2package = angular.module('peer2package', ['ui.router', 'ngStorage', 'ngGeolocation']);
+  peer2package = angular.module('peer2package', ['ui.router', 'ngStorage', 'ngGeolocation', 'ngFileUpload', 'ngImgCrop']);
 
   peer2package.config(function($stateProvider, $urlRouterProvider) {
     return $stateProvider.state('main', {
