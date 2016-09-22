@@ -11,6 +11,7 @@ peer2package.controller 'menuController', ['$scope', '$http', '$localStorage', '
   $scope.loggedIn = () ->
     menubox.classList.add 'loggedIn'
     userService.currentUser()
+    userService.getPhoto()
 
   if ($localStorage.token)
     $scope.loggedIn()

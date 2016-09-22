@@ -15,7 +15,8 @@
       sidenavmenu = document.getElementById('side-nav-menu');
       $scope.loggedIn = function() {
         menubox.classList.add('loggedIn');
-        return userService.currentUser();
+        userService.currentUser();
+        return userService.getPhoto();
       };
       if ($localStorage.token) {
         $scope.loggedIn();

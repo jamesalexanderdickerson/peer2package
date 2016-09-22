@@ -11,7 +11,19 @@ var app = require('express')(),
   RedisStore = require('connect-redis')(session),
   bcrypt = require('bcrypt'),
   multer = require('multer'),
-  upload = multer({dest: 'public/img/uploads'}),
+  jwt = require('jsonwebtoken'),
+  storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+      callback(null, 'public/img/uploads');
+    },
+    filename: function (req, file, callback) {
+      name = file.fieldname + '-' + Date.now()
+      hash = jwt.sign(name, process.env.JWT_SECRET);
+      hash += hash + '.jpg';
+      callback(null, hash);
+    }
+  })
+  upload = multer({storage: storage}),
   mysql = require('mysql'),
   connection = mysql.createConnection({
     host     : 'localhost',
@@ -22,7 +34,6 @@ var app = require('express')(),
 
   mongodb = require('mongodb'),
   mongoose = require('mongoose'),
-  jwt = require('jsonwebtoken'),
   dotenv = require('dotenv');
 
 
@@ -162,8 +173,19 @@ app.post('/delete', function (req, res) {
 });
 
 app.post('/photoUpload', upload.any(), function (req, res) {
-  console.log(req.files);
+  insertQuery = 'UPDATE users SET photo="' + req.files[0].path + '" WHERE email="' + user.email +'";';
+  connection.query(insertQuery, function (err, rows) {
+    if (err) throw err;
+    res.end();
+  });
 });
+
+app.get('/photo', function (req, res) {
+  insertQuery = 'SELECT photo FROM users WHERE email="'+ user.email +'";';
+  connection.query(insertQuery, function (err, rows) {
+    res.send(rows[0]);
+  })
+})
 
 app.get('/map', function (req, res) {
   res.sendFile(__dirname + '/public/map.html');
@@ -183,7 +205,6 @@ app.get('/users', function (req, res) {
         user = {email:email,name:name};
         names.push(user);
       }
-      console.log(names);
       res.send({
         names
       })
@@ -232,7 +253,6 @@ io.on('connection', function (socket) {
     if (email) {
       Location.findOneAndUpdate({email: email}, {lng: lng, lat: lat}, {upsert: true}, function (err, location) {
         if(err) throw err;
-        console.log('location updated');
       });
     }
 

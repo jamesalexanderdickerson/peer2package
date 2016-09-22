@@ -3,7 +3,7 @@ div.container(ng-controller='accountController')
 		h1 ACCOUNT PAGE
 		div.profile
 			div.profile_img
-				img(src='./img/profile.gif' height='100px' width='100px')
+				img(src='{{photo}}' height='100px' width = '100px')
 			div.profile_data
 				span#userName {{name}}
 				p

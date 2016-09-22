@@ -24,9 +24,19 @@ peer2package.factory 'userService', ($http, $localStorage) ->
         $localStorage.$reset()
       )
 
+    getPhoto: (user) ->
+      $userPhoto = $http.get('/photo', user)
+      $userPhoto.then((response) ->
+        if response.data.photo is null
+          photo = './img/profile.gif'
+        else
+          photo = response.data.photo
+          $localStorage.photo = photo
+
+      )
+
     logout: () ->
       currentUser = ''
-    isLoggedIn: () ->
 
     currentUser: () ->
       if ($localStorage.token)

@@ -32,10 +32,22 @@
           return $localStorage.$reset();
         });
       },
+      getPhoto: function(user) {
+        var $userPhoto;
+        $userPhoto = $http.get('/photo', user);
+        return $userPhoto.then(function(response) {
+          var photo;
+          if (response.data.photo === null) {
+            return photo = './img/profile.gif';
+          } else {
+            photo = response.data.photo;
+            return $localStorage.photo = photo;
+          }
+        });
+      },
       logout: function() {
         return currentUser = '';
       },
-      isLoggedIn: function() {},
       currentUser: function() {
         if ($localStorage.token) {
           currentUser = jwt_decode($localStorage.token);

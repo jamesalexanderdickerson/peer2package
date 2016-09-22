@@ -4,14 +4,16 @@
   peer2package = angular.module('peer2package');
 
   peer2package.controller('uploadController', [
-    '$scope', 'Upload', '$timeout', function($scope, Upload, $timeout) {
-      $scope.upload = function(dataUrl, name) {
+    '$scope', 'Upload', '$timeout', 'userService', '$state', function($scope, Upload, $timeout, userService, $state) {
+      userService.getPhoto();
+      return $scope.upload = function(dataUrl, name) {
         Upload.upload({
-          url: '/public/img/uploads',
+          url: '/photoUpload',
           data: {
             file: Upload.dataUrltoBlob(dataUrl, name)
           }
         }).then((function(response) {
+          $state.go('account');
           $timeout(function() {
             $scope.result = response.data;
           });

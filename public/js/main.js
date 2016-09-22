@@ -18,7 +18,7 @@
       controller: 'mapController'
     }).state('photoUpload', {
       templateUrl: 'photo_upload.html',
-      controller: 'photoController'
+      controller: 'uploadController'
     }).state('gps', {
       templateUrl: 'gps.html',
       controller: 'gpsController'
