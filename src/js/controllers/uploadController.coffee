@@ -1,5 +1,6 @@
 peer2package = angular.module 'peer2package'
 peer2package.controller 'uploadController', ['$scope', 'Upload', '$timeout', 'userService', '$state', ($scope, Upload, $timeout, userService, $state) ->
+  $scope.pictureOn = false
   userService.getPhoto()
   $scope.upload = (dataUrl, name) ->
     Upload.upload(
@@ -12,6 +13,7 @@ peer2package.controller 'uploadController', ['$scope', 'Upload', '$timeout', 'us
       return
     ), ((response) ->
       if response.status > 0
+        $scope.pictureOn = true
         $scope.errorMsg = response.status + ': ' + response.data
       return
     ), (evt) ->

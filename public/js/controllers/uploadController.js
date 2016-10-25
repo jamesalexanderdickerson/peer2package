@@ -5,6 +5,7 @@
 
   peer2package.controller('uploadController', [
     '$scope', 'Upload', '$timeout', 'userService', '$state', function($scope, Upload, $timeout, userService, $state) {
+      $scope.pictureOn = false;
       userService.getPhoto();
       return $scope.upload = function(dataUrl, name) {
         Upload.upload({
@@ -19,6 +20,7 @@
           });
         }), (function(response) {
           if (response.status > 0) {
+            $scope.pictureOn = true;
             $scope.errorMsg = response.status + ': ' + response.data;
           }
         }), function(evt) {

@@ -1,11 +1,11 @@
 form#photoUpload(enctype='multipart/form-data')
 	h1 Crop Image and Upload
-	button(ngf-select ng-model='picFile' accept='image/*') Select Image
+	button(ng-hide='pictureOn' ngf-select ng-model='picFile' accept='image/*' ng-click='pictureOn=true') Select Image
 	div(ngf-drop ng-model='picFile' ngf-pattern='image/*' class='cropArea')
 		<img-crop area-type='square' image='picFile | ngfDataUrl' result-image='croppedDataUrl' ng-init='croppedDataUrl=""'></imgcrop>
-	div.croppedImg
+	div.croppedImg(ng-show='pictureOn')
 		<img id='croppedImg' ng-src="{{croppedDataUrl}}"/>	
-	button(ng-click='upload(croppedDataUrl, picFile.name)') Submit
+	button(ng-show='pictureOn' ng-click='upload(croppedDataUrl, picFile.name)') Submit
 	span.progress(ng-show='progress >= 0')
 		div(style="width:{{progress}}%" ng-bind='progress + "%"')
 	span(ng-show='result') Upload Successful
